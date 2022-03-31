@@ -28,10 +28,8 @@ class EventController {
     
     async getUserEvents(req, res, next){
         try {
-            const { creator } = req.body
-            console.log('request:')
-            console.log(req.body)
-            const events = await EventService.getUserEvents(creator)
+            const { creatorId } = req.params
+            const events = await EventService.getUserEvents(creatorId)
             return res.status(200).json(events)
         } catch (error) {
             next(error)

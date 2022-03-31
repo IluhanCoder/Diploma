@@ -9,8 +9,16 @@ import { Context } from "../../index";
 import EventService from "../../services/EventService";
 import { BiSearch } from "react-icons/bi";
 import { observer } from 'mobx-react-lite'
+import { useParams } from "react-router"
+
+type LocalParams = {
+  userId: string
+}
 
 export const UserEvents: FC = () => {
+  const params = useParams<LocalParams>()
+  const {userId: creatorId} = params
+  
   const {store} = useContext(Context)
   const [events, setEvents] = useState<Array<IEvent>>([]);
   const [searchType, setSearchType] = useState<string>("");
@@ -18,8 +26,7 @@ export const UserEvents: FC = () => {
   console.log(store.user.email)
 
   React.useEffect(() => {
-    console.log(store.user.email)
-    $api.post("/user-events", { creator: store.user.email }).then((response) => {
+    $api.get("/user-events/" + creatorId).then((response) => {
       setEvents(response.data);
     });
   }, []);

@@ -1,11 +1,15 @@
 import '../index.css';
-import React from 'react'
+import React, { useContext } from 'react'
 import {Link} from 'react-router-dom'
 import RightButtons from './HeaderComps/RigthButtons';
 import { observer } from 'mobx-react-lite';
 import UserPageLink from './HeaderComps/UserPageLink';
+import { storeAnnotation } from 'mobx/dist/internal';
+import { Context } from '../index';
 
 function Header(){
+    const {store} = useContext(Context)
+  
     return(
         <>
             <nav className="flex items-center justify-between flex-wrap bg-gradient-to-r from-cyan-500 to-sky-500 p-4 drop-shadow-lg">
@@ -27,6 +31,9 @@ function Header(){
                   </Link>
                   <Link to="/events" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                     Події
+                  </Link>
+                  <Link to={"/user-events/" + store.user.id} className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                    Мої події
                   </Link>
                   <UserPageLink/>
                 </div>

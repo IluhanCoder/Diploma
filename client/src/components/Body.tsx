@@ -3,7 +3,7 @@ import React from 'react'
 import LoginForm from './BodyComps/LoginForm'
 import RegForm from './BodyComps/RegForm'
 import { observer } from 'mobx-react-lite'
-import Profile from './BodyComps/Profile'
+import Profile from './BodyComps/profile'
 import Events from './BodyComps/Events'
 import AddEventForm from './BodyComps/AddEventForm'
 import UserEvents from './BodyComps/UserEvents'
@@ -19,7 +19,7 @@ function Body(){
               <Route path="/user/:id" element={<UserPage/>}/>
               <Route path="/events" element={<Events/>}/>
               <Route path="/event-form" element={<AddEventForm/>}/>
-              <Route path="/user-events" element={<UserEvents/>}/>
+              <Route path="/user-events/:userId" element={<UserEvents/>}/>
             </Routes>
         </>
     )

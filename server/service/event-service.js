@@ -16,9 +16,9 @@ class EventService {
         }
     }
     
-    async getUserEvents(creator) {
+    async getUserEvents(creatorId) {
         try{
-            const events = await EventModel.find({ creator:creator })
+            const events = await EventModel.find({ creatorId })
             return events
         } catch (error) {
             throw error
