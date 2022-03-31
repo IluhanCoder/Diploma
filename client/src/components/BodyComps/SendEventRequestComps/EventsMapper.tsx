@@ -1,5 +1,7 @@
+import { useState } from "react"
 import { IEvent } from "../../../models/IEvent"
 import DateFormater from "../DateFormater"
+import SmallEvent from "./EventMapperComps/SmallEvent"
 
 type LocalParams = {
     events: Array<IEvent>
@@ -7,19 +9,10 @@ type LocalParams = {
 
 const EventsMapper = (params: LocalParams) => {
     const {events} = params
-    return <div>
+    const [chosenIndex, setChosenIndex] = useState<number>(0)
+    return <div className="flex flex-col gap-2">
         {events?.map((event: IEvent) => {
-            return <div className="bg-cyan-400 rounded px-16 py-3 text-white grid grid-cols-3">
-                <div className="flex">
-                    {event.name}
-                </div>
-                <div className="flex justify-center">
-                    {event.adress}
-                </div>
-                <div className="flex right flex-row-reverse">
-                    <DateFormater value={event.date} dayOfWeek={false}/>
-                </div>
-            </div>
+            return <SmallEvent event={event} isSelected={true}/>
         })}
     </div>
 }

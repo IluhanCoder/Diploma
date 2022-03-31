@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, FC } from "react"
 import { useParams } from "react-router"
 import { IUser } from "../../models/IUser"
 import UserService from "../../services/UserService"
@@ -6,27 +6,30 @@ import $api from "../../http";
 import { Context } from "../../index"
 import { IEvent } from "../../models/IEvent";
 import EventsMapper from "./SendEventRequestComps/EventsMapper";
+import { observer } from 'mobx-react-lite'
 
 type LocalParams = {
     userId: string
 }
 
-const SendEventRequest = () => {
+const SendEventRequest: FC = () => {
     const {store} = useContext(Context)
     const {userId} = useParams<LocalParams>()
     const[user, setUser] = useState<IUser>()
     const[events, setEvents] = useState<Array<IEvent>>([])
     
     useEffect(() => {
+        $api.get("/user-events/623c8ea9a3970f8ff804100b").then((response) => {
+            setEvents(response.data)
+            console.log(events)
+        })
+    }, [])
+    
+    useEffect(() => {
         $api.get("/users/" + userId).then((response) => {
             setUser(response.data);
         });
-        
-        $api.get("/user-events/" + store.user.id).then((response) => {
-            setEvents(response.data)
-        })
-    }
-    , [])
+    }, [])
 
     return(
         <div className="flex flex-col p-2 gap-12">
@@ -44,4 +47,4 @@ const SendEventRequest = () => {
     )
 }
 
-export default SendEventRequest
+export default observer(SendEventRequest)

@@ -8,12 +8,13 @@ import Avatar from "react-avatar"
 import DateFormater from "./DateFormater";
 import InviteButtons from "./InviteButtons"
 import { isUndefined } from "util";
+import { observer } from "mobx-react-lite"
 
 type LocalParams = {
     id: string
 }
 
-export const UserPage: React.FC = () => {
+const UserPage: React.FC = () => {
     let url = API_URL.replace("/api", "")
 
     const [user, setUser] = useState<IUser>()
@@ -179,3 +180,5 @@ export const UserPage: React.FC = () => {
     )
     
 }
+
+export default observer(UserPage)

@@ -7,7 +7,7 @@ import Profile from './BodyComps/profile'
 import Events from './BodyComps/Events'
 import AddEventForm from './BodyComps/AddEventForm'
 import UserEvents from './BodyComps/UserEvents'
-import { UserPage } from './BodyComps/UserPage'
+import UserPage from './BodyComps/UserPage'
 import SendEventRequest from './BodyComps/SendEventRequest'
 
 function Body(){

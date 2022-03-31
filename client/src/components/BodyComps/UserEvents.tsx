@@ -23,8 +23,7 @@ export const UserEvents: FC = () => {
   const [events, setEvents] = useState<Array<IEvent>>([]);
   const [searchType, setSearchType] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
-  console.log(store.user.email)
-
+  
   React.useEffect(() => {
     $api.get("/user-events/" + creatorId).then((response) => {
       setEvents(response.data);
