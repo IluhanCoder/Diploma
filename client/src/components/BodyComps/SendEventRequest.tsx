@@ -1,0 +1,47 @@
+import { useContext, useEffect, useState } from "react"
+import { useParams } from "react-router"
+import { IUser } from "../../models/IUser"
+import UserService from "../../services/UserService"
+import $api from "../../http";
+import { Context } from "../../index"
+import { IEvent } from "../../models/IEvent";
+import EventsMapper from "./SendEventRequestComps/EventsMapper";
+
+type LocalParams = {
+    userId: string
+}
+
+const SendEventRequest = () => {
+    const {store} = useContext(Context)
+    const {userId} = useParams<LocalParams>()
+    const[user, setUser] = useState<IUser>()
+    const[events, setEvents] = useState<Array<IEvent>>([])
+    
+    useEffect(() => {
+        $api.get("/users/" + userId).then((response) => {
+            setUser(response.data);
+        });
+        
+        $api.get("/user-events/" + store.user.id).then((response) => {
+            setEvents(response.data)
+        })
+    }
+    , [])
+
+    return(
+        <div className="flex flex-col p-2 gap-12">
+            <div className="flex justify-center">
+                <div className="p-3 text-2xl">
+                    Будь ласка, оберіть подію, участь у якій ви хочете запропонувати користувачу {user?.login}
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="h-80 overflow-auto w-2/3">
+                    <EventsMapper events={events}/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default SendEventRequest

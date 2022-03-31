@@ -23,4 +23,8 @@ export default class UserService {
     static update(user: IUser, login: string, email: string, cell: string, city: string, gender: string) : void{
         $api.put('/user',{login, email, cell, city, gender})
     }
+    
+    static sendRequest(userId: string, eventId: string) {
+        $api.post('/event-request',{userId, eventId})
+    }
 }

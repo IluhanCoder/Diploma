@@ -8,6 +8,7 @@ import Events from './BodyComps/Events'
 import AddEventForm from './BodyComps/AddEventForm'
 import UserEvents from './BodyComps/UserEvents'
 import { UserPage } from './BodyComps/UserPage'
+import SendEventRequest from './BodyComps/SendEventRequest'
 
 function Body(){
     return(
@@ -20,6 +21,7 @@ function Body(){
               <Route path="/events" element={<Events/>}/>
               <Route path="/event-form" element={<AddEventForm/>}/>
               <Route path="/user-events/:userId" element={<UserEvents/>}/>
+              <Route path="/send-event-request/:userId" element={<SendEventRequest/>}/>
             </Routes>
         </>
     )

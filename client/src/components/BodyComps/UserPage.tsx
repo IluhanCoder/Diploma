@@ -6,6 +6,8 @@ import $api from "../../http";
 import{ API_URL } from "../../http"
 import Avatar from "react-avatar"
 import DateFormater from "./DateFormater";
+import InviteButtons from "./InviteButtons"
+import { isUndefined } from "util";
 
 type LocalParams = {
     id: string
@@ -17,7 +19,7 @@ export const UserPage: React.FC = () => {
     const [user, setUser] = useState<IUser>()
 
     const params = useParams<LocalParams>()
-    const {id} = params
+    let id = params?.id ?? ""
 
     React.useEffect(() => {
         $api.get("/users/" + id).then((response) => {
@@ -42,10 +44,7 @@ export const UserPage: React.FC = () => {
                                 <p className="text-4xl">{user?.login}</p>
                             </div>                   
                     </div>
-                    <div className="flex flex-col gap-3 justify-center bg-white rounded drop-shadow border-1 p-4">
-                            <button type="button" className="rounded bg-green-500 text-white hover:bg-green-700 transition px-4 py-2 hover:text-white lg:mt-0">Запропонувати участь у події</button>
-                            <button type="button" className="rounded bg-cyan-400 text-white hover:bg-cyan-400 transition px-4 py-2 hover:text-white lg:mt-0">Надіслати повідомлення</button>
-                    </div>
+                    <InviteButtons id={id}/>
                 </div>
                 <div className="p-10 bg-white border drop-shadow rounded md:w-7/12 sm:w-full grid grid-col h-fit gap-8">
                     <div>
