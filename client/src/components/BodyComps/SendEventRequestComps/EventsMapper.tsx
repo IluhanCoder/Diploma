@@ -4,15 +4,18 @@ import DateFormater from "../DateFormater"
 import SmallEvent from "./EventMapperComps/SmallEvent"
 
 type LocalParams = {
-    events: Array<IEvent>
+    events: Array<IEvent>,
+    chosenIndex: number,
+    setChosenIndex: React.Dispatch<React.SetStateAction<number>>
 }
 
 const EventsMapper = (params: LocalParams) => {
-    const {events} = params
-    const [chosenIndex, setChosenIndex] = useState<number>(0)
+    const {events, chosenIndex, setChosenIndex} = params
+    
     return <div className="flex flex-col gap-2">
         {events?.map((event: IEvent) => {
-            return <SmallEvent event={event} isSelected={true}/>
+            const currentIndex = events.indexOf(event)
+            return <button type="button" onClick={() => setChosenIndex(currentIndex)}><SmallEvent event={event} isSelected={(chosenIndex == currentIndex)? true : false}/></button>
         })}
     </div>
 }

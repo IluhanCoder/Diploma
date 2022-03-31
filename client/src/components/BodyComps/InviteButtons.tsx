@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { useNavigate } from "react-router"
 import { Context } from "../.."
 import UserService from "../../services/UserService"
+import { observer } from "mobx-react-lite"
 
 type LocalParams = {
     id: string
@@ -22,4 +23,4 @@ const InviteButtons = (params: LocalParams) => {
     else return <></>
 }
 
-export default InviteButtons
+export default observer(InviteButtons)

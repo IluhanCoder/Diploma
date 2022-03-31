@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, FC } from "react"
+import React, { useContext, useEffect, useState, FC } from "react"
 import { useParams } from "react-router"
 import { IUser } from "../../models/IUser"
 import UserService from "../../services/UserService"
@@ -7,6 +7,7 @@ import { Context } from "../../index"
 import { IEvent } from "../../models/IEvent";
 import EventsMapper from "./SendEventRequestComps/EventsMapper";
 import { observer } from 'mobx-react-lite'
+import Event from "../BodyComps/EventsComps/Event"
 
 type LocalParams = {
     userId: string
@@ -17,11 +18,11 @@ const SendEventRequest: FC = () => {
     const {userId} = useParams<LocalParams>()
     const[user, setUser] = useState<IUser>()
     const[events, setEvents] = useState<Array<IEvent>>([])
+    const [chosenIndex, setChosenIndex] = useState<number>(-1)
     
-    useEffect(() => {
-        $api.get("/user-events/623c8ea9a3970f8ff804100b").then((response) => {
+    React.useEffect(() => {
+        $api.get("/user-events/" + store.user.id).then((response) => {
             setEvents(response.data)
-            console.log(events)
         })
     }, [])
     
@@ -39,9 +40,12 @@ const SendEventRequest: FC = () => {
                 </div>
             </div>
             <div className="flex justify-center">
-                <div className="h-80 overflow-auto w-2/3">
-                    <EventsMapper events={events}/>
+                <div className="max-h-80 overflow-auto w-2/3">
+                    <EventsMapper events={events} chosenIndex={chosenIndex} setChosenIndex={setChosenIndex}/>
                 </div>
+            </div>
+            <div className="flex justify-center">
+                <button onClick={() => UserService.sendRequest(store.user.id, events[chosenIndex].id)}>Відправити пропозицію</button>
             </div>
         </div>
     )

@@ -9,9 +9,9 @@ type LocalParams = {
 const SmallEvent = (params: LocalParams) => {
     const {event, isSelected} = params
     let bgColor = ""
-    if(isSelected) bgColor = "bg-cyan-600"
-    else bgColor = "bg-red"
-    return <div className={"rounded px-16 py-3 text-white grid grid-cols-3 drop-shadow" + bgColor}>
+    if(isSelected) bgColor = "bg-cyan-700"
+    else bgColor = "bg-cyan-400"
+    return <div className={"rounded px-16 py-3 text-white grid grid-cols-3 drop-shadow " + bgColor}>
         <div className="flex">
             {event.name}
         </div>
