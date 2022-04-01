@@ -126,6 +126,15 @@ class UserController {
         }
     }
     
+    async eventInvite(req, res, next){
+        try {
+            const {userId, eventName} = req.body
+            userService.eventInvite(userId, eventName)
+        } catch (error) {
+            next(error)
+        }
+    }
+    
     async getById(req, res, next){
         try {
             const userId = req.params.id

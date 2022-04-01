@@ -45,7 +45,7 @@ const SendEventRequest: FC = () => {
                 </div>
             </div>
             <div className="flex justify-center">
-                <button onClick={() => UserService.sendRequest(store.user.id, events[chosenIndex].id)}>Відправити пропозицію</button>
+                <button onClick={() => UserService.sendRequest(userId? userId : "", events[chosenIndex].name)}>Надіслати пропозицію</button>
             </div>
         </div>
     )

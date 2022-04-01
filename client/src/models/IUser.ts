@@ -8,4 +8,5 @@ export interface IUser {
     avatar: string
     isActivated : boolean
     id : string
+    eventInvites : Array<string>
 }

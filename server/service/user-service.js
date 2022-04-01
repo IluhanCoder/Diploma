@@ -114,6 +114,19 @@ class UserService {
         const user = userModel.findOne({_id: id})
         return user
     }
+    
+    async eventInvite(userId, eventName) {
+        const user = await userModel.findOne({ _id: userId })
+        let eventInvite = user.eventInvites
+        eventInvite.push(eventName)
+        const filter = { _id: userId };
+        const updateDocument = {
+           $set: {
+              eventInvites: eventInvite
+           },
+        };
+        const result = await UserModel.updateOne(filter, updateDocument);
+    }
 }
 
 module.exports = new UserService()

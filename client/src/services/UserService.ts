@@ -24,7 +24,7 @@ export default class UserService {
         $api.put('/user',{login, email, cell, city, gender})
     }
     
-    static sendRequest(userId: string, eventId: string) {
-        $api.post('/event-request',{userId, eventId})
+    static sendRequest(userId: string, eventName: string) {
+        $api.post('/event-invite',{userId, eventName})
     }
 }

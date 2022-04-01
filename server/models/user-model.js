@@ -12,7 +12,8 @@ const UserSchema = new Schema({
     gender: {type: String, required: true},
     avatar: {type: String, required: false},
     isActivated: { type: String, default: true },
-    activationLink: { type: String }
+    activationLink: { type: String },
+    eventInvites: { type: [String], required: false }
 })
 
 module.exports = model('User', UserSchema)
