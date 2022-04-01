@@ -6,8 +6,7 @@ import $api from "../../http";
 import{ API_URL } from "../../http"
 import Avatar from "react-avatar"
 import DateFormater from "./DateFormater";
-import InviteButtons from "./InviteButtons"
-import { isUndefined } from "util";
+import InviteButtons from "./UserPageComps/InviteButtons";
 import { observer } from "mobx-react-lite"
 import Invites from "./UserPageComps/Invites";
 
@@ -109,8 +108,8 @@ const UserPage: React.FC = () => {
                         <p className="text-xl">Історія подій користувача:</p>
                     </div>
                     <div className="h-80 w-full mt-6 overflow-auto">
-                        <div className="h-fit grid drid-col gap-5 text-white">
-                            <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
+                        <div className="grid drid-col gap-5 text-white">
+                            <div className="h-fit bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
                                 <div>Назва події</div>
                                 <div className="flex justify-center">Роль у події</div>
                                 <div className="flex flex-row-reverse">24.10.22</div>
@@ -173,14 +172,7 @@ const UserPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="p-5 bg-white border drop-shadow rounded rounded w-3/12 grid grid-col">
-                    <div className="flex justify-center">
-                        <p className="text-xl">Пропозиції на участь:</p>
-                    </div>
-                    <div className="h-80 w-full mt-6 overflow-auto">
-                        <Invites invites={user?.eventInvites? user?.eventInvites : []} display={true}/>
-                    </div>
-                </div>
+                    <Invites invites={user?.eventInvites? user?.eventInvites : []} display={true} id={id}/>
             </div>
         </div>
     )
