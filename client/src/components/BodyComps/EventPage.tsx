@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import $api from "../../http";
 import { IEvent } from "../../models/IEvent";
 
@@ -6,7 +7,8 @@ type LocalParams = {
   eventId: string;
 };
 
-const EventPage = (params: LocalParams) => {
+const EventPage = () => {
+  const params = useParams<LocalParams>();
   const { eventId } = params;
 
   const [event, setEvent] = useState<IEvent>();
@@ -26,3 +28,5 @@ const EventPage = (params: LocalParams) => {
     </div>
   );
 };
+
+export default EventPage;
