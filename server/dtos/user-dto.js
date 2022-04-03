@@ -17,7 +17,7 @@ module.exports = class UserDto {
     this.city = model.city;
     this.gender = model.gender;
     this.avatar = model.avatar;
-    this.id = model._id;
+    this._id = model._id;
     this.isActivated = model.isActivated;
   }
 };

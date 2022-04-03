@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IEvent } from "../../models/IEvent";
-import { Event } from "./EventsComps/Event";
+import { Event } from "./EventsPageComps/Event";
 import $api from "../../http";
 import SubHeader from "../UniversalComps/SearchBar";
 

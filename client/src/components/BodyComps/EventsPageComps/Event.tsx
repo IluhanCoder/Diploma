@@ -62,6 +62,13 @@ export const Event = ({ event }: LocalProps) => {
             <p>Адреса: {event.adress}</p>
           </div>
         </div>
+        <div className="flex justify-center">
+          <Link to={"/event/" + event._id}>
+            <button type="button" className="">
+              Детальніше
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

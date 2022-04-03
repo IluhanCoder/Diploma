@@ -157,7 +157,7 @@ export const AddEventForm: FC = () => {
             onClick={() => {
               EventService.createEvent(
                 name,
-                store.user.id,
+                store.user._id,
                 desc,
                 genres,
                 date,

@@ -71,11 +71,11 @@ class UserService {
     if (!userData || !tokenFromDb) {
       throw ApiError.UnauthorizedError();
     }
-    const user = await UserModel.findById(userData.id);
+    const user = await UserModel.findById(userData._id);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
 
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await tokenService.saveToken(userDto._id, tokens.refreshToken);
 
     return {
       ...tokens,
@@ -89,7 +89,7 @@ class UserService {
   }
 
   async setAvatar(filePath, userData) {
-    const filter = { _id: userData.id };
+    const filter = { _id: userData._id };
     let fileStr = filePath.replace("images\\", "");
     const updateDocument = {
       $set: {
@@ -106,7 +106,7 @@ class UserService {
 
   async update(userData, login, email, cell, city, gender) {
     // userData.updateOne({login, email, cell, city, gender})
-    const filter = { _id: userData.id };
+    const filter = { _id: userData._id };
     const updateDocument = {
       $set: {
         login,

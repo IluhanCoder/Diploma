@@ -5,9 +5,9 @@ import UserService from "../../services/UserService";
 import $api from "../../http";
 import { Context } from "../../index";
 import { IEvent } from "../../models/IEvent";
-import EventsMapper from "./SendEventRequestComps/EventsMapper";
+import EventsMapper from "./InvitePageComps/EventsMapper";
 import { observer } from "mobx-react-lite";
-import Event from "./EventsComps/Event";
+import Event from "./EventsPageComps/Event";
 
 type LocalParams = {
   userId: string;
@@ -21,7 +21,7 @@ const SendEventRequest: FC = () => {
   const [chosenIndex, setChosenIndex] = useState<number>(-1);
 
   React.useEffect(() => {
-    $api.get("/user-events/" + store.user.id).then((response) => {
+    $api.get("/user-events/" + store.user._id).then((response) => {
       setEvents(response.data);
     });
   }, []);

@@ -68,6 +68,16 @@ class EventController {
       return res.status(400).json({ message: "Set avatar error" });
     }
   }
+
+  async getById(req, res, next) {
+    try {
+      const eventId = req.params.id;
+      const event = await eventService.getById(eventId);
+      return res.status(200).json(event);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new EventController();

@@ -12,7 +12,7 @@ const InviteButtons = (params: LocalParams) => {
   const navigate = useNavigate();
   const { store } = useContext(Context);
   const { id } = params;
-  if (store.isAuth && store.user.id != id) {
+  if (store.isAuth && store.user._id != id) {
     return (
       <div className="flex flex-col gap-3 justify-center bg-white rounded drop-shadow border-1 p-4">
         <button

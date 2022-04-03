@@ -5,15 +5,15 @@ import IRoute from "../../interfaces/route";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { storeAnnotation } from "mobx/dist/internal";
-import FileUploader from "./UserEventsComps/UserAvatarUploader";
+import FileUploader from "./UserEventsPageComps/UserAvatarUploader";
 import { API_URL } from "../../http";
 import DateFormater from "../UniversalComps/DateFormater";
 import Avatar from "react-avatar";
 import { BiPencil } from "react-icons/bi";
-import EditButton from "./UserAccountComps/EditButton";
-import ExtraInput from "./UserAccountComps/ExtraForm";
+import EditButton from "./UserAccountPageComps/EditButton";
+import ExtraInput from "./UserAccountPageComps/ExtraForm";
 import DatePicker from "react-datepicker";
-import SubmitChangesButton from "./UserAccountComps/SubmitChangesButton";
+import SubmitChangesButton from "./UserAccountPageComps/SubmitChangesButton";
 
 export const Profile = () => {
   const { store } = useContext(Context);

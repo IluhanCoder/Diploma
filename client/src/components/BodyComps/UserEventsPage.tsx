@@ -1,6 +1,6 @@
 import React, { FC, useContext, useState } from "react";
 import { IEvent } from "../../models/IEvent";
-import { Event } from "./EventsComps/Event";
+import { Event } from "./EventsPageComps/Event";
 import { useNavigate } from "react-router";
 import { arrayBuffer } from "stream/consumers";
 import $api from "../../http";

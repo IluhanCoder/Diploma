@@ -11,7 +11,7 @@ type LocalParams = {
 const Invites = (params: LocalParams) => {
   const { store } = useContext(Context);
 
-  if (store.isAuth && params.id == store.user.id) {
+  if (store.isAuth && params.id == store.user._id) {
     return (
       <div className="p-5 bg-white border drop-shadow rounded rounded w-3/12 flex flex-col gap-10">
         <div className="flex justify-center h-fit">

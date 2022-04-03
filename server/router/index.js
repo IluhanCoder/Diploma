@@ -49,6 +49,7 @@ router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users", userController.getUsers);
 router.get("/users/:id", userController.getById);
+router.get("/event/:id", eventController.getById);
 router.delete("/avatar", userController.deleteAvatar);
 router.delete("/user/:id", userController.deleteUser);
 router.put("/user", userController.update);

@@ -26,6 +26,11 @@ class EventService {
     return event;
   }
 
+  async getById(id) {
+    const user = eventModel.findOne({ _id: id });
+    return user;
+  }
+
   async getAllEvents() {
     try {
       const events = await EventModel.find();

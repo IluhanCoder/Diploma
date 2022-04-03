@@ -52,4 +52,8 @@ export default class EventService {
     //TODO: make by id stupid
     return $api.post("/event-avatar/:" + event.name, data);
   }
+
+  static getById(id: string) {
+    return $api.get("/event/:" + id);
+  }
 }
