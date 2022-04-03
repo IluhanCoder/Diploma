@@ -9,7 +9,7 @@
 
 // describe('TESTING A USER CONTROLLER', () => {
 //     let userId = null
-    
+
 //     describe('Test GET /api/users', () => {
 //         it('It should GET users from database', (done) => {
 //             chai.request(app)
@@ -22,7 +22,7 @@
 //                 })
 //         })
 //     });
-    
+
 //     describe('Test POST /api/registrarion', () => {
 //         it('It should POST a valid user', (done) => {
 //             let user = {
@@ -48,8 +48,8 @@
 //                     done()
 //                 })
 //         })
-//     });    
-    
+//     });
+
 //     describe('Test DELETE /api/user', () => {
 //         it('It should DELETE a user', (done) => {
 //             console.log(`A user id is: ${userId}`)
@@ -61,7 +61,7 @@
 //                     done()
 //                 })
 //         })
-//     });  
+//     });
 // })
 
 // describe('TESTING AN EVENTS CONTROLLER', () => {
@@ -77,7 +77,7 @@
 //                 })
 //         })
 //     });
-    
+
 //     describe('Test POST /api/events', () => {
 //         it('It should POST a valid event', (done) => {
 //             let event = {
@@ -90,7 +90,7 @@
 //                 participants: ["TestParticipant1", "TestParticipant2"],
 //                 avatar: "TestAvatar"
 //             }
-        
+
 //             chai.request(app)
 //                 .post("/api/events")
 //                 .send(event)
