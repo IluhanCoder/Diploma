@@ -34,7 +34,7 @@ export const Events = () => {
           setEvents={setEvents}
         />
       </div>
-      <div className="flex flex-col md:px-20 mt-2">
+      <div className="grid lg:grid-cols-2 md:grid-cols-1 px-5 py-2 gap-4">
         {events.map((item) => {
           return <Event event={item} />;
         })}
