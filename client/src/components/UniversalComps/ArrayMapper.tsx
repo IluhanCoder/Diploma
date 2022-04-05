@@ -8,7 +8,7 @@ type LocalProps = {
 const ArrayMapper = (props: LocalProps) => {
   const { array, itemClassName: className } = props;
   const listItems = array.map((item) => (
-    <div className={className}>
+    <div key={item.toString()} className={className}>
       <p>{item}</p>
     </div>
   ));

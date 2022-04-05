@@ -52,9 +52,9 @@ const SendEventRequest: FC = () => {
       <div className="flex justify-center">
         <button
           onClick={() =>
-            UserService.sendRequest(
+            UserService.sendInvite(
               userId ? userId : "",
-              events[chosenIndex].name
+              events[chosenIndex]._id
             )
           }
         >

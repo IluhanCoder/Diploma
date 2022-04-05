@@ -19,6 +19,7 @@ const upload = multer({
   storage: fileStorageEngine,
 });
 
+//handles user's registration
 router.post(
   "/registration",
   body("login").isLength({ min: 3, max: 32 }),
@@ -31,27 +32,47 @@ router.post(
   body("password").isLength({ min: 3, max: 32 }),
   userController.registration
 );
-// router.post('/registration', userController.registration)
+//handles user's login
 router.post("/login", userController.loginF);
+//handles user's logout
 router.post("/logout", userController.logout);
+//sets user's avatar
+router.post("/avatar", upload.single("file"), userController.setAvatar);
+//returns a specific user's avatar
+router.get("/avatar/:id", userController.getAvatar);
+//deletes user's avatar
+router.delete("/avatar", userController.deleteAvatar);
+//returns all the users from DB
+router.get("/users", userController.getUsers);
+//returns a specific user by id
+router.get("/users/:id", userController.getById);
+//delete user by id
+router.delete("/user/:id", userController.deleteUser);
+//update user data
+router.put("/user", userController.update);
+
+//writes down a new event data into DB
 router.post("/events", eventController.addEvent);
+//returns all the existing events from DB
 router.get("/events", eventController.getAllEvents);
+//sets event's avatar
 router.post(
-  "/event-avatar/:name",
+  "/event-avatar/:id",
   upload.single("file"),
   eventController.setAvatar
 );
+//returns an event according to specific parameters
 router.post("/events-find", eventController.findEvent);
+//sends to user invite of to be a participant
 router.post("/event-invite", userController.eventInvite);
+//returns an event of specific user
 router.get("/user-events/:creatorId", eventController.getUserEvents);
-router.post("/avatar", upload.single("file"), userController.setAvatar);
-router.get("/activate/:link", userController.activate);
-router.get("/refresh", userController.refresh);
-router.get("/users", userController.getUsers);
-router.get("/users/:id", userController.getById);
+//returns a cpecific event by id
 router.get("/event/:id", eventController.getById);
-router.delete("/avatar", userController.deleteAvatar);
-router.delete("/user/:id", userController.deleteUser);
-router.put("/user", userController.update);
+
+//refresh token request
+router.get("/refresh", userController.refresh);
+
+// router.get("/activate/:link", userController.activate);
 
 module.exports = router;

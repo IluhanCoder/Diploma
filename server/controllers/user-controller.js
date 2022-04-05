@@ -108,7 +108,6 @@ class UserController {
 
   async deleteAvatar(req, res) {
     try {
-      console.log(req.body);
       const user = await userModel.findById(req.id);
       fs.unlinkSync(AVATAR_FILE_PATH + "\\" + avatarName);
       user.avatar = null;
@@ -144,8 +143,8 @@ class UserController {
 
   async eventInvite(req, res, next) {
     try {
-      const { userId, eventName } = req.body;
-      userService.eventInvite(userId, eventName);
+      const { userId, eventId } = req.body;
+      userService.eventInvite(userId, eventId);
     } catch (error) {
       next(error);
     }
@@ -156,6 +155,16 @@ class UserController {
       const userId = req.params.id;
       const user = await userService.getById(userId);
       return res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAvatar(req, res, next) {
+    try {
+      const userId = req.params.id;
+      const avatar = await userService.getAvatar(userId);
+      return res.status(200).json(avatar);
     } catch (error) {
       next(error);
     }

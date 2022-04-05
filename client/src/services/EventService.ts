@@ -37,6 +37,7 @@ export default class EventService {
       })
       .then((res) => {
         const data = res.data;
+        console.log(data._id);
         EventService.setAvatar(data, avatar);
         return data;
       });
@@ -49,8 +50,7 @@ export default class EventService {
   static async setAvatar(event: IEvent, avatar: File) {
     const data = new FormData();
     data.append("file", avatar);
-    //TODO: make by id stupid
-    return $api.post("/event-avatar/:" + event.name, data);
+    return $api.post("/event-avatar/:" + event._id, data);
   }
 
   static getById(id: string) {

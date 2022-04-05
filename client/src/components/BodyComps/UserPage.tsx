@@ -60,7 +60,7 @@ const UserPage: React.FC = () => {
                 test test test test test test test test test test test test test
                 test test test test test test test test test test test test test
                 test test test test test test test test test test test test test
-                test{" "}
+                test
               </p>
             </div>
           </div>

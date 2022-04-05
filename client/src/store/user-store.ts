@@ -26,7 +26,6 @@ export default class Store {
   async loginF(email: string, password: string) {
     try {
       const response = await AuthService.loginF(email, password);
-      console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
@@ -54,7 +53,6 @@ export default class Store {
         city,
         gender
       );
-      console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
@@ -79,7 +77,6 @@ export default class Store {
       const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
         withCredentials: true,
       });
-      console.log(`Refresh response: ` + response);
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);

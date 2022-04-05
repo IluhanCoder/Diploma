@@ -100,7 +100,7 @@ export const AddEventForm: FC = () => {
           />
 
           <form>
-            <label>Учаники: </label>
+            <label>Учаcники: </label>
 
             <input
               value={participant}
@@ -128,7 +128,7 @@ export const AddEventForm: FC = () => {
                   setParticipant("");
                 }}
               >
-                Додати
+                Додати...
               </button>
             </div>
           </form>

@@ -73,8 +73,8 @@ class EventService {
     return event;
   }
 
-  async setAvatar(filePath, eventName) {
-    const filter = { name: eventName };
+  async setAvatar(filePath, eventId) {
+    const filter = { _id: eventId };
     let fileStr = filePath.replace("images\\", "");
     const updateDocument = {
       $set: {

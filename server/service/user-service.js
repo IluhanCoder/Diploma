@@ -124,10 +124,15 @@ class UserService {
     return user;
   }
 
-  async eventInvite(userId, eventName) {
+  async getAvatar(id) {
+    const avatar = userModel.findOne({ _id: id }).select("avatar -_id");
+    return avatar;
+  }
+
+  async eventInvite(userId, eventId) {
     const user = await userModel.findOne({ _id: userId });
     let eventInvite = user.eventInvites;
-    eventInvite.push(eventName);
+    eventInvite.push(eventId);
     const filter = { _id: userId };
     const updateDocument = {
       $set: {

@@ -5,7 +5,6 @@ const userService = require("../service/user-service");
 class EventController {
   async addEvent(req, res, next) {
     const creator = await userService.getById(req.body.creatorId);
-    console.log(creator.login);
     try {
       const { name, creatorId, desc, genres, date, adress, participants } =
         req.body;
@@ -58,10 +57,10 @@ class EventController {
 
   async setAvatar(req, res, next) {
     try {
-      const name = req.params.name.substring(1);
+      const eventId = req.params.id.substring(1);
       const file = req.file;
       if (file) {
-        EventService.setAvatar(file.path, name);
+        EventService.setAvatar(file.path, eventId);
       }
     } catch (error) {
       console.log(error);

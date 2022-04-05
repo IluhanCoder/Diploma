@@ -36,7 +36,7 @@ export const Events = () => {
       </div>
       <div className="grid lg:grid-cols-2 md:grid-cols-1 px-5 py-2 gap-4">
         {events.map((item) => {
-          return <Event event={item} />;
+          return <Event key={item.name} event={item} />;
         })}
       </div>
     </div>

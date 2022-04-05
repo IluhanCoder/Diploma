@@ -11,14 +11,15 @@ export default class UserService {
   static changeAvatar(fileData: File): void {
     const data = new FormData();
     data.append("file", fileData);
-    $api
-      .post("/avatar", data)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    $api.post("/avatar", data).catch((err) => console.log(err));
   }
 
   static getById(id: string) {
     return $api.get("/users/:" + id);
+  }
+
+  static getAvatar(id: string) {
+    return $api.get("/avatar/:" + id);
   }
 
   static update(
@@ -32,7 +33,7 @@ export default class UserService {
     $api.put("/user", { login, email, cell, city, gender });
   }
 
-  static sendRequest(userId: string, eventName: string) {
-    $api.post("/event-invite", { userId, eventName });
+  static sendInvite(userId: string, eventId: string) {
+    $api.post("/event-invite", { userId, eventId });
   }
 }

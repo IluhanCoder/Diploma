@@ -18,16 +18,22 @@ const EventPage = () => {
   const { eventId } = params;
 
   const [event, setEvent] = useState<IEvent>();
+  const [creatorAvar, setCreatorAvatar] = useState<string>("");
 
   useEffect(() => {
     $api.get("/event/" + eventId).then((response) => {
       const eventData = response.data;
       setEvent(eventData);
+      $api.get("/avatar/" + eventData.creatorId).then((response) => {
+        const { avatar } = response.data;
+        setCreatorAvatar(avatar);
+      });
     });
   }, []);
 
   return (
     <div className="bg-gray-100 p-5 flex flex-wrap gap-5 justify-center">
+      {creatorAvar}
       <div className="justify-center px-7 py-5 bg-white rounded border drop-shadow w-3/4">
         <h1 className="text-3xl text-center">{event?.name}</h1>
       </div>
@@ -91,7 +97,7 @@ const EventPage = () => {
             demo demo demo demo demo demo demo demo demo demo demo demo demo
             demo demo demo demo demo demo demo demo demo demo demo demo demo
             demo demo demo demo demo demo demo demo demo demo demo demo demo
-            demo demo demo demo demo demo demo demo demo demo{" "}
+            demo demo demo demo demo demo demo demo demo demo
           </p>
         </div>
       </div>
