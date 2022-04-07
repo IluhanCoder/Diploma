@@ -10,6 +10,7 @@ import UserEvents from "./BodyComps/UserEventsPage";
 import UserPage from "./BodyComps/UserPage";
 import SendEventRequest from "./BodyComps/InvitePage";
 import EventPage from "./BodyComps/EventPage";
+import EventsAdmin from "./BodyComps/EventsAdminPage";
 
 function Body() {
   return (
@@ -20,6 +21,7 @@ function Body() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/user/:id" element={<UserPage />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/events-admin" element={<EventsAdmin />} />
         <Route path="/event-form" element={<AddEventForm />} />
         <Route path="/user-events/:userId" element={<UserEvents />} />
         <Route

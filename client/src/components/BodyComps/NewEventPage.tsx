@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router";
 import EventService from "../../services/EventService";
 import { API_URL } from "../../http";
+import ArrayMapper from "../UniversalComps/ArrayMapper";
+import ImgDisplayer from "../UniversalComps/ImgDisplayer";
 
 export const AddEventForm: FC = () => {
   const [name, setName] = useState<string>("");
@@ -33,7 +35,7 @@ export const AddEventForm: FC = () => {
 
           <div className="flex justify-center flex-col">
             <div className="flex justify-center">
-              <img src={URL.createObjectURL(avatar)}></img>
+              <ImgDisplayer src={URL.createObjectURL(avatar)} />
             </div>
             <div className="flex justify-center mt-3">
               <input
@@ -71,12 +73,11 @@ export const AddEventForm: FC = () => {
               placeholder="Жанр"
             />
 
-            <div className="flex flex-row">
-              {genres.map((item) => {
-                return (
-                  <div className="px-2 bg-stone-400 rounded ml-2">{item}</div>
-                );
-              })}
+            <div className="flex flex-row gap-2">
+              <ArrayMapper
+                array={genres}
+                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
+              />
             </div>
 
             <div className="py-3">
@@ -111,12 +112,11 @@ export const AddEventForm: FC = () => {
               placeholder="Учасник"
             />
 
-            <div className="flex flex-row">
-              {participants.map((item) => {
-                return (
-                  <div className="px-2 bg-stone-400 rounded ml-2">{item}</div>
-                );
-              })}
+            <div className="flex flex-row gap-2">
+              <ArrayMapper
+                array={participants}
+                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
+              />
             </div>
 
             <div className="py-3">

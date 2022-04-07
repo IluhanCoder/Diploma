@@ -3,14 +3,14 @@ const imgPlaceholderUrl =
 
 type LocalParams = {
   src: string;
-  className: string;
+  className?: string;
 };
 
 function imageExists(image_url: string) {
   var http = new XMLHttpRequest();
-  http.open("HEAD", image_url, false);
+  http.open("GET", image_url, false);
   http.send();
-  return http.status != 404;
+  return http.status == 200;
 }
 
 const ImgDisplayer = (params: LocalParams) => {
@@ -18,7 +18,7 @@ const ImgDisplayer = (params: LocalParams) => {
   let actualSrc = "";
   if (imageExists(src)) actualSrc = src;
   else actualSrc = imgPlaceholderUrl;
-  return <img src={actualSrc} className={className}></img>;
+  return <img src={actualSrc} className={className ? className : ""}></img>;
 };
 
 export default ImgDisplayer;

@@ -1,4 +1,5 @@
 const eventModel = require("../models/event-model");
+const eventService = require("../service/event-service");
 const EventService = require("../service/event-service");
 const userService = require("../service/user-service");
 
@@ -30,6 +31,34 @@ class EventController {
     try {
       const events = await EventService.getAllEvents();
       return res.status(200).json(events);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getSubmitedEvents(req, res, next) {
+    try {
+      const events = await EventService.getSubmitedEvents();
+      return res.status(200).json(events);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getUnsubmitedEvents(req, res, next) {
+    try {
+      const events = await EventService.getUnsubmitedEvents();
+      return res.status(200).json(events);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async submitEvent(req, res, next) {
+    try {
+      const { eventId } = req.params;
+      console.log(eventId);
+      return await eventService.submitEvent(eventId);
     } catch (error) {
       next(error);
     }
@@ -73,6 +102,16 @@ class EventController {
       const eventId = req.params.id;
       const event = await EventService.getById(eventId);
       return res.status(200).json(event);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteById(req, res, next) {
+    try {
+      const eventId = req.params.id;
+      EventService.deleteEventById(eventId);
+      return res.status(200);
     } catch (error) {
       next(error);
     }

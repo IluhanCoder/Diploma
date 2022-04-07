@@ -41,9 +41,9 @@ export const UserEvents: FC = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="flex flex-col md:px-20 mt-2">
+      <div className="grid grid-cols-2 md:px-20 mt-2 gap-2">
         {events.map((item) => {
-          return <Event event={item} />;
+          return <Event key={item.name} event={item} />;
         })}
       </div>
     </div>

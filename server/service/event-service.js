@@ -27,8 +27,8 @@ class EventService {
   }
 
   async getById(id) {
-    const user = EventModel.findOne({ _id: id });
-    return user;
+    const event = EventModel.findOne({ _id: id });
+    return event;
   }
 
   async getAllEvents() {
@@ -38,6 +38,21 @@ class EventService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async deleteEventById(eventId) {
+    const res = await EventModel.deleteOne({ _id: eventId });
+    return res;
+  }
+
+  async getSubmitedEvents() {
+    const events = EventModel.find({ isSubmited: true });
+    return events;
+  }
+
+  async getUnsubmitedEvents() {
+    const events = EventModel.find({ isSubmited: false });
+    return events;
   }
 
   async getUserEvents(creatorId) {
@@ -83,6 +98,16 @@ class EventService {
     };
     const result = await EventModel.updateOne(filter, updateDocument);
     return result;
+  }
+
+  async submitEvent(eventId) {
+    const filter = { _id: eventId };
+    const updateDocument = {
+      $set: {
+        isSubmited: true,
+      },
+    };
+    const result = await EventModel.updateOne(filter, updateDocument);
   }
 }
 

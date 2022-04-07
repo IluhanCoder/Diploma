@@ -10,6 +10,8 @@ const EventSchema = new Schema({
   adress: { type: String, required: true },
   participants: { type: [String], required: false },
   avatar: { type: String, required: false, default: null },
+  songs: { type: [String], required: false, default: null },
+  isSubmited: { type: Boolean, default: false },
 });
 
 module.exports = model("Event", EventSchema);

@@ -56,4 +56,16 @@ export default class EventService {
   static getById(id: string) {
     return $api.get("/event/:" + id);
   }
+
+  static getSubmitedEvents() {
+    return $api.get("/events-submited");
+  }
+
+  static submitEvent(eventId: string) {
+    return $api.post("/event-submit/" + eventId);
+  }
+
+  static async deleteEvent(eventId: string) {
+    $api.delete("/event/" + eventId);
+  }
 }

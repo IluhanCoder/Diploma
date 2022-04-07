@@ -10,4 +10,5 @@ export interface IEvent {
   participants: [String];
   creator: String;
   avatar: string;
+  isSubmited: boolean;
 }

@@ -53,8 +53,14 @@ router.put("/user", userController.update);
 
 //writes down a new event data into DB
 router.post("/events", eventController.addEvent);
+//sumbits event
+router.post("/event-submit/:eventId", eventController.submitEvent);
 //returns all the existing events from DB
 router.get("/events", eventController.getAllEvents);
+//returns all the submited events from DB
+router.get("/events-submited", eventController.getSubmitedEvents);
+//returns all the submited events from DB
+router.get("/events-unsubmited", eventController.getUnsubmitedEvents);
 //sets event's avatar
 router.post(
   "/event-avatar/:id",
@@ -69,7 +75,8 @@ router.post("/event-invite", userController.eventInvite);
 router.get("/user-events/:creatorId", eventController.getUserEvents);
 //returns a cpecific event by id
 router.get("/event/:id", eventController.getById);
-
+//deletes event by id
+router.delete("/event/:id", eventController.deleteById);
 //refresh token request
 router.get("/refresh", userController.refresh);
 

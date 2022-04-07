@@ -6,6 +6,11 @@ import { API_URL } from "../../http";
 import DateFormater from "../UniversalComps/DateFormater";
 import ArrayMapper from "../UniversalComps/ArrayMapper";
 import ImgDisplayer from "../UniversalComps/ImgDisplayer";
+import Avatar from "react-avatar";
+import { Link } from "react-router-dom";
+import NewSongButton from "./EventPageComps/NewSongButton";
+import AdminButtons from "./EventPageComps/AdminButtons";
+import EventStatus from "./EventsPageComps/EventStatus";
 
 type LocalParams = {
   eventId: string;
@@ -33,12 +38,36 @@ const EventPage = () => {
 
   return (
     <div className="bg-gray-100 p-5 flex flex-wrap gap-5 justify-center">
-      {creatorAvar}
-      <div className="justify-center px-7 py-5 bg-white rounded border drop-shadow w-3/4">
-        <h1 className="text-3xl text-center">{event?.name}</h1>
+      <div className="flex flex-row w-full justify-center gap-2">
+        <div className="flex justify-between space-x px-7 py-5 bg-white rounded border drop-shadow w-3/4 h-fit">
+          <div>
+            <h1 className="text-4xl text-center">{event?.name}</h1>
+          </div>
+          <div>
+            <EventStatus
+              className="px-4 py-1 rounded"
+              isSubmited={event?.isSubmited ? event.isSubmited : false}
+            />
+          </div>
+        </div>
+        <Link to={`/user/${event?.creatorId}`}>
+          <div className="flex flex-col justify-center px-4 py-1 bg-white rounded border drop-shadow w-fit">
+            <div className="flex justify-center">
+              <h1>Створив:</h1>
+            </div>
+            <div className="flex justify-center">
+              <Avatar
+                name={event?.creatorName}
+                src={url + "/" + creatorAvar}
+                size="55"
+                className="rounded"
+              />
+            </div>
+            <div className="flex justify-center">{event?.creatorName}</div>
+          </div>
+        </Link>
       </div>
       <div className="bg-white rounded border drop-shadow p-3">
-        {/* <img src={url + "/" + event?.avatar} className="h-80"></img> */}
         <ImgDisplayer src={url + "/" + event?.avatar} className="h-80" />
       </div>
       <div className="bg-white rounded border drop-shadow w-1/2 flex flex-col px-8 py-6 h-fit">
@@ -133,7 +162,14 @@ const EventPage = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-center w-full">
+          <NewSongButton
+            className="bg-cyan-400 hover:bg-cyan-200 px-2 py-1 rounded drop-shadow"
+            eventCreatorId={event?.creatorId ? event?.creatorId : ""}
+          />
+        </div>
       </div>
+      <AdminButtons event={event} />
     </div>
   );
 };
