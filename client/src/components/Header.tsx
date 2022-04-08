@@ -55,10 +55,10 @@ function Header() {
             >
               Мої події
             </Link>
-            
-            <UserPageLink/>
-            
-            <AdminUsersLink/>
+
+            <UserPageLink />
+
+            <AdminUsersLink />
           </div>
         </div>
         <div>

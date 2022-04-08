@@ -51,7 +51,8 @@ export default class Store {
         birthday,
         cell,
         city,
-        gender
+        gender,
+        []
       );
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);

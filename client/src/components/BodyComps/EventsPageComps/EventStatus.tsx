@@ -7,7 +7,6 @@ type LocalParams = {
 
 const EventStatus = (params: LocalParams) => {
   const { isSubmited, className } = params;
-  console.log(isSubmited);
   return isSubmited ? (
     <div
       className={

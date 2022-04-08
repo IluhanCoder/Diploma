@@ -1,3 +1,5 @@
+import { IEvent } from "./IEvent";
+
 export interface IUser {
   login: string;
   email: string;
@@ -8,5 +10,5 @@ export interface IUser {
   avatar: string;
   isActivated: boolean;
   _id: string;
-  eventInvites: Array<string>;
+  eventInvites: Array<IEvent>;
 }

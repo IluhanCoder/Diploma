@@ -129,14 +129,28 @@ class UserService {
     return avatar;
   }
 
-  async eventInvite(userId, eventId) {
+  async eventInvite(event, userId) {
     const user = await userModel.findOne({ _id: userId });
-    let eventInvite = user.eventInvites;
-    eventInvite.push(eventId);
+    let eventInvites = user.eventInvites;
+    eventInvites.push(event);
     const filter = { _id: userId };
     const updateDocument = {
       $set: {
-        eventInvites: eventInvite,
+        eventInvites: eventInvites,
+      },
+    };
+    const result = await UserModel.updateOne(filter, updateDocument);
+  }
+
+  async removeInvite(event, userId) {
+    const user = await userModel.findOne({ _id: userId });
+    let eventInvites = user.eventInvites;
+    const eventIndex = eventInvites.indexOf(event);
+    eventInvites.splice(eventIndex);
+    const filter = { _id: userId };
+    const updateDocument = {
+      $set: {
+        eventInvites: eventInvites,
       },
     };
     const result = await UserModel.updateOne(filter, updateDocument);

@@ -53,8 +53,8 @@ const SendEventRequest: FC = () => {
         <button
           onClick={() =>
             UserService.sendInvite(
-              userId ? userId : "",
-              events[chosenIndex]._id
+              events[chosenIndex]._id,
+              userId ? userId : ""
             )
           }
         >

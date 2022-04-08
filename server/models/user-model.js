@@ -1,4 +1,5 @@
 const { Schema, model, ObjectId } = require("mongoose");
+const eventModel = require("./event-model");
 
 const UserSchema = new Schema(
   {
@@ -14,7 +15,7 @@ const UserSchema = new Schema(
     avatar: { type: String, required: false },
     isActivated: { type: String, default: true },
     activationLink: { type: String },
-    eventInvites: { type: [String], required: false },
+    eventInvites: { type: [Object], required: false },
   },
   { strict: false }
 );

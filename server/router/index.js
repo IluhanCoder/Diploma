@@ -71,6 +71,8 @@ router.post(
 router.post("/events-find", eventController.findEvent);
 //sends to user invite of to be a participant
 router.post("/event-invite", userController.eventInvite);
+//sends to user invite of to be a participant
+router.post("/event-invite-remove/:userId", userController.removeInvite);
 //returns an event of specific user
 router.get("/user-events/:creatorId", eventController.getUserEvents);
 //returns a cpecific event by id

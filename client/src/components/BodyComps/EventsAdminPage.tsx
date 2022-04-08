@@ -29,8 +29,10 @@ export const EventsAdmin = () => {
 
   return (
     <div className="bg-gray-100 flex flex-col">
-      <div className="flex justify-center"><div className="px-2 py-6 text-3xl">Непідтвердженні події:</div></div>
-      <EventsMapper events={events}/>
+      <div className="flex justify-center">
+        <div className="px-2 py-6 text-3xl">Непідтвердженні події:</div>
+      </div>
+      <EventsMapper events={events} />
     </div>
   );
 };

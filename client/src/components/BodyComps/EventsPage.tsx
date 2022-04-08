@@ -37,10 +37,12 @@ export const Events = () => {
         />
       </div>
       <div className="flex justify-center p-2">
-        <EventCreateRequest className="bg-red-200 rounded px-2 py-1 border-4 border-red-400 text-red-600 hover:bg-red-100
-          hover:border-red-200 hover:text-red-400"/>
+        <EventCreateRequest
+          className="bg-red-200 rounded px-2 py-1 border-4 border-red-400 text-red-600 hover:bg-red-100
+          hover:border-red-200 hover:text-red-400"
+        />
       </div>
-      <EventsMapper events={events}/>
+      <EventsMapper events={events} />
     </div>
   );
 };

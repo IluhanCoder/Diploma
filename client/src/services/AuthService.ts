@@ -1,6 +1,7 @@
 import $api from "../http";
 import { AxiosResponse } from "axios";
 import { AuthResponse } from "../models/response/AuthResponse";
+import { IEvent } from "../models/IEvent";
 
 export default class AuthService {
   static async loginF(
@@ -17,7 +18,8 @@ export default class AuthService {
     birthday: Date,
     cell: string,
     city: string,
-    gender: string
+    gender: string,
+    eventInvites: Array<IEvent>
   ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post("/registration", {
       login: login,
@@ -28,6 +30,7 @@ export default class AuthService {
       city,
       gender,
       avatar: null,
+      eventInvites: [],
     });
   }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import $api from "../../http";
 import { IEvent } from "../../models/IEvent";
@@ -11,6 +11,9 @@ import { Link } from "react-router-dom";
 import NewSongButton from "./EventPageComps/NewSongButton";
 import AdminButtons from "./EventPageComps/AdminButtons";
 import EventStatus from "./EventsPageComps/EventStatus";
+import AcceptButtons from "./EventPageComps/AcceptButtons";
+import { Context } from "../../index";
+import { observer } from "mobx-react-lite";
 
 type LocalParams = {
   eventId: string;
@@ -19,6 +22,8 @@ type LocalParams = {
 const url = API_URL.replace("/api", "");
 
 const EventPage = () => {
+  const { store } = useContext(Context);
+
   const params = useParams<LocalParams>();
   const { eventId } = params;
 
@@ -169,9 +174,10 @@ const EventPage = () => {
           />
         </div>
       </div>
+      <AcceptButtons event={event} />
       <AdminButtons event={event} />
     </div>
   );
 };
 
-export default EventPage;
+export default observer(EventPage);

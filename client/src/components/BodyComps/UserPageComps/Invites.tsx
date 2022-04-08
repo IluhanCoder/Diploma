@@ -1,9 +1,11 @@
 import { IEvent } from "../../../models/IEvent";
 import { Context } from "../../../index";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import $api from "../../../http";
 
 type LocalParams = {
-  invites: Array<string>;
+  invites: Array<IEvent>;
   id: string;
   display: boolean;
 };
@@ -20,8 +22,12 @@ const Invites = (params: LocalParams) => {
         <div className="flex flex-col gap-5 text-white">
           {params.invites.map((item) => {
             return (
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>{item}</div>
+              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 flex justify-between ">
+                <div>{item.name}</div>
+                <div>{"запрошує: " + item.creatorName}</div>
+                <div>
+                  <Link to={"/event/" + item._id}>Детальніше</Link>
+                </div>
               </div>
             );
           })}

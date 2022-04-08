@@ -120,7 +120,7 @@ class UserController {
   }
 
   async deleteUser(req, res, next) {
-    console.log(req.params.id)
+    console.log(req.params.id);
     try {
       const id = req.params.id;
       await userService.deleteUserById(id);
@@ -144,8 +144,18 @@ class UserController {
 
   async eventInvite(req, res, next) {
     try {
-      const { userId, eventId } = req.body;
-      userService.eventInvite(userId, eventId);
+      const { event, userId } = req.body;
+      userService.eventInvite(event, userId);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeInvite(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const { event } = req.body;
+      await userService.removeInvite(event, userId);
     } catch (error) {
       next(error);
     }
