@@ -101,7 +101,7 @@ class UserService {
   }
 
   async deleteUserById(userId) {
-    userModel.deleteOne({ _id: userId });
+    await userModel.deleteOne({ _id: userId });
   }
 
   async update(userData, login, email, cell, city, gender) {

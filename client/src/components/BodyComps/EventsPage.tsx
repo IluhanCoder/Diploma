@@ -4,6 +4,7 @@ import { Event } from "./EventsPageComps/Event";
 import $api from "../../http";
 import SubHeader from "../UniversalComps/SearchBar";
 import EventCreateRequest from "./EventsPageComps/EventCreateRequest";
+import EventsMapper from "../UniversalComps/EventsMapper";
 
 export type SearchParams = {
   searchType: string;
@@ -36,13 +37,10 @@ export const Events = () => {
         />
       </div>
       <div className="flex justify-center p-2">
-        <EventCreateRequest />
+        <EventCreateRequest className="bg-red-200 rounded px-2 py-1 border-4 border-red-400 text-red-600 hover:bg-red-100
+          hover:border-red-200 hover:text-red-400"/>
       </div>
-      <div className="grid lg:grid-cols-2 md:grid-cols-1 px-5 py-2 gap-4">
-        {events.map((item) => {
-          return <Event key={item.name} event={item} />;
-        })}
-      </div>
+      <EventsMapper events={events}/>
     </div>
   );
 };

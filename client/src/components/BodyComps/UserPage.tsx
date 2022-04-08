@@ -9,6 +9,7 @@ import DateFormater from "../UniversalComps/DateFormater";
 import InviteButtons from "./UserPageComps/InviteButtons";
 import { observer } from "mobx-react-lite";
 import Invites from "./UserPageComps/Invites";
+import AdminButtons from "./UserPageComps/AdminButtons";
 
 type LocalParams = {
   id: string;
@@ -185,6 +186,11 @@ const UserPage: React.FC = () => {
           display={true}
           id={id}
         />
+      </div>
+      <div className="flex justify-center mt-2">
+        <div className="bg-white border drop-shadow rounded p-2 flex justify-center w-1/6">
+            <AdminButtons userId={user?._id? user._id : ""} className="bg-red-400 rounded border-4 border-red-600 text-red-700 px-4 py-1"/>
+        </div>
       </div>
     </div>
   );

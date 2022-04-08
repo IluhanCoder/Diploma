@@ -23,6 +23,7 @@ const AdminButtons = (props: LocalParams) => {
 
   async function deleteHandler() {
     await EventService.deleteEvent(eventId);
+    navigate("/events");
   }
 
   if (store.isAuth && store.user.login == "ADMIN") {

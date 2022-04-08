@@ -3,10 +3,15 @@ import { Context } from "../../..";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-const EventCreateRequest = () => {
+type LocalParams = {
+  className?: string 
+}
+
+const EventCreateRequest = (params: LocalParams) => {
   const { store } = useContext(Context);
+  const { className } = params;
   if (store.isAuth && store.user.login == "ADMIN") {
-    return <Link to={"/events-admin"}>Запроси на створення подій</Link>;
+    return <Link to={"/events-admin"}><div className={className}>Запроси на створення подій</div></Link>;
   } else return <></>;
 };
 

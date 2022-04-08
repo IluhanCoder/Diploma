@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import UserPageLink from "./HeaderComps/UserPageLink";
 import { storeAnnotation } from "mobx/dist/internal";
 import { Context } from "../index";
+import AdminUsersLink from "./HeaderComps/AdminUsersLink";
 
 function Header() {
   const { store } = useContext(Context);
@@ -54,7 +55,10 @@ function Header() {
             >
               Мої події
             </Link>
-            <UserPageLink />
+            
+            <UserPageLink/>
+            
+            <AdminUsersLink/>
           </div>
         </div>
         <div>

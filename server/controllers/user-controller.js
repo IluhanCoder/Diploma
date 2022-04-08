@@ -120,9 +120,10 @@ class UserController {
   }
 
   async deleteUser(req, res, next) {
+    console.log(req.params.id)
     try {
       const id = req.params.id;
-      userService.deleteUserById(id);
+      await userService.deleteUserById(id);
       return res.status(200);
     } catch (error) {
       next(error);

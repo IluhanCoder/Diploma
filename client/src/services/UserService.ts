@@ -13,9 +13,13 @@ export default class UserService {
     data.append("file", fileData);
     $api.post("/avatar", data).catch((err) => console.log(err));
   }
+  
+  static deleteUserById(userId: string) {
+    $api.delete("/user/" + userId);
+  }
 
-  static getById(id: string) {
-    return $api.get("/users/:" + id);
+  static getById(userId: string) {
+    return $api.get("/users/:" + userId);
   }
 
   static getAvatar(id: string) {

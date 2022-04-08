@@ -4,6 +4,7 @@ import { Event } from "./EventsPageComps/Event";
 import $api from "../../http";
 import SubHeader from "../UniversalComps/SearchBar";
 import EventCreateRequest from "./EventsPageComps/EventCreateRequest";
+import EventsMapper from "../UniversalComps/EventsMapper";
 
 export type SearchParams = {
   searchType: string;
@@ -27,12 +28,9 @@ export const EventsAdmin = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100">
-      <div className="grid lg:grid-cols-2 md:grid-cols-1 px-5 py-2 gap-4">
-        {events.map((item) => {
-          return <Event key={item.name} event={item} />;
-        })}
-      </div>
+    <div className="bg-gray-100 flex flex-col">
+      <div className="flex justify-center"><div className="px-2 py-6 text-3xl">Непідтвердженні події:</div></div>
+      <EventsMapper events={events}/>
     </div>
   );
 };
