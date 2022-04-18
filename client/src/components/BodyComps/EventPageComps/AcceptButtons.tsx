@@ -37,13 +37,14 @@ const AcceptButtons = (params: LocalParams) => {
 
   if (event && object_contains(userEvents, event._id))
     return (
-      <div className="bg-white rounded drop-shadow w-1/3 p-4 flex flex-row gap-6">
+      <div className="bg-white rounded drop-shadow w-1/3 p-4 flex flex-row gap-6 justify-center">
         <button
           type="button"
           onClick={() => {
             acceptHandler();
             navigate("/user/" + store.user._id);
           }}
+          className="bg-green-200 text-green-500 border-4 border-green-400 rounded p-2"
         >
           Погодитись на участь
         </button>
@@ -52,7 +53,9 @@ const AcceptButtons = (params: LocalParams) => {
           onClick={() => {
             rejectHandler();
             navigate("/user/" + store.user._id);
+            window.location.reload();
           }}
+          className="bg-red-200 text-red-500 border-4 border-red-400 rounded p-2"
         >
           Відмоситись від участі
         </button>

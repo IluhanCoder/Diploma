@@ -11,11 +11,11 @@ const { contextsKey } = require("express-validator/src/base");
 class UserController {
   async registration(req, res, next) {
     try {
+      const { login, email, password, birthday, cell, city, gender } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.BadRequest("Помилка валідації", errors.array()));
       }
-      const { login, email, password, birthday, cell, city, gender } = req.body;
       const userData = await userService.registration(
         login,
         email,

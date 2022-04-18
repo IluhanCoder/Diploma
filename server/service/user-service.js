@@ -9,10 +9,20 @@ const userModel = require("../models/user-model");
 
 class UserService {
   async registration(login, email, password, birthday, cell, city, gender) {
-    const candidate = await UserModel.findOne({ email });
-    if (candidate != null) {
+    const mailCandidate = await UserModel.findOne({ email });
+    if (mailCandidate != null) {
       throw ApiError.BadRequest(
         "Користувач з адресом електроної пошти " + email + " вже існує"
+      );
+    }
+    const loginCandidate = await UserModel.findOne({ login });
+    if (loginCandidate != null) {
+      throw ApiError.BadRequest("Користувач з логіном " + login + " вже існує");
+    }
+    const phoneCandidate = await UserModel.findOne({ cell });
+    if (phoneCandidate != null) {
+      throw ApiError.BadRequest(
+        "Користувач з таким номером телефону вже існує"
       );
     }
     const hashPassword = await bcrypt.hash(password, 3);

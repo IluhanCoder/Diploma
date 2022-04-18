@@ -22,14 +22,22 @@ const upload = multer({
 //handles user's registration
 router.post(
   "/registration",
-  body("login").isLength({ min: 3, max: 32 }),
-  body("email").isEmail(),
+  body("login")
+    .isLength({ min: 3, max: 18 })
+    .withMessage("Довжина Логіну має бути від 3 до 18 символів "),
+  body("email")
+    .isEmail()
+    .withMessage("Адреса елекроної пошти має відповідати формату: нік@пошта"),
   //todo: fix date validation
-  body("birthday").isLength({ min: 1, max: 32 }),
-  body("cell").isMobilePhone(),
-  body("city").isLength({ min: 2 }),
-  body("gender").notEmpty(),
-  body("password").isLength({ min: 3, max: 32 }),
+  body("cell")
+    .isMobilePhone()
+    .withMessage("Введені цифри не є номером телефону"),
+  body("city")
+    .isLength({ min: 3, max: 24 })
+    .withMessage("Місто має довжину від 3 до 24 символів"),
+  body("password")
+    .isLength({ min: 5, max: 24 })
+    .withMessage("Пароль має бути довжиною від 5 до 24 символів"),
   userController.registration
 );
 //handles user's login

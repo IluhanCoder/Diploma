@@ -18,7 +18,6 @@ const AdminButtons = (props: LocalParams) => {
 
   async function submitHandler() {
     await EventService.submitEvent(eventId);
-    window.location.reload();
   }
 
   async function deleteHandler() {
@@ -31,7 +30,10 @@ const AdminButtons = (props: LocalParams) => {
       return (
         <div className="bg-white drop-shadow p-3 w-1/3 flex flex-row gap-6 rounded justify-center">
           <button
-            onClick={() => submitHandler()}
+            onClick={() => {
+              submitHandler();
+              window.location.reload();
+            }}
             type="button"
             className="bg-green-400 hover:bg-green-200 px-2 py-1 rounded drop-shadow"
           >

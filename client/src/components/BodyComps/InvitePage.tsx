@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, FC } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { IUser } from "../../models/IUser";
 import UserService from "../../services/UserService";
 import $api from "../../http";
@@ -19,6 +19,7 @@ const SendEventRequest: FC = () => {
   const [user, setUser] = useState<IUser>();
   const [events, setEvents] = useState<Array<IEvent>>([]);
   const [chosenIndex, setChosenIndex] = useState<number>(-1);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     $api.get("/user-events/" + store.user._id).then((response) => {
@@ -51,12 +52,13 @@ const SendEventRequest: FC = () => {
       </div>
       <div className="flex justify-center">
         <button
-          onClick={() =>
+          onClick={() => {
             UserService.sendInvite(
               events[chosenIndex]._id,
               userId ? userId : ""
-            )
-          }
+            );
+            navigate("/events");
+          }}
         >
           Надіслати пропозицію
         </button>

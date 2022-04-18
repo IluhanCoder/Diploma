@@ -16,98 +16,132 @@ export const RegForm: FC = () => {
   const [gender, setGender] = useState<string>("чоловіча");
   const [password, setPassword] = useState<string>("");
   const [passwordConf, setPasswordConf] = useState<string>("");
+  const [errorMessages, setErrorMessages] = useState<Array<any>>([]);
   const { store } = useContext(Context);
   const navigate = useNavigate();
 
-  function RegHandler() {
-    store.registration(login, email, password, birthday, cell, city, gender);
-    if (password !== passwordConf) throw new Error(`failed password confirm`);
-    navigate("/events");
+  async function RegHandler() {
+    try {
+      if (password !== passwordConf) {
+        setErrorMessages([
+          "Поля Пароль і Підтвердження пароля мають співпадати",
+        ]);
+        return;
+      }
+      await store.registration(
+        login,
+        email,
+        password,
+        birthday,
+        cell,
+        city,
+        gender
+      );
+      navigate("/events");
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      let tempArray: Array<string> = [error.response.data.message];
+      error?.response?.data?.errors?.map((error: any) => {
+        tempArray.push(error.msg);
+      });
+      setErrorMessages(tempArray);
+    }
   }
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col py-6">
       <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
         <div className="bg-white px-6 py-8 rounded drop-shadow-lg text-black w-full">
-          <h1 className="mb-8 text-3xl text-center">Реєстрація</h1>
-          <input
-            onChange={(e) => setLogin(e.target.value)}
-            value={login}
-            type="text"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="fullname"
-            placeholder="Ім'я користувача"
-          />
+          <h1 className="p-2 text-3xl text-center">Реєстрація</h1>
+          <div className="p-2 flex flex-col justify-center text-red-400 gap-2">
+            {errorMessages.map((error) => {
+              return (
+                <div key={errorMessages.indexOf(error)} className="text-center">
+                  {error}
+                </div>
+              );
+            })}
+          </div>
+          <div className="pt-2">
+            <input
+              onChange={(e) => setLogin(e.target.value)}
+              value={login}
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="fullname"
+              placeholder="Логін"
+            />
 
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type="text"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="email"
-            placeholder="Електрона пошта"
-          />
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="email"
+              placeholder="Електрона пошта"
+            />
 
-          <DatePicker
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            selected={birthday}
-            onChange={(date: Date) => setBirthday(date)}
-          />
+            <DatePicker
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              selected={birthday}
+              onChange={(date: Date) => setBirthday(date)}
+            />
 
-          <input
-            onChange={(e) => setCell(e.target.value)}
-            value={cell}
-            type="tel"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="cell"
-            placeholder="Номер телефону"
-          />
+            <input
+              onChange={(e) => setCell(e.target.value)}
+              value={cell}
+              type="tel"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="cell"
+              placeholder="Номер телефону"
+            />
 
-          <input
-            onChange={(e) => setCity(e.target.value)}
-            value={city}
-            type="text"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="cell"
-            placeholder="Місто"
-          />
+            <input
+              onChange={(e) => setCity(e.target.value)}
+              value={city}
+              type="text"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="cell"
+              placeholder="Місто"
+            />
 
-          <select
-            onChange={(e) => setGender(e.target.value)}
-            value={gender}
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="confirm_password"
-          >
-            <option value="male">чоловіча стать</option>
-            <option value="female">жіноча стать</option>
-            <option value="none">не вказувати стать</option>
-          </select>
+            <select
+              onChange={(e) => setGender(e.target.value)}
+              value={gender}
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="confirm_password"
+            >
+              <option value="male">чоловіча стать</option>
+              <option value="female">жіноча стать</option>
+              <option value="none">не вказувати стать</option>
+            </select>
 
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            type="password"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="password"
-            placeholder="Пароль"
-          />
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="password"
+              placeholder="Пароль"
+            />
 
-          <input
-            onChange={(e) => setPasswordConf(e.target.value)}
-            value={passwordConf}
-            type="password"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="confirm_password"
-            placeholder="Підтвердження пароля"
-          />
+            <input
+              onChange={(e) => setPasswordConf(e.target.value)}
+              value={passwordConf}
+              type="password"
+              className="block border border-grey-light w-full p-3 rounded mb-4"
+              name="confirm_password"
+              placeholder="Підтвердження пароля"
+            />
 
-          <button
-            type="submit"
-            className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 focus:outline-none my-1"
-            onClick={() => RegHandler()}
-          >
-            Створити Аккаунт
-          </button>
+            <button
+              type="submit"
+              className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 focus:outline-none my-1"
+              onClick={() => RegHandler()}
+            >
+              Створити Аккаунт
+            </button>
+          </div>
         </div>
 
         <div className="text-grey-dark mt-6">
