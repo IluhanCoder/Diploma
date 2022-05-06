@@ -13,7 +13,9 @@ export const AddEventForm: FC = () => {
   const [name, setName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [participants, setParticipants] = useState<Array<string>>([]);
-  const [participant, setParticipant] = useState<string>("");
+  const [rider, setRider] = useState<string>("");
+  const [musiciansNeeded, setMusiciansNeeded] = useState<Array<string>>([]);
+  const [musicianNeeded, setMusicianNeeded] = useState<string>("");
   const [genres, setGenres] = useState<Array<string>>([]);
   const [genre, setGenre] = useState<string>("");
   const [date, setDate] = useState<Date>(new Date("Sept 24, 22 13:20:18"));
@@ -89,7 +91,7 @@ export const AddEventForm: FC = () => {
                   setGenre("");
                 }}
               >
-                Додати
+                Додати...
               </button>
             </div>
           </form>
@@ -101,11 +103,11 @@ export const AddEventForm: FC = () => {
           />
 
           <form>
-            <label>Учаcники: </label>
+            <label>Які музиканти потрібні: </label>
 
             <input
-              value={participant}
-              onChange={(e) => setParticipant(e.target.value)}
+              value={musicianNeeded}
+              onChange={(e) => setMusicianNeeded(e.target.value)}
               type="text"
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="fenre"
@@ -114,7 +116,7 @@ export const AddEventForm: FC = () => {
 
             <div className="flex flex-row gap-2">
               <ArrayMapper
-                array={participants}
+                array={musiciansNeeded}
                 itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
               />
             </div>
@@ -124,8 +126,8 @@ export const AddEventForm: FC = () => {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 type="button"
                 onClick={() => {
-                  setParticipants(participants.concat(participant));
-                  setParticipant("");
+                  setMusiciansNeeded(musiciansNeeded.concat(musicianNeeded));
+                  setMusicianNeeded("");
                 }}
               >
                 Додати...
@@ -142,13 +144,20 @@ export const AddEventForm: FC = () => {
             placeholder="Місто"
           />
 
-          <input
+          <textarea
             onChange={(e) => setDesc(e.target.value)}
             value={desc}
-            type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="cell"
+            name="desc"
             placeholder="Опис"
+          />
+
+          <textarea
+            onChange={(e) => setRider(e.target.value)}
+            value={rider}
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            name="rider"
+            placeholder="Технічний райдер"
           />
 
           <button
@@ -159,11 +168,12 @@ export const AddEventForm: FC = () => {
                 name,
                 store.user._id,
                 desc,
+                rider,
                 genres,
                 date,
                 adress,
-                participants,
-                avatar
+                avatar,
+                musiciansNeeded
               );
               navigate("/events");
               window.location.reload();

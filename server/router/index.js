@@ -5,6 +5,10 @@ const { body } = require("express-validator");
 const eventController = require("../controllers/event-controller");
 const multer = require("multer");
 const path = require("path");
+const propositionController = require("../controllers/proposition-controller");
+const inviteController = require("../controllers/invite-controller");
+const commentController = require("../controllers/comment-controller");
+const commentService = require("../service/comment-service");
 
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -41,7 +45,13 @@ router.post(
   userController.registration
 );
 //handles user's login
-router.post("/login", userController.loginF);
+router.post(
+  "/login",
+  body("login")
+    .isLength({ min: 3, max: 18 })
+    .withMessage("Довжина Логіну має бути від 3 до 18 символів "),
+  userController.loginF
+);
 //handles user's logout
 router.post("/logout", userController.logout);
 //sets user's avatar
@@ -60,35 +70,51 @@ router.delete("/user/:id", userController.deleteUser);
 router.put("/user", userController.update);
 
 //writes down a new event data into DB
-router.post("/events", eventController.addEvent);
+router.post("/event", eventController.addEvent);
 //sumbits event
 router.post("/event-submit/:eventId", eventController.submitEvent);
-//returns all the existing events from DB
-router.get("/events", eventController.getAllEvents);
-//returns all the submited events from DB
-router.get("/events-submited", eventController.getSubmitedEvents);
-//returns all the submited events from DB
-router.get("/events-unsubmited", eventController.getUnsubmitedEvents);
+//returns events from DB (isSubmited = true - returns submited events
+//else returns unsubmited events)
+router.get("/events/:isSubmited", eventController.getEvents);
+//returns an event of specific user
+router.get("/user-events/:userId", eventController.getUserEvents);
 //sets event's avatar
+//deletes event by id
+router.delete("/event/:id", eventController.deleteById);
+
 router.post(
   "/event-avatar/:id",
   upload.single("file"),
   eventController.setAvatar
 );
-//returns an event according to specific parameters
-router.post("/events-find", eventController.findEvent);
 //sends to user invite of to be a participant
-router.post("/event-invite", userController.eventInvite);
-//sends to user invite of to be a participant
-router.post("/event-invite-remove/:userId", userController.removeInvite);
-//returns an event of specific user
-router.get("/user-events/:creatorId", eventController.getUserEvents);
+router.post("/event-invite", inviteController.eventInvite);
+//user sends a proposition of him to be a partificial
+router.post("/event-propose", propositionController.eventPropose);
 //returns a cpecific event by id
 router.get("/event/:id", eventController.getById);
-//deletes event by id
-router.delete("/event/:id", eventController.deleteById);
 //refresh token request
 router.get("/refresh", userController.refresh);
+
+//return an object with proposition data of specific user
+router.get("/propositions/:userId", propositionController.getUserPropositions);
+//handling proposition accept/reject
+//if :accept = true puts a proposer into event's "participants", and then deletes proposition
+//if :accept = false just deletes proposition
+router.put(
+  "/proposition/:propositionId/:accept",
+  propositionController.seeProposition
+);
+//handling invite accept/reject
+//if :accept = true puts a proposer into event's "participants", and then deletes proposition
+//if :accept = false just deletes proposition
+router.put("/invite/:inviteId/:accept", inviteController.seeInvite);
+
+router.get("/invites/:userId", inviteController.getUserInvites);
+
+router.post("/comment", commentController.newComment);
+
+router.get("/comments/:eventId", commentController.getComments);
 
 // router.get("/activate/:link", userController.activate);
 

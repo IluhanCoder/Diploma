@@ -8,6 +8,7 @@ module.exports = class EventDto {
   adress;
   participants;
   avatar;
+  musiciansNeeded;
   songs;
   isSubmited;
 
@@ -19,6 +20,7 @@ module.exports = class EventDto {
     this.city = model.city;
     this.gender = model.gender;
     this.avatar = model.avatar;
+    this.musiciansNeeded = model.musiciansNeeded;
     this._id = model._id;
     this.isActivated = model.isActivated;
   }

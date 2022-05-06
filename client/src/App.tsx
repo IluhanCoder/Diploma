@@ -21,10 +21,8 @@ const App: FC = () => {
 
   return (
     <Router>
-      <div>
-        <Header />
-        <Body />
-      </div>
+      <Header />
+      <Body />
     </Router>
   );
 };

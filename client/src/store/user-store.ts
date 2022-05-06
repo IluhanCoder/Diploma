@@ -30,7 +30,7 @@ export default class Store {
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (error: any) {
-      console.log(error.response?.data?.message);
+      throw error;
     }
   }
 

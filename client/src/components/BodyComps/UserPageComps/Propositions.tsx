@@ -1,6 +1,6 @@
 import { IEvent } from "../../../models/IEvent";
 import { Context } from "../../../index";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import $api from "../../../http";
 import { IUser } from "../../../models/IUser";
@@ -10,41 +10,44 @@ import { observer } from "mobx-react-lite";
 import PropositionService from "../../../services/PropositionService";
 import DateFormater from "../../UniversalComps/DateFormater";
 import { getEnvironmentData } from "worker_threads";
+import { BiAlarmSnooze } from "react-icons/bi";
 
 type LocalParams = {
   userId: string;
 };
 
-const Invites = (params: LocalParams) => {
-  const [invites, setInvites] = useState<ITicket[]>([]);
-  const { userId } = params;
+const Propositions = (params: LocalParams) => {
+  const [propositions, setPropositions] = useState<ITicket[]>([]);
 
   useEffect(() => {
     const getData = async () => {
-      await $api
-        .get("/invites/" + userId)
-        .then((response) => setInvites(response.data));
-      getData();
+      //i have to use this check, because params are undefined after
+      //first call of useEffect
+      if (params.userId)
+        await $api
+          .get("/propositions/" + params.userId)
+          .then((response) => setPropositions(response.data));
     };
-  }, [setInvites]);
+    getData();
+  }, [params]);
 
-  if (invites) {
+  if (propositions) {
     return (
       <div className="p-5 bg-white border drop-shadow rounded w-1/2 flex flex-col gap-4">
         <div className="flex justify-center h-fit">
-          <p className="text-xl">Пропозиції вашу участь в подіях:</p>
+          <p className="text-xl">Пропозиції на участь в ваших подіях:</p>
         </div>
         <div>
-          {invites.map((invite: ITicket) => {
-            const proposer = invite.proposer;
-            const event = invite.event;
+          {propositions.map((proposition: ITicket) => {
+            const proposer = proposition.proposer;
+            const event = proposition.event;
             return (
-              <Link to={"/aaa/" + proposer[0]._id + "/" + invite._id}>
+              <Link to={"/aaa/" + proposer[0]._id + "/" + proposition._id}>
                 <div className="flex-col gap-2 bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow px-3 py-6 text-white">
                   <div className="flex justify-end">
                     <div>
                       Дата пропозиції:{" "}
-                      <DateFormater value={invite.date} dayOfWeek={true} />
+                      <DateFormater value={proposition.date} dayOfWeek={true} />
                     </div>
                   </div>
                   <div className="flex-wrap p-4">
@@ -53,9 +56,9 @@ const Invites = (params: LocalParams) => {
                       Подія: {event[0].name} (
                       <DateFormater value={event[0].date} dayOfWeek />)
                     </div>
-                    <div className="text-xl">Роль: {invite.role}</div>
+                    <div className="text-xl">Роль: {proposition.role}</div>
                   </div>
-                  <div className="px-6">{invite.comment}</div>
+                  <div className="px-6">{proposition.comment}</div>
                 </div>
               </Link>
             );
@@ -66,4 +69,4 @@ const Invites = (params: LocalParams) => {
   } else return <></>;
 };
 
-export default observer(Invites);
+export default observer(Propositions);

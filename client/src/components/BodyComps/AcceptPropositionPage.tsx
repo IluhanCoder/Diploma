@@ -1,7 +1,7 @@
 import UserService from "../../services/UserService";
 import { IUser } from "../../models/IUser";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import $api from "../../http";
 import { API_URL } from "../../http";
 import Avatar from "react-avatar";
@@ -16,19 +16,38 @@ import { IEvent } from "../../models/IEvent";
 import { Link } from "react-router-dom";
 import { storeAnnotation } from "mobx/dist/internal";
 
-const UserPage: React.FC = () => {
+type LocalParams = {
+  userId: string;
+  propositionId: string;
+};
+
+type extraItem = {
+  user: IUser;
+  event: IEvent;
+};
+
+const AcceptPropositionPage: React.FC = () => {
   let url = API_URL.replace("/api", "");
 
-  const params = useParams();
-  const userId = params.userId ?? "";
+  const navigate = useNavigate();
 
   const [user, setUser] = useState<IUser>();
+  const [propositionData, setPropositionData] = useState<extraItem[]>();
+
+  const { propositionId, userId } = useParams<LocalParams>();
 
   React.useEffect(() => {
     $api.get("/users/" + userId).then((response) => {
       setUser(response.data);
     });
   }, [setUser]);
+
+  const acceptPropositionHandler = async () => {
+    await $api.put("/proposition/" + propositionId + "/" + true);
+  };
+  const rejectPropositionHandler = async () => {
+    await $api.put("/proposition/" + propositionId + "/" + false);
+  };
 
   return (
     <div className="bg-gray-100 p-5">
@@ -47,7 +66,6 @@ const UserPage: React.FC = () => {
               <p className="text-4xl">{user?.login}</p>
             </div>
           </div>
-          <InviteButtons id={userId} />
         </div>
         <div className="p-10 bg-white border drop-shadow rounded md:w-7/12 sm:w-full grid grid-col h-fit gap-8">
           <div>
@@ -116,22 +134,22 @@ const UserPage: React.FC = () => {
           <div className="h-80 w-full mt-6 overflow-auto">
             <div className="grid drid-col gap-5 text-white">
               <div className="h-fit bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Test</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">17.10.20</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Event of legends</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">24.03.21</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Good music</div>
-                <div className="flex justify-center">Гітарист</div>
-                <div className="flex flex-row-reverse">17.07.18</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Bad music</div>
+                <div>Назва події</div>
                 <div className="flex justify-center">Роль у події</div>
                 <div className="flex flex-row-reverse">24.10.22</div>
               </div>
@@ -155,36 +173,56 @@ const UserPage: React.FC = () => {
           <div className="h-80 w-full mt-6 overflow-auto text-white">
             <div className="h-fit grid drid-col gap-5">
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Test event</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">19.11.23</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Фестиваль року</div>
-                <div className="flex justify-center">Звукорежисер</div>
-                <div className="flex flex-row-reverse">01.03.23</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
               <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Live Aids</div>
-                <div className="flex justify-center">Баарабанщик</div>
-                <div className="flex flex-row-reverse">09.09.22</div>
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
+              </div>
+              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
+              </div>
+              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
+                <div>Назва події</div>
+                <div className="flex justify-center">Роль у події</div>
+                <div className="flex flex-row-reverse">24.10.22</div>
               </div>
             </div>
           </div>
         </div>
-        <Propositions userId={user?._id!} />
-        <Invites userId={user?._id!} />
-      </div>
-      <div className="flex justify-center mt-2">
-        <div className="bg-white border drop-shadow rounded p-2 flex justify-center w-1/6">
-          <AdminButtons
-            userId={user?._id ? user._id : ""}
-            className="bg-red-400 rounded border-4 border-red-600 text-red-700 px-4 py-1"
-          />
+        <div className="bg-white drop-shadow p-5 w-1/2 flex flex-col gap-4">
+          <button
+            onClick={() => {
+              acceptPropositionHandler();
+              navigate("/events/");
+            }}
+            className="bg-green-400 rounded p-2 text-white hover:bg-green-200"
+          >
+            Підтвердити пропозицію на участь в вашій події
+          </button>
+          <button
+            onClick={() => {
+              rejectPropositionHandler();
+              navigate("/events/");
+            }}
+            className="bg-red-400 rounded p-2 text-white hover:bg-red-200"
+          >
+            Відмовитись
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default observer(UserPage);
+export default observer(AcceptPropositionPage);

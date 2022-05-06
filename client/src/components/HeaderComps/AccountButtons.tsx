@@ -9,8 +9,8 @@ export const RightButtons: FC = () => {
   const { store } = useContext(Context);
   const navigate = useNavigate();
 
-  function logoutHandler() {
-    store.logout();
+  async function logoutHandler() {
+    await store.logout();
     navigate("/login");
   }
 

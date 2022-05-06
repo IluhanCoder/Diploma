@@ -11,6 +11,7 @@ import ArrayMapper from "../../UniversalComps/ArrayMapper";
 import DateFormater from "../../UniversalComps/DateFormater";
 import UserService from "../../../services/UserService";
 import ImgDisplayer from "../../UniversalComps/ImgDisplayer";
+import Events from "../EventsPage";
 
 type LocalProps = {
   event: IEvent;
@@ -19,15 +20,13 @@ type LocalProps = {
 const url = API_URL.replace("/api", "");
 
 export const Event = ({ event }: LocalProps) => {
-  const { store } = useContext(Context);
-
   return (
     <div className="bg-white border-gray-300 border-2 rounded-md md:px-24 px-2 py-6">
       <div className="grid grid-rows-8">
         <div className="flex md:place-content-end place-content-center">
           <h2>
             Створив подію:{" "}
-            <a href={`user/` + event.creatorId}>{event.creatorName}</a>
+            <a href={`user/` + event.creator._id}>{event.creator.login}</a>
           </h2>
         </div>
         <div className="flex justify-center">
@@ -56,10 +55,19 @@ export const Event = ({ event }: LocalProps) => {
             <div>
               <p className="mb-2">Учасники:</p>
               <div className="flex flex-wrap">
-                <ArrayMapper
+                {/* <ArrayMapper
                   itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
                   array={event.participants}
-                />
+                /> */}
+              </div>
+            </div>
+            <div>
+              <p className="mb-2">Потрібні:</p>
+              <div className="flex flex-wrap">
+                {/* <ArrayMapper
+                  itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
+                  array={event.roles}
+                /> */}
               </div>
             </div>
           </div>

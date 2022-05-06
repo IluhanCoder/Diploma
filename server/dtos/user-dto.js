@@ -9,6 +9,7 @@ module.exports = class UserDto {
   id;
   isActivated;
   eventInvites;
+  eventPropositions;
 
   constructor(model) {
     this.login = model.login;
@@ -21,5 +22,6 @@ module.exports = class UserDto {
     this._id = model._id;
     this.isActivated = model.isActivated;
     this.eventInvites = model.eventInvites;
+    this.eventPropositions = model.eventPropositions;
   }
 };

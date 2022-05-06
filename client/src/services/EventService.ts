@@ -5,35 +5,27 @@ import { IEvent } from "../models/IEvent";
 import { runInNewContext } from "vm";
 
 export default class EventService {
-  static async fetchEvents(): Promise<AxiosResponse<IEvent[]>> {
-    return $api.get("/events");
-  }
-
-  static async fetchUserEvents(
-    creator: string
-  ): Promise<AxiosResponse<IEvent[]>> {
-    return $api.post("/user-events", { creator });
-  }
-
   static async createEvent(
     name: string,
     creatorId: string,
     desc: string,
+    rider: string,
     genres: string[],
     date: Date,
     adress: string,
-    participants: string[],
-    avatar: File
+    avatar: File,
+    musiciansNeeded: string[]
   ): Promise<AxiosResponse<IEvent[]>> {
     return $api
-      .post("/events", {
+      .post("/event", {
         name,
         creatorId,
         desc,
+        rider,
         genres,
         date,
         adress,
-        participants,
+        musiciansNeeded,
       })
       .then((res) => {
         const data = res.data;
@@ -43,8 +35,18 @@ export default class EventService {
       });
   }
 
-  static async findEvent(searchValue: string, searchType: string) {
-    return $api.post("/events-find", { searchValue, searchType });
+  static async getEvents(
+    isSubmited: boolean
+  ): Promise<AxiosResponse<IEvent[]>> {
+    return await $api.get<IEvent[]>(`/events/${isSubmited}`);
+  }
+
+  static async getEvent(eventId: string) {
+    return await $api.get<IEvent>(`/event/${eventId}`);
+  }
+
+  static async getUserEvents(userId: string): Promise<AxiosResponse<IEvent[]>> {
+    return await $api.get(`/user-events/${userId}`);
   }
 
   static async setAvatar(event: IEvent, avatar: File) {
@@ -57,15 +59,25 @@ export default class EventService {
     return $api.get("/event/:" + id);
   }
 
-  static getSubmitedEvents() {
-    return $api.get("/events-submited");
-  }
-
   static submitEvent(eventId: string) {
     return $api.post("/event-submit/" + eventId);
   }
 
   static async deleteEvent(eventId: string) {
     $api.delete("/event/" + eventId);
+  }
+
+  static async addComment(
+    commenterId: string,
+    content: string,
+    eventId: string,
+    commenterName: string
+  ) {
+    return $api.post("/comment", {
+      commenterId,
+      content,
+      eventId,
+      commenterName,
+    });
   }
 }

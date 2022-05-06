@@ -1,14 +1,26 @@
+import { IComment } from "./IComment";
+import { IUser } from "./IUser";
+
+export interface IParticipant {
+  _id: string;
+  name: string;
+  role: string;
+  rights: number;
+}
+
 export interface IEvent {
   _id: string;
-  creatorName: string;
-  creatorId: string;
+  creator: IUser;
   name: string;
-  desc: String;
-  genres: [String];
+  desc: string;
+  rider: string;
+  genres: [string];
   date: Date;
   adress: string;
-  participants: [String];
-  creator: String;
+  participants: [IParticipant];
   avatar: string;
   isSubmited: boolean;
+  musiciansNeeded: [string];
+  roles: [string];
+  comments: [IComment];
 }

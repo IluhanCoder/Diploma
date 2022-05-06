@@ -31,6 +31,7 @@ export default class AuthService {
       gender,
       avatar: null,
       eventInvites: [],
+      eventPropositions: [],
     });
   }
 

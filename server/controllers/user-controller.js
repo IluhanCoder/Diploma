@@ -142,25 +142,6 @@ class UserController {
     }
   }
 
-  async eventInvite(req, res, next) {
-    try {
-      const { event, userId } = req.body;
-      userService.eventInvite(event, userId);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async removeInvite(req, res, next) {
-    try {
-      const { userId } = req.params;
-      const { event } = req.body;
-      await userService.removeInvite(event, userId);
-    } catch (error) {
-      next(error);
-    }
-  }
-
   async getById(req, res, next) {
     try {
       const userId = req.params.id;
@@ -176,6 +157,17 @@ class UserController {
       const userId = req.params.id;
       const avatar = await userService.getAvatar(userId);
       return res.status(200).json(avatar);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPropositions(req, res, next) {
+    console.log(req.body);
+    try {
+      const propositions = req.body;
+      const proposData = await userService.getPropositions(propositions);
+      return res.status(200).json(proposData);
     } catch (error) {
       next(error);
     }

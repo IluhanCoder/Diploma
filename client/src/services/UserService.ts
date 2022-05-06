@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import { AuthResponse } from "../models/response/AuthResponse";
 import { IUser } from "../models/IUser";
 import { IEvent } from "../models/IEvent";
+import { ITicket } from "../models/IProposition";
 
 export default class UserService {
   static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
@@ -47,5 +48,18 @@ export default class UserService {
       const event = result.data;
       $api.post("/event-invite", { event, userId });
     });
+  }
+
+  static async sendProposition(eventId: string, userId: string, role: string) {
+    return await $api.post("/event-proposition/", { eventId, userId, role });
+  }
+
+  static async getPropositionData(propositions: Array<ITicket>) {
+    console.log(propositions);
+    return await $api.post("/propositions/", { propositions });
+  }
+
+  static isAdmin(user: IUser) {
+    return user.login == "ADMIN";
   }
 }

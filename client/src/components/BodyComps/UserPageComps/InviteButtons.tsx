@@ -18,7 +18,7 @@ const InviteButtons = (params: LocalParams) => {
         <button
           type="button"
           className="rounded bg-green-500 text-white hover:bg-green-700 transition px-4 py-2 hover:text-white lg:mt-0"
-          onClick={() => navigate("/send-event-request/" + id)}
+          onClick={() => navigate("/invite/" + id)}
         >
           Запропонувати участь у події
         </button>

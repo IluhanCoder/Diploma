@@ -17,9 +17,7 @@ export const Context = createContext<State>({
 
 ReactDOM.render(
   <Context.Provider value={{ store }}>
-    {/* <AlertProvider template={AlertTemplate}> */}
     <App />
-    {/* </AlertProvider> */}
   </Context.Provider>,
   document.getElementById("root")
 );

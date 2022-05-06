@@ -5,50 +5,30 @@ const userService = require("../service/user-service");
 
 class EventController {
   async addEvent(req, res, next) {
-    const creator = await userService.getById(req.body.creatorId);
     try {
-      const { name, creatorId, desc, genres, date, adress, participants } =
-        req.body;
-      const creator = await userService.getById(creatorId);
-      const creatorName = creator.login;
-      const event = await EventService.addEvent(
+      const {
         name,
         creatorId,
-        creatorName,
         desc,
+        rider,
         genres,
         date,
         adress,
-        participants
+        participants,
+        musiciansNeeded,
+      } = req.body;
+      const event = await EventService.addEvent(
+        name,
+        creatorId,
+        desc,
+        rider,
+        genres,
+        date,
+        adress,
+        participants,
+        musiciansNeeded
       );
       res.status(200).json(event);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async getAllEvents(req, res, next) {
-    try {
-      const events = await EventService.getAllEvents();
-      return res.status(200).json(events);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async getSubmitedEvents(req, res, next) {
-    try {
-      const events = await EventService.getSubmitedEvents();
-      return res.status(200).json(events);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async getUnsubmitedEvents(req, res, next) {
-    try {
-      const events = await EventService.getUnsubmitedEvents();
-      return res.status(200).json(events);
     } catch (error) {
       next(error);
     }
@@ -64,21 +44,22 @@ class EventController {
     }
   }
 
-  async getUserEvents(req, res, next) {
+  async getEvents(req, res, next) {
     try {
-      const { creatorId } = req.params;
-      const events = await EventService.getUserEvents(creatorId);
+      const { isSubmited } = req.params;
+      const convertedIsSubmited = isSubmited === "true";
+      const events = await eventService.getEvents(convertedIsSubmited);
       return res.status(200).json(events);
     } catch (error) {
       next(error);
     }
   }
 
-  async findEvent(req, res, next) {
+  async getUserEvents(req, res, next) {
     try {
-      const { searchValue, searchType } = req.body;
-      const events = await EventService.findEvent(searchValue, searchType);
-      return res.json(events);
+      const { userId } = req.params;
+      const events = await EventService.getUserEvents(userId);
+      return res.status(200).json(events);
     } catch (error) {
       next(error);
     }
@@ -110,7 +91,27 @@ class EventController {
   async deleteById(req, res, next) {
     try {
       const eventId = req.params.id;
-      EventService.deleteEventById(eventId);
+      EventService.deleteById(eventId);
+      return res.status(200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addComment(req, res, next) {
+    try {
+      const { content, commenterId, eventId, commenterName } = req.body;
+      EventService.addComment(content, commenterId, commenterName, eventId);
+      return res.status(200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteComment(req, res, next) {
+    try {
+      const { eventId, commentIndex } = req.params;
+      await eventService.deleteComment(eventId, commentIndex);
       return res.status(200);
     } catch (error) {
       next(error);

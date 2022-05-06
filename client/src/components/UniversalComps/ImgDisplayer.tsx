@@ -7,10 +7,7 @@ type LocalParams = {
 };
 
 function imageExists(image_url: string) {
-  var http = new XMLHttpRequest();
-  http.open("GET", image_url, false);
-  http.send();
-  return http.status == 200;
+  return !image_url.includes("-none");
 }
 
 const ImgDisplayer = (params: LocalParams) => {

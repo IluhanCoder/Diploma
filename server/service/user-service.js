@@ -6,6 +6,8 @@ const tokenService = require("./token-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 const userModel = require("../models/user-model");
+const eventService = require("./event-service");
+const propositionModel = require("../models/ticket-children/proposition-model");
 
 class UserService {
   async registration(login, email, password, birthday, cell, city, gender) {
@@ -139,31 +141,14 @@ class UserService {
     return avatar;
   }
 
-  async eventInvite(event, userId) {
-    const user = await userModel.findOne({ _id: userId });
-    let eventInvites = user.eventInvites;
-    eventInvites.push(event);
-    const filter = { _id: userId };
-    const updateDocument = {
-      $set: {
-        eventInvites: eventInvites,
-      },
-    };
-    const result = await UserModel.updateOne(filter, updateDocument);
-  }
-
-  async removeInvite(event, userId) {
-    const user = await userModel.findOne({ _id: userId });
-    let eventInvites = user.eventInvites;
-    const eventIndex = eventInvites.indexOf(event);
-    eventInvites.splice(eventIndex);
-    const filter = { _id: userId };
-    const updateDocument = {
-      $set: {
-        eventInvites: eventInvites,
-      },
-    };
-    const result = await UserModel.updateOne(filter, updateDocument);
+  async getPropositions(propositions) {
+    let proposData = [];
+    propositions.map((proposition) => {
+      const user = this.getById(proposition.userId);
+      const event = eventService.getById(proposition.eventId);
+      proposData.push({ user, event });
+    });
+    return proposData;
   }
 }
 

@@ -1,4 +1,5 @@
 import { IEvent } from "./IEvent";
+import { ITicket } from "./IProposition";
 
 export interface IUser {
   login: string;
@@ -11,4 +12,5 @@ export interface IUser {
   isActivated: boolean;
   _id: string;
   eventInvites: Array<IEvent>;
+  eventPropositions: Array<ITicket>;
 }
