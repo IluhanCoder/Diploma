@@ -8,9 +8,9 @@ import Avatar from "react-avatar";
 import DateFormater from "../UniversalComps/DateFormater";
 import InviteButtons from "./UserPageComps/InviteButtons";
 import { observer } from "mobx-react-lite";
-import Invites from "./UserPageComps/Invites";
+import Invites from "./TicketsPageComps/Invites";
 import AdminButtons from "./UserPageComps/AdminButtons";
-import Propositions from "./UserPageComps/Propositions";
+import Propositions from "./TicketsPageComps/Propositions";
 import { ITicket } from "../../models/IProposition";
 import { IEvent } from "../../models/IEvent";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ const UserPage: React.FC = () => {
     $api.get("/users/" + userId).then((response) => {
       setUser(response.data);
     });
-  }, [setUser]);
+  }, [setUser, userId]);
 
   return (
     <div className="bg-gray-100 p-5">
@@ -67,6 +67,22 @@ const UserPage: React.FC = () => {
             </div>
           </div>
           <div className="grid xl:grid-cols-2 lg:grid-cols-1 gap-5">
+            <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
+              <div>
+                <p>Ім'я:</p>
+              </div>
+              <div className="flex flex-row-reverse">
+                <p>{user?.name}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
+              <div>
+                <p>Прзвище:</p>
+              </div>
+              <div className="flex flex-row-reverse">
+                <p>{user?.surname}</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
               <div>
                 <p>Email:</p>
@@ -172,8 +188,6 @@ const UserPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <Propositions userId={user?._id!} />
-        <Invites userId={user?._id!} />
       </div>
       <div className="flex justify-center mt-2">
         <div className="bg-white border drop-shadow rounded p-2 flex justify-center w-1/6">

@@ -7,7 +7,7 @@ const UsersAdminPage = () => {
   const [users, setUsers] = useState<Array<IUser>>([]);
 
   useEffect(() => {
-    UserService.fetchUsers().then((response) => {
+    UserService.getUsers().then((response) => {
       const users = response.data;
       setUsers(users);
     });

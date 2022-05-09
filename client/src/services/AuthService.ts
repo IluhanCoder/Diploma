@@ -13,16 +13,19 @@ export default class AuthService {
 
   static async registration(
     login: string,
+    name: string,
+    surname: string,
     email: string,
     password: string,
     birthday: Date,
     cell: string,
     city: string,
-    gender: string,
-    eventInvites: Array<IEvent>
+    gender: string
   ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post("/registration", {
       login: login,
+      name,
+      surname,
       email,
       password,
       birthday,

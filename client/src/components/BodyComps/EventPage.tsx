@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import NewSongButton from "./EventPageComps/NewSongButton";
 import AdminButtons from "./EventPageComps/AdminButtons";
 import EventStatus from "./EventsPageComps/EventStatus";
-import AcceptButtons from "./EventPageComps/AcceptButtons";
 import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
 import ProposeButtons from "../BodyComps/EventPageComps/ProposeButtons";

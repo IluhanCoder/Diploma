@@ -9,6 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export const RegForm: FC = () => {
   const [login, setLogin] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [surName, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [birthday, setBirthday] = useState<Date>(new Date());
   const [cell, setCell] = useState<string>("+380");
@@ -30,6 +32,8 @@ export const RegForm: FC = () => {
       }
       await store.registration(
         login,
+        name,
+        surName,
         email,
         password,
         birthday,
@@ -69,8 +73,28 @@ export const RegForm: FC = () => {
               type="text"
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="fullname"
-              placeholder="Логін"
+              placeholder="Нік користувача"
             />
+
+            <div className="flex gap-2 justify-between">
+              <input
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                type="text"
+                className="block border border-grey-light w-full p-3 rounded mb-4"
+                name="fullname"
+                placeholder="Ім'я"
+              />
+
+              <input
+                onChange={(e) => setSurname(e.target.value)}
+                value={surName}
+                type="text"
+                className="block border border-grey-light w-full p-3 rounded mb-4"
+                name="fullname"
+                placeholder="Прізвище"
+              />
+            </div>
 
             <input
               onChange={(e) => setEmail(e.target.value)}

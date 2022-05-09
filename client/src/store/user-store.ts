@@ -36,6 +36,8 @@ export default class Store {
 
   async registration(
     login: string,
+    name: string,
+    surname: string,
     email: string,
     password: string,
     birthday: Date,
@@ -46,13 +48,14 @@ export default class Store {
     try {
       const response = await AuthService.registration(
         login,
+        name,
+        surname,
         email,
         password,
         birthday,
         cell,
         city,
-        gender,
-        []
+        gender
       );
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);

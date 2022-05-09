@@ -10,7 +10,17 @@ const eventService = require("./event-service");
 const propositionModel = require("../models/ticket-children/proposition-model");
 
 class UserService {
-  async registration(login, email, password, birthday, cell, city, gender) {
+  async registration(
+    login,
+    name,
+    surname,
+    email,
+    password,
+    birthday,
+    cell,
+    city,
+    gender
+  ) {
     const mailCandidate = await UserModel.findOne({ email });
     if (mailCandidate != null) {
       throw ApiError.BadRequest(
@@ -31,6 +41,8 @@ class UserService {
     const activationLink = uuid.v4();
     const user = await UserModel.create({
       login: login,
+      name,
+      surname,
       email,
       password: hashPassword,
       birthday,

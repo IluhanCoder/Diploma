@@ -1,9 +1,9 @@
-import { IEvent } from "./IEvent";
-import { ITicket } from "./IProposition";
-
 export interface IUser {
   login: string;
+  name: string;
+  surname: string;
   email: string;
+  bio?: string;
   birthday: Date;
   cell: string;
   city: string;
@@ -11,6 +11,4 @@ export interface IUser {
   avatar: string;
   isActivated: boolean;
   _id: string;
-  eventInvites: Array<IEvent>;
-  eventPropositions: Array<ITicket>;
 }

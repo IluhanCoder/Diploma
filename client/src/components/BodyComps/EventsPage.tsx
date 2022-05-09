@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { IEvent } from "../../models/IEvent";
+import { IEvent, IParticipant } from "../../models/IEvent";
 import EventsMapper from "../UniversalComps/LargeEventMapper";
 import { Context } from "../..";
 import UserService from "../../services/UserService";
@@ -55,10 +55,12 @@ export const Events = ({ type }: LocalParams) => {
             return event.name.toUpperCase().includes(upperValue);
           case "city":
             return event.adress.toUpperCase().includes(upperValue);
-          // case "participant":
-          //   return event.participantsNames.some((str: string) => {
-          //     if(str.toUpperCase().includes(upperValue)) {return true}
-          //   });
+          case "participant":
+            return event.participants.some((participant: IParticipant) => {
+              if (participant.name.toUpperCase().includes(upperValue)) {
+                return true;
+              }
+            });
           case "genre":
             return event.genres.some((str: string) => {
               if (str.toUpperCase().includes(upperValue)) {

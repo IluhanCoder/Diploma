@@ -14,6 +14,8 @@ import PropositionPage from "./BodyComps/PropositionPage";
 import AcceptPropositionPage from "./BodyComps/AcceptPropositionPage";
 import InvitePage from "./BodyComps/InvitePage";
 import { Context } from "..";
+import TicketsPage from "./BodyComps/TicketsPage";
+import UsersPage from "./BodyComps/UsersPage";
 
 function Body() {
   const { store } = useContext(Context);
@@ -37,6 +39,8 @@ function Body() {
         />
         <Route path="/invite/:receiverId" element={<InvitePage />} />
         <Route path="/event/:eventId" element={<EventPage />} />
+        <Route path="/tickets" element={<TicketsPage />} />
+        <Route path="/users" element={<UsersPage />} />
         <Route
           path="/event-proposition/:eventId"
           element={<PropositionPage />}

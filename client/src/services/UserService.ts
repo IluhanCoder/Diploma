@@ -6,7 +6,7 @@ import { IEvent } from "../models/IEvent";
 import { ITicket } from "../models/IProposition";
 
 export default class UserService {
-  static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
+  static getUsers(): Promise<AxiosResponse<IUser[]>> {
     return $api.get("/users");
   }
 

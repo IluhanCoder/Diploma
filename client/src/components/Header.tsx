@@ -19,9 +19,6 @@ function Header() {
             Music WEB
           </span>
           <div className="flex gap-4 md:gap-5 text-xl md:text-base">
-            <div className="hover:text-gray-300">
-              <Link to={"/events"}>події</Link>
-            </div>
             {store.isAuth && (
               <div className="hover:text-gray-300">
                 <Link to={"/user-events"}>мої події</Link>
@@ -29,9 +26,25 @@ function Header() {
             )}
             {store.isAuth && (
               <div className="hover:text-gray-300">
-                <Link to={`/user/${store.user._id}`}>сторінка користувача</Link>
+                <Link to={`/user/${store.user._id}`}>моя сторінка</Link>
               </div>
             )}
+            {store.isAuth && (
+              <div className="hover:text-gray-300">
+                <Link to={`/tickets`}>пропозиції</Link>
+              </div>
+            )}
+            {store.isAuth && (
+              <div className="hover:text-gray-300">
+                <Link to={`/event-history`}>історія подій</Link>
+              </div>
+            )}
+            <div className="hover:text-gray-300">
+              <Link to={`/events`}>події</Link>
+            </div>
+            <div className="hover:text-gray-300">
+              <Link to={`/users`}>користувачі</Link>
+            </div>
           </div>
         </div>
 

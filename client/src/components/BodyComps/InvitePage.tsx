@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { Context } from "../../index";
 import { IEvent } from "../../models/IEvent";
 import EventService from "../../services/EventService";
@@ -11,6 +12,9 @@ const InvitePage = () => {
   const currentUser = store.user;
   const { receiverId } = useParams();
   const [events, setEvents] = useState<IEvent[]>();
+  const [roles, setRoles] = useState<string[]>();
+  const [selectedEvent, setSelectedEvent] = useState<number>(-1);
+  const [selectedRole, serSelectedRole] = useState<number>(-1);
 
   useEffect(() => {
     const getEvents = async () => {
@@ -18,12 +22,11 @@ const InvitePage = () => {
         setEvents(res.data)
       );
     };
-  }, [setEvents]);
+    getEvents();
+  }, [currentUser._id]);
 
   if (!receiverId) throw new Error("Помилка адреси");
   if (!currentUser) throw new Error("Помилка авторизації");
-  if (!events || events.length < 1)
-    throw new Error("У вас нема доступних подій");
 
   return (
     <div className="flex-col">
@@ -31,7 +34,32 @@ const InvitePage = () => {
         Будь-ласка, оберіть подію, на участь в якій ви хочете запросити
         користувача:
       </div>
-      <SmallEventMapper events={events} />
+
+      <div>
+        {events?.map((event: IEvent) => {
+          const currentIndex = events.indexOf(event);
+          return (
+            <div
+              onClick={(e) => {
+                setSelectedEvent(currentIndex);
+              }}
+              className={
+                currentIndex == selectedEvent ? "bg-cyan-600" : "bg-cyan-500"
+              }
+            >
+              {event.name}
+            </div>
+          );
+        })}
+      </div>
+      {selectedEvent > 0 && (
+        <div>
+          {events![selectedEvent].roles.map((role: string) => {
+            return <div>{role}</div>;
+          })}
+        </div>
+      )}
+
       <div className="overflow-auto">
         <div className="flex-col"></div>
       </div>
