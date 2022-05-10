@@ -32,6 +32,10 @@ class CommentService {
     ]);
     return comments;
   }
+
+  async deleteComment(commentId) {
+    await commentModel.deleteOne({ _id: commentId });
+  }
 }
 
 module.exports = new CommentService();

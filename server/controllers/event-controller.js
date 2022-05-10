@@ -14,7 +14,6 @@ class EventController {
         genres,
         date,
         adress,
-        participants,
         musiciansNeeded,
       } = req.body;
       const event = await EventService.addEvent(
@@ -25,7 +24,6 @@ class EventController {
         genres,
         date,
         adress,
-        participants,
         musiciansNeeded
       );
       res.status(200).json(event);
@@ -37,8 +35,8 @@ class EventController {
   async submitEvent(req, res, next) {
     try {
       const { eventId } = req.params;
-      console.log(eventId);
-      return await eventService.submitEvent(eventId);
+      await eventService.submitEvent(eventId);
+      return res.status(200);
     } catch (error) {
       next(error);
     }

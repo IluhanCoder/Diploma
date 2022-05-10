@@ -20,6 +20,16 @@ class CommentController {
       next(error);
     }
   }
+
+  async deleteComment(req, res, next) {
+    try {
+      const { commentId } = req.params;
+      await commentService.deleteComment(commentId);
+      return res.status(200);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new CommentController();

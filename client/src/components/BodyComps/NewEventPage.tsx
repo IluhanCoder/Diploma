@@ -26,6 +26,20 @@ export const AddEventForm: FC = () => {
   const url = API_URL.replace("/api", "");
 
   const { store } = useContext(Context);
+  const newEventHandler = async () => {
+    await EventService.createEvent(
+      name,
+      store.user._id,
+      desc,
+      rider,
+      genres,
+      date,
+      adress,
+      avatar,
+      musiciansNeeded
+    );
+    navigate("/events");
+  };
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col py-6">
@@ -163,21 +177,7 @@ export const AddEventForm: FC = () => {
           <button
             type="submit"
             className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 focus:outline-none my-1"
-            onClick={() => {
-              EventService.createEvent(
-                name,
-                store.user._id,
-                desc,
-                rider,
-                genres,
-                date,
-                adress,
-                avatar,
-                musiciansNeeded
-              );
-              navigate("/events");
-              window.location.reload();
-            }}
+            onClick={() => newEventHandler()}
           >
             Додати подію
           </button>

@@ -28,27 +28,60 @@ const url = API_URL.replace("/api", "");
 const EventPage = () => {
   const { store } = useContext(Context);
 
-  const params = useParams<LocalParams>();
-  const [eventId, setEventId] = useState<string>(params.eventId ?? "");
+  const { eventId } = useParams<LocalParams>();
 
   const [event, setEvent] = useState<IEvent>();
   const [commentInput, setCommentInput] = useState<string>();
 
+  const submitHandler = () => {
+    EventService.submitEvent(event?._id!);
+    window.location.reload();
+  };
+
+  const deleteHandler = () => {
+    EventService.deleteEvent(event?._id!);
+    window.location.reload();
+  };
+
   const getData = async () => {
-    await EventService.getEvent(eventId).then((res) => {
+    await EventService.getEvent(eventId!).then((res) => {
       setEvent(res.data);
-      console.log(res.data);
     });
   };
   useEffect(() => {
     if (eventId) getData();
-  }, [eventId]);
+  }, [eventId, setEvent]);
 
   return (
     <div className="grid grid-cols-3 w-full bg-gray-200 p-4 gap-4">
+      {store.user.login == "ADMIN" && (
+        <div className="bg-white rounded drop-shadow flex justify-center p-2 gap-4 col-start-2">
+          <button
+            className="bg-green-500 text-white hover:bg-green-300 rounded p-2"
+            onClick={() => submitHandler()}
+          >
+            Підтвердити
+          </button>
+          <button
+            className="bg-red-500 text-white hover:bg-red-300 rounded p-2"
+            onClick={() => deleteHandler()}
+          >
+            Видалити
+          </button>
+        </div>
+      )}
       <div className="col-span-3 flex flex-row gap-2 mx-6">
-        <div className="bg-white rounded drop-shadow text-center grow h-fit p-4 mt-10">
+        <div className="bg-white flex justify-between rounded drop-shadow grow h-fit py-4 px-12 mt-10">
           <div className="text-center text-4xl">{event?.name}</div>
+          {(!event?.isSubmited && (
+            <div className="bg-red-200 text-red-400 rounded border-2 border-red-400 p-2">
+              подію не підтверджено
+            </div>
+          )) || (
+            <div className="bg-green-200 text-green-400 rounded border-2 border-green-400 p-2">
+              подію підтверджено
+            </div>
+          )}
         </div>
         <div className="bg-white rounded drop-shadow w-fit px-4 py-1 flex-col gap-2">
           <div className="text-center">Сворив подію:</div>
@@ -56,6 +89,7 @@ const EventPage = () => {
             <Avatar
               src={url + "/" + event?.creator.avatar}
               className="rounded"
+              name={event?.creator.login}
             />
           </div>
           <div className="text-center">{event?.creator.login}</div>
@@ -107,28 +141,35 @@ const EventPage = () => {
       <div className="bg-white rounded drop-shadow p-4 flex flex-col gap-2 col-span-2">
         <div className="text-center">Учасники:</div>
         <div className="p-4 grid grid-cols-2 gap-2">
-          {event?.participants.map((participant: IParticipant) => {
-            return (
-              <Link to={`/user/${participant._id}`}>
-                <div className="bg-cyan-500 drop-shadow rounded text-white flex flex-col p-4 gap-4">
-                  <div className="text-center text-xl">{participant.name}</div>
-                  <div className="grid grid-cols-2 gap-28">
-                    <div className="flex justify-between">
-                      <div>Роль:</div>
-                      <div>{participant.role}</div>
+          {(event?.participants.length! > 0 &&
+            event?.participants.map((participant: IParticipant) => {
+              return (
+                <Link to={`/user/${participant._id}`} key={participant._id}>
+                  <div className="bg-cyan-500 drop-shadow rounded text-white flex flex-col p-4 gap-4">
+                    <div className="text-center text-xl">
+                      {participant.name}
                     </div>
-                    <div className="flex justify-between">
-                      <div>Права:</div>
-                      <div>{participant.rights}</div>
+                    <div className="grid grid-cols-2 gap-28">
+                      <div className="flex justify-between">
+                        <div>Роль:</div>
+                        <div>{participant.role}</div>
+                      </div>
+                      <div className="flex justify-between">
+                        <div>Права:</div>
+                        <div>{participant.rights}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })) || (
+            <div className="col-span-2 text-center text-gray-500">
+              Учасників нема
+            </div>
+          )}
         </div>
       </div>
-      <Comments eventId={eventId} />
+      <Comments eventId={eventId!} />
     </div>
   );
 };

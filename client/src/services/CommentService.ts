@@ -12,6 +12,10 @@ export default class CommenntService {
   }
 
   static async getComments(eventId: string) {
-    return await $api.get("/comments/" + eventId);
+    return await $api.get(`/comments/${eventId}`);
+  }
+
+  static async deleteComment(commentId: string) {
+    return await $api.delete(`/comment/${commentId}`);
   }
 }

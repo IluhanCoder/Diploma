@@ -13,7 +13,6 @@ class EventService {
     genres,
     date,
     adress,
-    participants,
     musiciansNeeded,
     avatar
   ) {
@@ -25,16 +24,17 @@ class EventService {
       genres,
       date,
       adress,
-      participants,
       musiciansNeeded,
-      comments: [],
     });
+    console.log(event);
     return event;
   }
 
   async getById(eventId) {
+    //i need this only to check participants array later
     const convertedId = Mongoose.Types.ObjectId(eventId);
-    const event = await EventModel.aggregate([
+    const tempEvent = await EventModel.findById(eventId);
+    let query = [
       { $match: { _id: convertedId } },
       {
         $lookup: {
@@ -47,74 +47,81 @@ class EventService {
       {
         $unwind: "$creator",
       },
-      {
-        $unwind: {
-          path: "$participants",
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "participants.id",
-          foreignField: "_id",
-          as: "participantData",
-        },
-      },
-      {
-        $unwind: "$participantData",
-      },
-      {
-        $addFields: {
-          participant: {
-            _id: "$participants.id",
-            name: "$participantData.login",
-            role: "$participants.role",
-            rights: "$participants.rights",
+    ];
+    if (tempEvent.participants.length > 0) {
+      console.log("called");
+      query = query.concat([
+        {
+          $unwind: {
+            path: "$participants",
           },
         },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          name: {
-            $first: "$name",
-          },
-          creator: {
-            $first: "$creator",
-          },
-          desc: {
-            $first: "$desc",
-          },
-          rider: {
-            $first: "$rider",
-          },
-          genres: {
-            $first: "$genres",
-          },
-          date: {
-            $first: "$date",
-          },
-          adress: {
-            $first: "$adress",
-          },
-          avatar: {
-            $first: "$avatar",
-          },
-          songs: {
-            $first: "$songs",
-          },
-          musiciansNeeded: {
-            $first: "$musiciansNeeded",
-          },
-          usSubmited: {
-            $first: "$isSubmited",
-          },
-          participants: {
-            $push: "$participant",
+        {
+          $lookup: {
+            from: "users",
+            localField: "participants.id",
+            foreignField: "_id",
+            as: "participantData",
           },
         },
-      },
-    ]);
+        {
+          $unwind: "$participantData",
+        },
+        {
+          $addFields: {
+            participant: {
+              _id: "$participants.id",
+              name: "$participantData.login",
+              role: "$participants.role",
+              rights: "$participants.rights",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: {
+              $first: "$name",
+            },
+            creator: {
+              $first: "$creator",
+            },
+            desc: {
+              $first: "$desc",
+            },
+            rider: {
+              $first: "$rider",
+            },
+            genres: {
+              $first: "$genres",
+            },
+            date: {
+              $first: "$date",
+            },
+            adress: {
+              $first: "$adress",
+            },
+            avatar: {
+              $first: "$avatar",
+            },
+            songs: {
+              $first: "$songs",
+            },
+            musiciansNeeded: {
+              $first: "$musiciansNeeded",
+            },
+            isSubmited: {
+              $first: "$isSubmited",
+            },
+            participants: {
+              $push: "$participant",
+            },
+          },
+        },
+      ]);
+    }
+    const event = await EventModel.aggregate(query);
+    console.log(JSON.stringify(query));
     //i have no time to fix it :)
     return event[0];
   }

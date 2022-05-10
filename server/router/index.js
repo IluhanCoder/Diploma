@@ -72,7 +72,7 @@ router.put("/user", userController.update);
 //writes down a new event data into DB
 router.post("/event", eventController.addEvent);
 //sumbits event
-router.post("/event-submit/:eventId", eventController.submitEvent);
+router.put("/event-submit/:eventId", eventController.submitEvent);
 //returns events from DB (isSubmited = true - returns submited events
 //else returns unsubmited events)
 router.get("/events/:isSubmited", eventController.getEvents);
@@ -115,6 +115,8 @@ router.get("/invites/:userId", inviteController.getUserInvites);
 router.post("/comment", commentController.newComment);
 
 router.get("/comments/:eventId", commentController.getComments);
+
+router.delete("/comment/:commentId", commentController.deleteComment);
 
 // router.get("/activate/:link", userController.activate);
 

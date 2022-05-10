@@ -9,9 +9,10 @@ const EventSchema = new Schema({
   genres: { type: [String], required: true },
   date: { type: Date, required: true },
   adress: { type: String, required: true },
-  participantsId: {
-    type: { id: String, role: String, rights: Number },
+  participants: {
+    type: [{ id: String, role: String, rights: Number }],
     required: false,
+    default: [],
   },
   avatar: { type: String, required: false, default: null },
   songs: { type: [Schema.Types.ObjectId], required: false, default: [] },

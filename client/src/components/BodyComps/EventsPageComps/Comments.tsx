@@ -17,6 +17,12 @@ const Comments = ({ eventId }: LocalParams) => {
 
   const newCommentHandler = () => {
     CommenntService.newComment(store.user._id, eventId, content);
+    window.location.reload();
+  };
+
+  const deleteCommentHandler = (commentId: string) => {
+    CommenntService.deleteComment(commentId);
+    window.location.reload();
   };
 
   const getData = async () => {
@@ -32,28 +38,45 @@ const Comments = ({ eventId }: LocalParams) => {
   return (
     <div className="col-span-3 bg-white rounded drop-shadow flex flex-col gap-3 p-4">
       <div className="text-center text-2xl">Коментарі:</div>
-      <div className="flex flex-col overflow-auto gap-4">
-        {comments.map((comment: IComment) => {
-          return (
-            <div className="flex flex-col bg-gray-200 rounded drop-shadow p-4">
-              <div className="flex justify-between">
-                <div>
-                  <Link to={"/user/" + comment.commenter._id}>
-                    {comment.commenter.login}
-                  </Link>
+      {(comments.length > 0 && (
+        <div className="flex flex-col overflow-auto gap-4">
+          {comments.map((comment: IComment) => {
+            return (
+              <div
+                className="flex flex-col bg-gray-200 rounded drop-shadow p-4"
+                key={comment._id}
+              >
+                <div className="flex justify-between">
+                  <div>
+                    <Link to={"/user/" + comment.commenter._id}>
+                      {comment.commenter.login}
+                    </Link>
+                  </div>
+                  <div>
+                    <DateFormater value={comment.date} dayOfWeek={false} />
+                  </div>
                 </div>
-                <div>
-                  <DateFormater value={comment.date} dayOfWeek={false} />
+                <div className="px-10 py-4">
+                  <p> {comment.content} </p>
                 </div>
+                {(store.user.login == "ADMIN" ||
+                  comment.commenterId == store.user._id) && (
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        deleteCommentHandler(comment._id);
+                      }}
+                    >
+                      Видалити
+                    </button>
+                  </div>
+                )}
               </div>
-              <div className="px-10 py-4">
-                <p> {comment.content} </p>
-              </div>
-              <div></div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )) || <div className="text-center text-gray-500">коментарів нема</div>}
       <form className="flex flex-col gap-3">
         <textarea
           value={content}

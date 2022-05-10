@@ -29,7 +29,6 @@ export default class EventService {
       })
       .then((res) => {
         const data = res.data;
-        console.log(data._id);
         EventService.setAvatar(data, avatar);
         return data;
       });
@@ -59,25 +58,11 @@ export default class EventService {
     return $api.get("/event/:" + id);
   }
 
-  static submitEvent(eventId: string) {
-    return $api.post("/event-submit/" + eventId);
-  }
-
   static async deleteEvent(eventId: string) {
     $api.delete("/event/" + eventId);
   }
 
-  static async addComment(
-    commenterId: string,
-    content: string,
-    eventId: string,
-    commenterName: string
-  ) {
-    return $api.post("/comment", {
-      commenterId,
-      content,
-      eventId,
-      commenterName,
-    });
+  static async submitEvent(eventId: string) {
+    return $api.put(`/event-submit/${eventId}`);
   }
 }

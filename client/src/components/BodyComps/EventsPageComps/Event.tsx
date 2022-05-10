@@ -64,10 +64,10 @@ export const Event = ({ event }: LocalProps) => {
             <div>
               <p className="mb-2">Потрібні:</p>
               <div className="flex flex-wrap">
-                {/* <ArrayMapper
+                <ArrayMapper
                   itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
-                  array={event.roles}
-                /> */}
+                  array={event.musiciansNeeded}
+                />
               </div>
             </div>
           </div>
