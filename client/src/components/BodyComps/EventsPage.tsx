@@ -104,7 +104,7 @@ export const Events = ({ type }: LocalParams) => {
             <BiSearch color="white" />
           </button>
         </div>
-        {store.isAuth && type == "submited" && (
+        {store.isAuth && type != "unsubmited" && (
           <Link to="/event-form">
             <button className="bg-green-400 text-white rounded px-4 h-8 hover:bg-green-200 drop-shadow">
               Створити свою подію
@@ -124,7 +124,7 @@ export const Events = ({ type }: LocalParams) => {
       )}
       {type == "user" && (
         <div className="flex justify-center ">
-          <p className="text-3xl p-2">Створені вами події:</p>
+          <p className="text-3xl p-2">Ваші події:</p>
         </div>
       )}
 

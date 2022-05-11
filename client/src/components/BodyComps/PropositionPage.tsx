@@ -5,6 +5,8 @@ import { IEvent } from "../../models/IEvent";
 import UserService from "../../services/UserService";
 import { Context } from "../..";
 import PropositionService from "../../services/PropositionService";
+import EventService from "../../services/EventService";
+import { json } from "stream/consumers";
 
 const PropositionPage = () => {
   const { eventId } = useParams();
@@ -16,21 +18,24 @@ const PropositionPage = () => {
   const [commentAreaContent, setCommentAreaContent] = useState<string>("");
   const navigate = useNavigate();
 
-  const proposeButtonHandler = async () => {
-    await PropositionService.eventPropose(
+  const proposeButtonHandler = () => {
+    PropositionService.eventPropose(
       currentUser._id,
       event?.creator._id!,
       event?._id!,
-      event?.roles[chosenRoleIndex]!,
+      event?.musiciansNeeded[chosenRoleIndex]!,
       commentAreaContent
     );
+    alert("пропозицію було успішно надіслано");
+    navigate("/events");
   };
 
+  const getData = () => {
+    EventService.getEvent(eventId!).then((res) => setEvent(res.data));
+  };
   useEffect(() => {
-    $api.get("/event/" + eventId).then((response) => {
-      setEvent(response.data);
-    });
-  }, []);
+    if (eventId) getData();
+  }, [eventId]);
 
   return (
     <div className="flex flex-col gap-2 p-2">
@@ -38,8 +43,8 @@ const PropositionPage = () => {
         <p className="text-2xl">Оберіть роль, на яку ви себе пропонуєте:</p>
       </div>
       <div className="flex flex-wrap p-4 gap-2">
-        {event?.roles.map((role: string) => {
-          const currentIndex = event.roles.indexOf(role);
+        {event?.musiciansNeeded.map((role: string) => {
+          const currentIndex = event.musiciansNeeded.indexOf(role);
           let color =
             chosenRoleIndex == currentIndex ? "bg-cyan-500" : "bg-cyan-300";
           return (
@@ -66,10 +71,7 @@ const PropositionPage = () => {
       </div>
       <div className="flex justify-center">
         <button
-          onClick={() => {
-            proposeButtonHandler();
-            navigate("/events");
-          }}
+          onClick={proposeButtonHandler}
           className="rounded p-2 bg-cyan-400 hover:bg-cyan-200 drop-shadow"
         >
           Надіслати пропозицію

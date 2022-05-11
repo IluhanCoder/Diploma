@@ -7,7 +7,7 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 const userModel = require("../models/user-model");
 const eventService = require("./event-service");
-const propositionModel = require("../models/ticket-children/proposition-model");
+const eventModel = require("../models/event-model");
 
 class UserService {
   async registration(

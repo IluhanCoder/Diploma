@@ -118,6 +118,18 @@ router.get("/comments/:eventId", commentController.getComments);
 
 router.delete("/comment/:commentId", commentController.deleteComment);
 
+router.get("/invite-exists/:eventId", inviteController.eventInviteExists);
+
+router.get("/invite/:receiverId/:eventId", inviteController.getInvite);
 // router.get("/activate/:link", userController.activate);
+
+router.get("/events/:userId/:rights", eventController.getEventsWithRights);
+
+router.get("/participants/:eventId", eventController.getParticipants);
+
+router.get(
+  "/proposition/:receiverId/:senderId",
+  propositionController.getPropsition
+);
 
 module.exports = router;

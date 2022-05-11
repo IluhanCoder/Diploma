@@ -92,6 +92,7 @@ export const AddEventForm: FC = () => {
             <div className="flex flex-row gap-2">
               <ArrayMapper
                 array={genres}
+                className="flex gap-2 overflow-auto"
                 itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
               />
             </div>
@@ -131,7 +132,8 @@ export const AddEventForm: FC = () => {
             <div className="flex flex-row gap-2">
               <ArrayMapper
                 array={musiciansNeeded}
-                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
+                className="flex gap-2 overflow-auto"
+                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow flex gap-2"
               />
             </div>
 

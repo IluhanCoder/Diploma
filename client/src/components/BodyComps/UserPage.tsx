@@ -10,11 +10,12 @@ import InviteButtons from "./UserPageComps/InviteButtons";
 import { observer } from "mobx-react-lite";
 import Invites from "./TicketsPageComps/Invites";
 import AdminButtons from "./UserPageComps/AdminButtons";
-import Propositions from "./TicketsPageComps/Propositions";
-import { ITicket } from "../../models/IProposition";
+import { ITicket } from "../../models/ITicket";
 import { IEvent } from "../../models/IEvent";
 import { Link } from "react-router-dom";
 import { storeAnnotation } from "mobx/dist/internal";
+import AcceptPropositionPage from "./AcceptPropositionPage";
+import AcceptPropositionButton from "./UserPageComps/AcceptPropositionButton";
 
 const UserPage: React.FC = () => {
   let url = API_URL.replace("/api", "");
@@ -189,6 +190,10 @@ const UserPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <AcceptPropositionButton
+        userId={user?._id!}
+        className="flex justify-center gap-2 p-4"
+      />
       <div className="flex justify-center mt-2">
         <div className="bg-white border drop-shadow rounded p-2 flex justify-center w-1/6">
           <AdminButtons

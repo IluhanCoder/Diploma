@@ -1,4 +1,3 @@
-const propositionModel = require("../models/ticket-children/proposition-model");
 const propositionService = require("../service/proposition-service");
 
 class PropositionController {
@@ -20,11 +19,23 @@ class PropositionController {
   }
 
   async getUserPropositions(req, res, next) {
-    console.log(req.params);
     try {
       const { userId } = req.params;
       const propositions = await propositionService.getUserPropositions(userId);
       return res.status(200).json(propositions);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPropsition(req, res, next) {
+    try {
+      const { receiverId, senderId } = req.params;
+      const proposition = await propositionService.getProposition(
+        receiverId,
+        senderId
+      );
+      return res.status(200).json(proposition);
     } catch (error) {
       next(error);
     }

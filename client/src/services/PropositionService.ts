@@ -1,16 +1,16 @@
 import $api from "../http";
-import { ITicket } from "../models/IProposition";
+import { ITicket } from "../models/ITicket";
 
 export default class PropositionService {
   static async eventPropose(
-    proposerId: string,
+    senderId: string,
     receiverId: string,
     eventId: string,
     role: string,
     comment: string
   ) {
     await $api.post("/event-propose", {
-      proposerId,
+      proposerId: senderId,
       receiverId,
       eventId,
       role,
@@ -19,7 +19,18 @@ export default class PropositionService {
   }
 
   static async getPropositions(userId: string) {
-    console.log(userId);
-    // return await $api.get("/propositions/" + userId);
+    return await $api.get("/propositions/" + userId);
+  }
+
+  static async acceptProposition(propositionId: string) {
+    return await $api.put(`/proposition/${propositionId}/true`);
+  }
+
+  static async rejectProposition(propositionId: string) {
+    return await $api.put(`/proposition/${propositionId}/false`);
+  }
+
+  static async getProposition(receiverId: string, senderId: string) {
+    return await $api.get(`/proposition/${receiverId}/${senderId}`);
   }
 }

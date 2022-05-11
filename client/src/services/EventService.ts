@@ -54,15 +54,20 @@ export default class EventService {
     return $api.post("/event-avatar/:" + event._id, data);
   }
 
-  static getById(id: string) {
-    return $api.get("/event/:" + id);
-  }
-
   static async deleteEvent(eventId: string) {
-    $api.delete("/event/" + eventId);
+    await $api.delete("/event/" + eventId);
   }
 
   static async submitEvent(eventId: string) {
-    return $api.put(`/event-submit/${eventId}`);
+    return await $api.put(`/event-submit/${eventId}`);
+  }
+
+  //returns all the events, where user has speciditc rights
+  static async getEventsWithRights(userId: string, rights: number) {
+    return await $api.get(`/events/${userId}/${rights}`);
+  }
+
+  static async getParticipants(eventId: string) {
+    return await $api.get(`/participants/${eventId}`);
   }
 }

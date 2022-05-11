@@ -63,6 +63,16 @@ class EventController {
     }
   }
 
+  async getEventsWithRights(req, res, next) {
+    try {
+      const { userId, rights } = req.params;
+      const events = await EventService.getEventsWithRights(userId, rights);
+      return res.status(200).json(events);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async setAvatar(req, res, next) {
     try {
       const eventId = req.params.id.substring(1);
@@ -111,6 +121,16 @@ class EventController {
       const { eventId, commentIndex } = req.params;
       await eventService.deleteComment(eventId, commentIndex);
       return res.status(200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getParticipants(req, res, next) {
+    try {
+      const { eventId } = req.params;
+      const participants = await eventService.getParticipants(eventId);
+      return res.status(200).json(participants);
     } catch (error) {
       next(error);
     }

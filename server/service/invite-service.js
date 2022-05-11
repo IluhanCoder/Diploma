@@ -1,13 +1,16 @@
 const Mongoose = require("mongoose");
-const inviteModel = require("../models/ticket-children/invite-model");
+const eventModel = require("../models/event-model");
+const ticketModel = require("../models/ticket-model");
+const userModel = require("../models/user-model");
 
 class InviteService {
   async newInvite(proposerId, receiverId, eventId, role, date, comment) {
-    const candidate = await inviteModel.findOne({ proposerId, eventId });
+    const candidate = await ticketModel.findOne({ proposerId, eventId });
     if (candidate != null)
       throw ApiError.BadRequest("Ви вже запросили користувача на цю подію");
-    const invite = await inviteModel.create({
-      proposerId,
+    const invite = await ticketModel.create({
+      type: "invite",
+      senderId: proposerId,
       receiverId,
       eventId,
       role,
@@ -19,8 +22,8 @@ class InviteService {
 
   async getUserInvites(userId) {
     const convertedUserId = Mongoose.Types.ObjectId(userId);
-    const invites = await inviteModel.aggregate([
-      { $match: { receiverId: convertedUserId } },
+    const invites = await ticketModel.aggregate([
+      { $match: { receiverId: convertedUserId, type: "invite" } },
       {
         $lookup: {
           from: "users",
@@ -29,6 +32,7 @@ class InviteService {
           as: "sender",
         },
       },
+      { $unwind: "$sender" },
       {
         $lookup: {
           from: "events",
@@ -37,22 +41,45 @@ class InviteService {
           as: "event",
         },
       },
+      { $unwind: "$event" },
     ]);
     return invites;
   }
 
+  async getInvite(receiverId, eventId) {
+    const invite = await ticketModel.findOne({
+      receiverId,
+      eventId,
+      type: "invite",
+    });
+    return invite;
+  }
+
   async seeInvite(inviteId, accept) {
-    const invite = await inviteModel.findById(inviteId);
+    const invite = await ticketModel.findById(inviteId);
+    const receiver = await userModel.findById(invite.senderId);
     if (accept) {
-      const proposer = await userModel
-        .findOne({ _id: invite.proposerId.toString() })
-        .catch(console.error);
+      const convertedReceiverId = Mongoose.Types.ObjectId(invite.receiverId);
       await eventModel.updateOne(
         { _id: invite.eventId.toString() },
-        { $push: { participants: proposer.login } }
+        {
+          $push: {
+            participants: {
+              id: convertedReceiverId,
+              name: receiver.name,
+              role: invite.role,
+              rights: 4,
+            },
+          },
+        }
       );
     }
-    await inviteModel.deleteOne({ id: invite._id });
+    await ticketModel.deleteOne({ _id: invite._id });
+  }
+
+  async eventInviteExists(eventId) {
+    const isExist = await ticketModel.exists({ eventId: eventId });
+    return isExist;
   }
 }
 

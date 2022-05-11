@@ -1,5 +1,4 @@
 import $api from "../http";
-import { ITicket } from "../models/IProposition";
 
 export default class InviteService {
   static async newInvite(
@@ -19,7 +18,22 @@ export default class InviteService {
   }
 
   static async getInvites(userId: string) {
-    console.log(userId);
-    // return await $api.get("/propositions/" + userId);
+    return await $api.get("/invites/" + userId);
+  }
+
+  static async getInvite(receiverId: string, eventId: string) {
+    return await $api.get(`/invite/${receiverId}/${eventId}`);
+  }
+
+  static async eventInviteExists(eventId: string) {
+    return await $api.get(`/invite-exists/${eventId}`);
+  }
+
+  static async acceptInvite(inviteId: string) {
+    return await $api.put(`/invite/${inviteId}/true`);
+  }
+
+  static async rejectInvite(inviteId: string) {
+    return await $api.put(`/invite/${inviteId}/false`);
   }
 }

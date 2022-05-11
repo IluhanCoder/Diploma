@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import $api from "../../http";
 import { IEvent, IParticipant } from "../../models/IEvent";
 import { API_URL } from "../../http";
@@ -18,6 +18,8 @@ import { IComment } from "../../models/IComment";
 import EventService from "../../services/EventService";
 import CommentAdmin from "../UniversalComps/CommentAdmin";
 import Comments from "./EventsPageComps/Comments";
+import { useLocation } from "react-router";
+import AcceptInviteButton from "./EventPageComps/AcceptInviteButton";
 
 type LocalParams = {
   eventId: string;
@@ -27,6 +29,7 @@ const url = API_URL.replace("/api", "");
 
 const EventPage = () => {
   const { store } = useContext(Context);
+  const navigate = useNavigate();
 
   const { eventId } = useParams<LocalParams>();
 
@@ -40,7 +43,11 @@ const EventPage = () => {
 
   const deleteHandler = () => {
     EventService.deleteEvent(event?._id!);
-    window.location.reload();
+    navigate("/events");
+  };
+
+  const proposeHandler = () => {
+    navigate(`/event-proposition/${event?._id}`);
   };
 
   const getData = async () => {
@@ -56,12 +63,14 @@ const EventPage = () => {
     <div className="grid grid-cols-3 w-full bg-gray-200 p-4 gap-4">
       {store.user.login == "ADMIN" && (
         <div className="bg-white rounded drop-shadow flex justify-center p-2 gap-4 col-start-2">
-          <button
-            className="bg-green-500 text-white hover:bg-green-300 rounded p-2"
-            onClick={() => submitHandler()}
-          >
-            Підтвердити
-          </button>
+          {!event?.isSubmited && (
+            <button
+              className="bg-green-500 text-white hover:bg-green-300 rounded p-2"
+              onClick={() => submitHandler()}
+            >
+              Підтвердити
+            </button>
+          )}
           <button
             className="bg-red-500 text-white hover:bg-red-300 rounded p-2"
             onClick={() => deleteHandler()}
@@ -169,6 +178,24 @@ const EventPage = () => {
           )}
         </div>
       </div>
+      {!event?.participants.some(
+        (participant: IParticipant) => participant._id == store.user._id
+      ) &&
+        event?.creator._id != store.user._id && (
+          <div className="bg-white drop-shadow rounded p-2 flex justify-center col-start-2">
+            <button
+              type="button"
+              className="bg-cyan-400 hover:bg-cyan-300 rounded p-2"
+              onClick={proposeHandler}
+            >
+              запропонувати свою участь
+            </button>
+          </div>
+        )}
+      <AcceptInviteButton
+        eventId={event?._id!}
+        className="bg-white rounded p-2 drop-shadow flex justify-center gap-2 col-start-2"
+      />
       <Comments eventId={eventId!} />
     </div>
   );

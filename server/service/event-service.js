@@ -3,6 +3,7 @@ const { BadRequest } = require("../exceptions/api-error");
 const eventModel = require("../models/event-model");
 const EventModel = require("../models/event-model");
 const userModel = require("../models/user-model");
+const userService = require("./user-service");
 
 class EventService {
   async addEvent(
@@ -49,7 +50,6 @@ class EventService {
       },
     ];
     if (tempEvent.participants.length > 0) {
-      console.log("called");
       query = query.concat([
         {
           $unwind: {
@@ -121,7 +121,6 @@ class EventService {
       ]);
     }
     const event = await EventModel.aggregate(query);
-    console.log(JSON.stringify(query));
     //i have no time to fix it :)
     return event[0];
   }
@@ -155,7 +154,14 @@ class EventService {
     try {
       const convertedUserId = Mongoose.Types.ObjectId(userId);
       const events = await EventModel.aggregate([
-        { $match: { creatorId: convertedUserId } },
+        {
+          $match: {
+            $or: [
+              { creatorId: convertedUserId },
+              { "participants.id": convertedUserId },
+            ],
+          },
+        },
         {
           $lookup: {
             from: "users",
@@ -167,6 +173,32 @@ class EventService {
         { $unwind: "$creator" },
       ]);
       return events;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEventsWithRights(userId, rights) {
+    try {
+      //this is crazy but i have no time to fix it :)
+      const events = await this.getUserEvents(userId);
+      console.log(events);
+      let rightEvents = [];
+      events.map((event) => {
+        if (event.creatorId == userId) {
+          rightEvents.push(event);
+        } else {
+          event.participants.map((participant) => {
+            if (
+              event.creatorId == userId ||
+              (participant.id == userId && participant.rights <= rights)
+            ) {
+              rightEvents.push(event);
+            }
+          });
+        }
+      });
+      return rightEvents;
     } catch (error) {
       throw error;
     }
@@ -217,6 +249,50 @@ class EventService {
       { _id: eventId },
       { $set: { comments: comments } }
     );
+  }
+
+  async getParticipants(eventId) {
+    const convertedEventId = Mongoose.Types.ObjectId(eventId);
+    const participants = await eventModel.aggregate([
+      { $match: { _id: convertedEventId } },
+      {
+        $unwind: {
+          path: "$participants",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "participants.id",
+          foreignField: "_id",
+          as: "participantData",
+        },
+      },
+      {
+        $unwind: "$participantData",
+      },
+      {
+        $addFields: {
+          participant: {
+            _id: "$participants.id",
+            name: "$participantData.login",
+            role: "$participants.role",
+            rights: "$participants.rights",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          participants: {
+            $push: "$participant",
+          },
+        },
+      },
+    ]);
+    //so stupid, but i have no time to fix it :)))
+    if (participants[0]) return participants[0].participants;
+    else return [];
   }
 }
 

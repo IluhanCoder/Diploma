@@ -10,8 +10,6 @@ import InviteButtons from "./UserPageComps/InviteButtons";
 import { observer } from "mobx-react-lite";
 import Invites from "./TicketsPageComps/Invites";
 import AdminButtons from "./UserPageComps/AdminButtons";
-import Propositions from "./TicketsPageComps/Propositions";
-import { ITicket } from "../../models/IProposition";
 import { IEvent } from "../../models/IEvent";
 import { Link } from "react-router-dom";
 import { storeAnnotation } from "mobx/dist/internal";

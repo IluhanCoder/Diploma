@@ -20,7 +20,30 @@ class InviteController {
   async getUserInvites(req, res, next) {
     try {
       const { userId } = req.params;
-      await inviteService.getUserInvites(userId);
+      const invites = await inviteService.getUserInvites(userId);
+      return res.status(200).json(invites);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getInvite(req, res, next) {
+    try {
+      const { receiverId, eventId } = req.params;
+      const invite = await inviteService.getInvite(receiverId, eventId);
+      return res.status(200).json(invite);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async eventInviteExists(req, res, next) {
+    console.log("called");
+    try {
+      const { eventId } = req.params;
+      const isExist = await inviteService.eventInviteExists(eventId);
+      console.log(isExist);
+      return res.status(200).json(isExist);
     } catch (error) {
       next(error);
     }

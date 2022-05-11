@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 import { AuthResponse } from "../models/response/AuthResponse";
 import { IUser } from "../models/IUser";
 import { IEvent } from "../models/IEvent";
-import { ITicket } from "../models/IProposition";
+import { ITicket } from "../models/ITicket";
 
 export default class UserService {
   static getUsers(): Promise<AxiosResponse<IUser[]>> {

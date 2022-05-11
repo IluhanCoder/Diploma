@@ -1,10 +1,10 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Context } from "../../../index";
 import { observer } from "mobx-react-lite";
 import IRoute from "../../../interfaces/route";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { IEvent } from "../../../models/IEvent";
+import { IEvent, IParticipant } from "../../../models/IEvent";
 import { API_URL } from "../../../http";
 import EventService from "../../../services/EventService";
 import ArrayMapper from "../../UniversalComps/ArrayMapper";
@@ -12,6 +12,7 @@ import DateFormater from "../../UniversalComps/DateFormater";
 import UserService from "../../../services/UserService";
 import ImgDisplayer from "../../UniversalComps/ImgDisplayer";
 import Events from "../EventsPage";
+import { IUser } from "../../../models/IUser";
 
 type LocalProps = {
   event: IEvent;
@@ -54,11 +55,17 @@ export const Event = ({ event }: LocalProps) => {
             </div>
             <div>
               <p className="mb-2">Учасники:</p>
-              <div className="flex flex-wrap">
-                {/* <ArrayMapper
-                  itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
-                  array={event.participants}
-                /> */}
+              <div className="flex flex-wrap gap-2">
+                {event.participants.map((participant: IParticipant) => {
+                  return (
+                    <div
+                      className="bg-gray-400 rounded px-4 py-1"
+                      key={participant._id}
+                    >
+                      {participant.name}
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div>

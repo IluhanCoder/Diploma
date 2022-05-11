@@ -10,7 +10,9 @@ const EventSchema = new Schema({
   date: { type: Date, required: true },
   adress: { type: String, required: true },
   participants: {
-    type: [{ id: String, role: String, rights: Number }],
+    type: [
+      { id: Schema.Types.ObjectId, name: String, role: String, rights: Number },
+    ],
     required: false,
     default: [],
   },

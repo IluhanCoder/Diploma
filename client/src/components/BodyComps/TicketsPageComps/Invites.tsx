@@ -4,12 +4,13 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import $api from "../../../http";
 import { IUser } from "../../../models/IUser";
-import { ITicket } from "../../../models/IProposition";
+import { ITicket } from "../../../models/ITicket";
 import UserService from "../../../services/UserService";
 import { observer } from "mobx-react-lite";
 import PropositionService from "../../../services/PropositionService";
 import DateFormater from "../../UniversalComps/DateFormater";
 import { getEnvironmentData } from "worker_threads";
+import InviteService from "../../../services/InviteService";
 
 type LocalParams = {
   userId: string;
@@ -18,15 +19,16 @@ type LocalParams = {
 
 const Invites = ({ userId, className }: LocalParams) => {
   const [invites, setInvites] = useState<ITicket[]>([]);
+  const { store } = useContext(Context);
 
+  const getData = () => {
+    InviteService.getInvites(store.user._id).then((res) =>
+      setInvites(res.data)
+    );
+  };
   useEffect(() => {
-    const getData = async () => {
-      await $api
-        .get("/invites/" + userId)
-        .then((response) => setInvites(response.data));
-      getData();
-    };
-  }, [setInvites]);
+    if (userId) getData();
+  }, [userId, setInvites]);
 
   if (invites) {
     return (
@@ -35,13 +37,13 @@ const Invites = ({ userId, className }: LocalParams) => {
           <p className="text-xl">Запоршення на участь в подіях:</p>
         </div>
         {invites.length > 0 && (
-          <div>
+          <div className="flex flex-col overflow-auto h-[35rem] gap-2">
             {invites.map((invite: ITicket) => {
-              const proposer = invite.proposer;
+              const sender = invite.sender;
               const event = invite.event;
               return (
-                <Link to={"/aaa/" + proposer[0]._id + "/" + invite._id}>
-                  <div className="flex-col gap-2 bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow px-3 py-6 text-white">
+                <Link to={`/event/${invite.event._id}`} key={invite._id}>
+                  <div className="flex-col gap-2 bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow px-3 py-6 text-white ">
                     <div className="flex justify-end">
                       <div>
                         Дата пропозиції:{" "}
@@ -49,14 +51,12 @@ const Invites = ({ userId, className }: LocalParams) => {
                       </div>
                     </div>
                     <div className="flex-wrap p-4">
-                      <div className="text-xl">
-                        Пропонує: {proposer[0].login}
+                      <div className="l">Пропонує: {sender.login}</div>
+                      <div className="">
+                        Подія: {event.name} (
+                        <DateFormater value={event.date} dayOfWeek />)
                       </div>
-                      <div className="text-xl">
-                        Подія: {event[0].name} (
-                        <DateFormater value={event[0].date} dayOfWeek />)
-                      </div>
-                      <div className="text-xl">Роль: {invite.role}</div>
+                      <div className="">Роль: {invite.role}</div>
                     </div>
                     <div className="px-6">{invite.comment}</div>
                   </div>
