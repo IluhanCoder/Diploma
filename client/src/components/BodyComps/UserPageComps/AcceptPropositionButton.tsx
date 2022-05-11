@@ -5,6 +5,7 @@ import InviteService from "../../../services/InviteService";
 import { Context } from "../../../index";
 import { useNavigate } from "react-router";
 import PropositionService from "../../../services/PropositionService";
+import { Link } from "react-router-dom";
 
 type LocalParams = {
   className?: string;
@@ -37,12 +38,21 @@ const AcceptPropositionButton = ({ userId, className }: LocalParams) => {
   if (proposition) {
     return (
       <div className={className}>
+        <div className="text-center pb-2">
+          даний користувач надіслав запрос на участь в події <br />
+          <Link
+            to={`/event/${proposition.event._id}`}
+            className="font-bold underline"
+          >
+            {proposition.event.name}
+          </Link>
+        </div>
         <button
           type="button"
           className="bg-green-400 hover:bg-green-300 rounded p-2 drop-shadow"
           onClick={() => acceptHandler()}
         >
-          погодитись
+          погодитись на пропозицію
         </button>
         <button
           type="button"
@@ -51,7 +61,7 @@ const AcceptPropositionButton = ({ userId, className }: LocalParams) => {
             rejectHandler();
           }}
         >
-          відмовитись
+          відмовитись від пропозиції
         </button>
       </div>
     );

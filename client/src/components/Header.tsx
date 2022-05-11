@@ -19,22 +19,22 @@ function Header() {
             Music WEB
           </span>
           <div className="flex gap-4 md:gap-5 text-xl md:text-base">
-            {store.isAuth && (
+            {store.isAuth && store.user.login != "ADMIN" && (
               <div className="hover:text-gray-300">
                 <Link to={"/user-events"}>мої події</Link>
               </div>
             )}
-            {store.isAuth && (
+            {store.isAuth && store.user.login != "ADMIN" && (
               <div className="hover:text-gray-300">
                 <Link to={`/user/${store.user._id}`}>моя сторінка</Link>
               </div>
             )}
-            {store.isAuth && (
+            {store.isAuth && store.user.login != "ADMIN" && (
               <div className="hover:text-gray-300">
                 <Link to={`/tickets`}>пропозиції</Link>
               </div>
             )}
-            {store.isAuth && (
+            {store.isAuth && store.user.login != "ADMIN" && (
               <div className="hover:text-gray-300">
                 <Link to={`/event-history`}>історія подій</Link>
               </div>

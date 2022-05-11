@@ -33,8 +33,6 @@ const AcceptInviteButton = ({ eventId, className }: LocalParams) => {
     if (store.user._id && eventId) getData();
   }, [store.user._id, eventId]);
 
-  console.log(invite);
-
   if (invite) {
     return (
       <div className={className}>

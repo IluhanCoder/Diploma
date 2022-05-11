@@ -2,19 +2,21 @@ const inviteService = require("../service/invite-service");
 
 class InviteController {
   async eventInvite(req, res, next) {
-    const { proposerId, receiverId, eventId, role, comment } = req.body;
-    const currentDate = new Date();
-    await inviteService.newInvite(
-      proposerId,
-      receiverId,
-      eventId,
-      role,
-      currentDate,
-      comment
-    );
-  }
-  catch(error) {
-    next(error);
+    try {
+      const { proposerId, receiverId, eventId, role, comment } = req.body;
+      const currentDate = new Date();
+      await inviteService.newInvite(
+        proposerId,
+        receiverId,
+        eventId,
+        role,
+        currentDate,
+        comment
+      );
+      return res.status(200);
+    } catch (error) {
+      next(error);
+    }
   }
 
   async getUserInvites(req, res, next) {

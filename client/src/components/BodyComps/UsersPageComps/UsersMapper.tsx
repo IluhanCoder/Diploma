@@ -16,7 +16,7 @@ const UsersMapper = ({ users }: LocalParams) => {
   return (
     <div className="grid grid-cols-2 gap-4">
       {users.map((user: IUser) => {
-        if (user._id != store.user!._id)
+        if (user._id != store.user!._id && user.login != "ADMIN")
           return (
             <div
               className="flex bg-white drop-shadow rounded p-4"

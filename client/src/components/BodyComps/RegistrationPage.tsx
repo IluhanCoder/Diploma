@@ -41,7 +41,7 @@ export const RegForm: FC = () => {
         city,
         gender
       );
-      navigate("/events");
+      navigate(`/user/${store.user._id}`);
     } catch (error: any) {
       console.log(error.response.data.message);
       let tempArray: Array<string> = [error.response.data.message];

@@ -48,7 +48,13 @@ const UserPage: React.FC = () => {
               <p className="text-4xl">{user?.login}</p>
             </div>
           </div>
-          <InviteButtons id={userId} />
+          <InviteButtons userId={userId} />
+          <div>
+            <AcceptPropositionButton
+              userId={user?._id!}
+              className="flex flex-col gap-2 p-4 bg-white rounded drop-shadow border-2 border-yellow-200"
+            />
+          </div>
         </div>
         <div className="p-10 bg-white border drop-shadow rounded md:w-7/12 sm:w-full grid grid-col h-fit gap-8">
           <div>
@@ -188,18 +194,6 @@ const UserPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <AcceptPropositionButton
-        userId={user?._id!}
-        className="flex justify-center gap-2 p-4"
-      />
-      <div className="flex justify-center mt-2">
-        <div className="bg-white border drop-shadow rounded p-2 flex justify-center w-1/6">
-          <AdminButtons
-            userId={user?._id ? user._id : ""}
-            className="bg-red-400 rounded border-4 border-red-600 text-red-700 px-4 py-1"
-          />
         </div>
       </div>
     </div>

@@ -16,7 +16,8 @@ export const LoginForm: FC = () => {
   async function LoginHandler() {
     try {
       await store.loginF(email, password);
-      navigate("/events");
+      if (store.user.login != "ADMIN") navigate(`/user/${store.user._id}`);
+      else navigate("/events");
     } catch (error: any) {
       let tempArray: Array<string> = [error.response.data.message];
       error?.response?.data?.errors.map((error: any) =>

@@ -8,13 +8,17 @@ export default class InviteService {
     role: string,
     comment: string
   ) {
-    await $api.post("/event-invite", {
-      proposerId,
-      receiverId,
-      eventId,
-      role,
-      comment,
-    });
+    try {
+      await $api.post("/event-invite", {
+        proposerId,
+        receiverId,
+        eventId,
+        role,
+        comment,
+      });
+    } catch (error: any) {
+      throw error;
+    }
   }
 
   static async getInvites(userId: string) {

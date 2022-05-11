@@ -1,4 +1,5 @@
 const Mongoose = require("mongoose");
+const ApiError = require("../exceptions/api-error");
 const eventModel = require("../models/event-model");
 const ticketModel = require("../models/ticket-model");
 const userModel = require("../models/user-model");
@@ -57,7 +58,7 @@ class InviteService {
 
   async seeInvite(inviteId, accept) {
     const invite = await ticketModel.findById(inviteId);
-    const receiver = await userModel.findById(invite.senderId);
+    const receiver = await userModel.findById(invite.receiverId);
     if (accept) {
       const convertedReceiverId = Mongoose.Types.ObjectId(invite.receiverId);
       await eventModel.updateOne(
@@ -66,12 +67,16 @@ class InviteService {
           $push: {
             participants: {
               id: convertedReceiverId,
-              name: receiver.name,
+              name: receiver.login,
               role: invite.role,
               rights: 4,
             },
           },
         }
+      );
+      await eventModel.updateOne(
+        { _id: invite.eventId.toString() },
+        { $pull: { musiciansNeeded: invite.role } }
       );
     }
     await ticketModel.deleteOne({ _id: invite._id });

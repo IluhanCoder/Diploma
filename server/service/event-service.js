@@ -2,6 +2,7 @@ const Mongoose = require("mongoose");
 const { BadRequest } = require("../exceptions/api-error");
 const eventModel = require("../models/event-model");
 const EventModel = require("../models/event-model");
+const ticketModel = require("../models/ticket-model");
 const userModel = require("../models/user-model");
 const userService = require("./user-service");
 
@@ -126,6 +127,7 @@ class EventService {
   }
 
   async deleteById(eventId) {
+    await ticketModel.deleteMany({ eventId });
     const res = await EventModel.deleteOne({ _id: eventId });
     return res;
   }
