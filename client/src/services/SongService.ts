@@ -41,4 +41,23 @@ export default class SongService {
   static async deleteAudio(songId: string, index: number) {
     await $api.delete(`/song-audio/${songId}/${index}`);
   }
+
+  static async update(
+    songId: string,
+    name: string,
+    author: string,
+    key: string,
+    tempo: number,
+    signature: string,
+    lyrics: string
+  ) {
+    await $api.put(`/song/${songId}`, {
+      name,
+      author,
+      key,
+      tempo,
+      signature,
+      lyrics,
+    });
+  }
 }

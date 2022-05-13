@@ -183,4 +183,6 @@ router.delete("/song-pdf/:songId/:index", songController.deletePdf);
 
 router.delete("/song-audio/:songId/:index", songController.deleteAudio);
 
+router.put("/song/:songId", songController.update);
+
 module.exports = router;

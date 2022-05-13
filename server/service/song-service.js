@@ -81,6 +81,20 @@ class SongService {
     });
     await songModel.updateOne({ _id: songId }, { audio: newAudio });
   }
+
+  async update(songId, name, key, tempo, signature, author, lyrics) {
+    await songModel.updateOne(
+      { _id: songId },
+      {
+        name,
+        key,
+        tempo,
+        signature,
+        author,
+        lyrics,
+      }
+    );
+  }
 }
 
 module.exports = new SongService();

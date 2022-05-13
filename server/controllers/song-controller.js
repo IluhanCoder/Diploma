@@ -88,6 +88,24 @@ class SongController {
       next(error);
     }
   }
+
+  async update(req, res, next) {
+    try {
+      const { songId } = req.params;
+      const { name, key, tempo, signature, author, lyrics } = req.body;
+      await songService.update(
+        songId,
+        name,
+        key,
+        tempo,
+        signature,
+        author,
+        lyrics
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new SongController();

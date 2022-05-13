@@ -37,6 +37,7 @@ const SongPage = () => {
   const [pdfs, setPdfs] = useState<fileData[]>([]);
   const [audio, setAudio] = useState<fileData[]>([]);
   const [audioFile, setAudioFile] = useState<File>();
+  const [lyrics, setLyrics] = useState<string>();
 
   const addPdfHandler = async () => {
     await SongService.putPdf(pdf!, songId!, desc!);
@@ -69,6 +70,18 @@ const SongPage = () => {
     }
   };
 
+  const updateHandler = async () => {
+    await SongService.update(
+      songId!,
+      name!,
+      author!,
+      `${key} ${mod}`,
+      tempo!,
+      signature!,
+      lyrics!
+    );
+  };
+
   const getData = () => {
     SongService.getById(songId!).then((res) => {
       setName(res.data.name);
@@ -81,6 +94,7 @@ const SongPage = () => {
       setPdfs(res.data.pdf);
       setAuthor(res.data.author);
       setAudio(res.data.audio);
+      setLyrics(res.data.lyrics);
     });
   };
   useEffect(() => {
@@ -97,7 +111,7 @@ const SongPage = () => {
           {(store.user._id == event?.creatorId ||
             event?.participants.some((participant: IParticipant) => {
               return (
-                participant._id == store.user._id && participant.rights <= 2
+                participant._id == store.user._id && participant.rights <= 1
               );
             })) && (
             <EditButton value={editMode} setValue={setEditMode} size={25} />
@@ -116,7 +130,7 @@ const SongPage = () => {
                   })}
                 </select>
                 {key != "змінна" && (
-                  <select value={mod}>
+                  <select value={mod} onChange={(e) => setMod(e.target.value)}>
                     <option className="мажор">мажор</option>
                     <option className="мажор">мінор</option>
                   </select>
@@ -161,20 +175,20 @@ const SongPage = () => {
           <div className="grid grid-cols-2 gap-2 overflow-auto">
             {pdfs!.map((file: fileData) => {
               return (
-                <a href={`${url}/${file.file}`}>
-                  <div className="bg-cyan-500 hover:bg-cyan-300 rounded py-1 px-3 drop-shadow flex justify-between">
+                <div className="bg-cyan-500 hover:bg-cyan-300 rounded py-1 px-3 drop-shadow flex justify-between">
+                  <a href={`${url}/${file.file}`}>
                     <div>{file.desc}</div>
-                    {editMode && (
-                      <ImCross
-                        onClick={() => {
-                          deletePdfHandler(pdfs.indexOf(file));
-                        }}
-                        color="red"
-                        className="mt-1"
-                      />
-                    )}
-                  </div>
-                </a>
+                  </a>
+                  {editMode && (
+                    <ImCross
+                      onClick={() => {
+                        deletePdfHandler(pdfs.indexOf(file));
+                      }}
+                      color="red"
+                      className="mt-1"
+                    />
+                  )}
+                </div>
               );
             })}
             {pdfs.length == 0 && (
@@ -267,7 +281,33 @@ const SongPage = () => {
           )}
         </div>
       </div>
-      <div className="bg-white rounded drop-shadow p-4"></div>
+      <div className="flex justify-center">
+        <div className="bg-white rounded drop-shadow p-4 w-1/2 flex flex-col gap-2">
+          <div className="text-center font-bold">слова:</div>
+          <div className="flex justify-center">
+            <textarea
+              className="border-2 border-gray-200 rounded w-full h-72 text-center"
+              value={lyrics}
+              onChange={(e) => setLyrics(e.target.value)}
+              disabled={!editMode}
+            />
+          </div>
+        </div>
+      </div>
+      {editMode && (
+        <div className="flex justify-center">
+          <button
+            type="button"
+            className="bg-green-400 hover:bg-green-200 p-1 rounded drop-shadow"
+            onClick={() => {
+              updateHandler();
+              window.location.reload();
+            }}
+          >
+            застосувати зміни
+          </button>
+        </div>
+      )}
     </div>
   );
 };

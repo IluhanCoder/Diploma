@@ -10,7 +10,7 @@ const PropositionSchema = new Schema({
   signature: { type: String, required: true },
   pdf: { type: [{ file: String, desc: String }], required: false },
   audio: { type: [{ file: String, desc: String }], required: false },
-  lyrics: { type: [String], required: false },
+  lyrics: { type: String, required: false, default: "" },
   desc: { type: String, required: false },
 });
 
