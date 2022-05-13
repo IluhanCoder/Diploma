@@ -1,8 +1,7 @@
 import $api from "../http";
 import { AxiosResponse } from "axios";
 import { AuthResponse } from "../models/response/AuthResponse";
-import { IEvent } from "../models/IEvent";
-import { runInNewContext } from "vm";
+import { IEvent, IParticipant } from "../models/IEvent";
 
 export default class EventService {
   static async createEvent(
@@ -48,10 +47,10 @@ export default class EventService {
     return await $api.get(`/user-events/${userId}`);
   }
 
-  static async setAvatar(event: IEvent, avatar: File) {
+  static async setAvatar(eventId: string, avatar: File) {
     const data = new FormData();
     data.append("file", avatar);
-    return $api.post("/event-avatar/:" + event._id, data);
+    return await $api.post("/event-avatar/" + eventId, data);
   }
 
   static async deleteEvent(eventId: string) {
@@ -69,5 +68,28 @@ export default class EventService {
 
   static async getParticipants(eventId: string) {
     return await $api.get(`/participants/${eventId}`);
+  }
+
+  static async update(
+    eventId: string,
+    name: string,
+    desc: string,
+    rider: string,
+    genres: string[],
+    date: Date,
+    adress: string,
+    participants: IParticipant[],
+    musiciansNeeded: string[]
+  ) {
+    return await $api.put(`/event/${eventId}`, {
+      name,
+      desc,
+      rider,
+      genres,
+      date,
+      adress,
+      participants,
+      musiciansNeeded,
+    });
   }
 }

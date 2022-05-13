@@ -25,14 +25,14 @@ export const Profile = () => {
   const [cell, setCell] = useState<string>(currentUser.cell);
   const [city, setCity] = useState<string>(currentUser.city);
   const [gender, setGender] = useState<string>(currentUser.gender);
-  const [avatar, setAvatar] = useState<string>(currentUser.avatar);
+  const [avatar, setAvatar] = useState<File>();
+  const [avatarPath, setAvatarPath] = useState<string>(currentUser.avatar);
 
   useEffect(() => {
     setLogin(currentUser.login);
     setEmail(currentUser.email);
-    setAvatar(currentUser.avatar);
-    // todo: fix THAT
-    // setBirthday(currentUser.birthday)
+    setAvatarPath(currentUser.avatar);
+    // setBirthday(currentUser.birthday);
     setCell(currentUser.cell);
     setCity(currentUser.city);
     setGender(currentUser.gender);
@@ -56,13 +56,17 @@ export const Profile = () => {
                 <div className="p-2 flex justify-center">
                   <Avatar
                     name={login}
-                    src={url + "/" + avatar}
-                    round
+                    src={
+                      avatar
+                        ? URL.createObjectURL(avatar)
+                        : url + "/" + avatarPath
+                    }
+                    className="rounded"
                     size="200"
                   />
                 </div>
                 <div className="p-2 flex justify-center">
-                  <FileUploader display={editMode} />
+                  <FileUploader display={editMode} setFile={setAvatar} />
                 </div>
               </div>
               <div className="flex flex-col justify-center space-y-5">
@@ -139,6 +143,7 @@ export const Profile = () => {
                     cell={cell}
                     city={city}
                     gender={gender}
+                    avatar={avatar!}
                   />
                 </div>
               </div>

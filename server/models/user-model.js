@@ -19,6 +19,7 @@ const UserSchema = new Schema(
     activationLink: { type: String },
     eventInvites: { type: [Schema.Types.ObjectId], required: false },
     eventPropositions: { type: [Schema.Types.ObjectId], required: false },
+    desc: { type: String, required: false, default: "" },
   },
   { strict: false }
 );

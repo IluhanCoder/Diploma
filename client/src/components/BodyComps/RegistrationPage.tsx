@@ -15,7 +15,7 @@ export const RegForm: FC = () => {
   const [birthday, setBirthday] = useState<Date>(new Date());
   const [cell, setCell] = useState<string>("+380");
   const [city, setCity] = useState<string>("");
-  const [gender, setGender] = useState<string>("чоловіча");
+  const [gender, setGender] = useState<string>("male");
   const [password, setPassword] = useState<string>("");
   const [passwordConf, setPasswordConf] = useState<string>("");
   const [errorMessages, setErrorMessages] = useState<Array<any>>([]);

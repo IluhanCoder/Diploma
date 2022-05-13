@@ -10,6 +10,7 @@ export interface IParticipant {
 
 export interface IEvent {
   _id: string;
+  creatorId?: string;
   creator: IUser;
   name: string;
   desc: string;

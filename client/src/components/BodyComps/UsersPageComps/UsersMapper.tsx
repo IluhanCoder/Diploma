@@ -4,6 +4,7 @@ import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
 import { Context } from "../../../index";
 import { useContext } from "react";
+import GenderDisplayer from "../../UniversalComps/GenderDisplayer";
 
 type LocalParams = {
   users: IUser[];
@@ -42,7 +43,7 @@ const UsersMapper = ({ users }: LocalParams) => {
                   </div>
                   <div className="flex gap-4">
                     <div>Стать:</div>
-                    <div>{user.gender}</div>
+                    <GenderDisplayer gender={user.gender} />
                   </div>
                   <div className="flex gap-4">
                     <div>Місто:</div>

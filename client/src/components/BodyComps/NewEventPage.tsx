@@ -115,6 +115,7 @@ export const AddEventForm: FC = () => {
             className="block border border-grey-light w-full p-3 rounded mb-4"
             selected={date}
             onChange={(date: Date) => setDate(date)}
+            dateFormat="dd/MM/yyyy"
           />
 
           <form>

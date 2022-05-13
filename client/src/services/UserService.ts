@@ -10,10 +10,10 @@ export default class UserService {
     return $api.get("/users");
   }
 
-  static changeAvatar(fileData: File): void {
+  static async changeAvatar(fileData: File) {
     const data = new FormData();
     data.append("file", fileData);
-    $api.post("/avatar", data).catch((err) => console.log(err));
+    await $api.post("/avatar", data).catch((err) => console.log(err));
   }
 
   static deleteUserById(userId: string) {
@@ -32,15 +32,29 @@ export default class UserService {
     return $api.post("/event-invite-remove/" + userId, { event });
   }
 
-  static update(
-    user: IUser,
+  static async update(
+    userId: string,
+    name: string,
+    surname: string,
     login: string,
     email: string,
     cell: string,
     city: string,
-    gender: string
-  ): void {
-    $api.put("/user", { login, email, cell, city, gender });
+    gender: string,
+    desc: string,
+    birthday: Date
+  ) {
+    await $api.put(`/user/${userId}`, {
+      desc,
+      name,
+      surname,
+      login,
+      email,
+      cell,
+      city,
+      gender,
+      birthday,
+    });
   }
 
   static sendInvite(eventId: string, userId: string) {

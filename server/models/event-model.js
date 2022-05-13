@@ -11,7 +11,12 @@ const EventSchema = new Schema({
   adress: { type: String, required: true },
   participants: {
     type: [
-      { id: Schema.Types.ObjectId, name: String, role: String, rights: Number },
+      {
+        _id: Schema.Types.ObjectId,
+        name: String,
+        role: String,
+        rights: Number,
+      },
     ],
     required: false,
     default: [],

@@ -11,13 +11,15 @@ type LocalParams = {
   cell: string;
   city: string;
   gender: string;
+  avatar: File;
 };
 
 const SubmitChangesButton = (params: LocalParams) => {
-  const { user, email, login, cell, city, gender } = params;
+  const { user, email, login, cell, city, gender, avatar } = params;
 
-  const handleButtonClick = (e: any) => {
-    UserService.update(user, login, email, cell, city, gender);
+  const handleButtonClick = () => {
+    // UserService.update(user, login, email , cell, city, gender);
+    UserService.changeAvatar(avatar);
     window.location.reload();
   };
 

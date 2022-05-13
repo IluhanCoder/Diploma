@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Context } from "../../..";
 import { IEvent, IParticipant } from "../../../models/IEvent";
 import { ITicket } from "../../../models/ITicket";
+import InviteService from "../../../services/InviteService";
 import PropositionService from "../../../services/PropositionService";
 
 type LocalParams = {
@@ -13,6 +14,7 @@ const PropositionButton = ({ event }: LocalParams) => {
   const navigate = useNavigate();
   const { store } = useContext(Context);
   const [proposition, setProposition] = useState<ITicket>();
+  const [invite, setInvite] = useState<ITicket>();
   const [checked, setChecked] = useState<boolean>(false);
 
   const proposeHandler = () => {
@@ -27,7 +29,8 @@ const PropositionButton = ({ event }: LocalParams) => {
           (participant: IParticipant) => participant._id == store.user._id
         ) &&
         event!.creator._id != store.user._id &&
-        !proposition
+        !proposition &&
+        !invite
     );
   };
 
@@ -37,6 +40,9 @@ const PropositionButton = ({ event }: LocalParams) => {
         setProposition(res.data);
       }
     );
+    InviteService.getInvite(store.user._id, event._id).then((res) => {
+      setInvite(res.data);
+    });
   };
   useEffect(() => {
     if (store.user._id && event) {
@@ -46,7 +52,7 @@ const PropositionButton = ({ event }: LocalParams) => {
 
   useEffect(() => {
     checkConditions();
-  }, [proposition]);
+  }, [proposition, invite]);
 
   if (checked)
     return (

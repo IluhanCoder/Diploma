@@ -66,10 +66,10 @@ class InviteService {
         {
           $push: {
             participants: {
-              id: convertedReceiverId,
+              _id: convertedReceiverId,
               name: receiver.login,
               role: invite.role,
-              rights: 4,
+              rights: 2,
             },
           },
         }

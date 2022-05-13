@@ -3,20 +3,34 @@ import UserService from "../../../services/UserService";
 
 type LocalParams = {
   display: boolean;
+  setFile: React.Dispatch<React.SetStateAction<any>>;
+  className?: string;
+  accept?: string;
 };
 
-export default function FileUploader(params: LocalParams): JSX.Element {
+export default function FileUploader({
+  display,
+  setFile,
+  className,
+  accept,
+}: LocalParams): JSX.Element {
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const files = e.target.files;
     if (!files) return;
     const file = files[0];
     if (!file) return;
-    UserService.changeAvatar(file);
+    setFile(file);
   };
 
-  if (params.display) {
+  if (display) {
     return (
-      <input onChange={(e) => handleFileSelected(e)} type="file" name="file" />
+      <input
+        className={className}
+        onChange={(e) => handleFileSelected(e)}
+        type="file"
+        name="file"
+        accept={accept}
+      />
     );
   } else {
     return <></>;

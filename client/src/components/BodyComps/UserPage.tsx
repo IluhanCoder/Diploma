@@ -1,6 +1,6 @@
 import UserService from "../../services/UserService";
 import { IUser } from "../../models/IUser";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import $api from "../../http";
 import { API_URL } from "../../http";
@@ -16,36 +16,103 @@ import { Link } from "react-router-dom";
 import { storeAnnotation } from "mobx/dist/internal";
 import AcceptPropositionPage from "./AcceptPropositionPage";
 import AcceptPropositionButton from "./UserPageComps/AcceptPropositionButton";
+import EditButton from "./UserAccountPageComps/EditButton";
+import ExtraInput from "./UserAccountPageComps/ExtraForm";
+import ReactDatePicker from "react-datepicker";
+import { Context } from "../..";
+import GenderDisplayer from "../UniversalComps/GenderDisplayer";
+import FileUploader from "./UserEventsPageComps/UserAvatarUploader";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
+import History from "./EventPageComps/History";
 
 const UserPage: React.FC = () => {
   let url = API_URL.replace("/api", "");
 
+  const { store } = useContext(Context);
+
+  const [editMode, setEditMode] = useState<boolean>(false);
   const params = useParams();
   const userId = params.userId ?? "";
 
+  const [name, setName] = useState<string>();
+  const [surname, setSurame] = useState<string>();
+  const [login, setLogin] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [birthday, setBirthday] = useState<Date>();
+  const [cell, setCell] = useState<string>();
+  const [city, setCity] = useState<string>();
+  const [gender, setGender] = useState<string>();
+  const [avatar, setAvatar] = useState<File>();
+  const [avatarPath, setAvatarPath] = useState<string>();
+  const [description, setDesctiption] = useState<string>("");
+
   const [user, setUser] = useState<IUser>();
 
-  React.useEffect(() => {
-    $api.get("/users/" + userId).then((response) => {
+  const changeHandler = () => {
+    UserService.update(
+      userId,
+      name!,
+      surname!,
+      login!,
+      email!,
+      cell!,
+      city!,
+      gender!,
+      description!,
+      birthday!
+    );
+    UserService.changeAvatar(avatar!);
+    window.location.reload();
+  };
+
+  const getData = async () => {
+    await $api.get("/users/" + userId).then((response) => {
       setUser(response.data);
+      setName(response.data.name);
+      setSurame(response.data.surname);
+      setLogin(response.data.login);
+      setEmail(response.data.email);
+      setAvatarPath(response.data.avatar);
+      setBirthday(new Date(response.data.birthday));
+      setCell(response.data.cell);
+      setCity(response.data.city);
+      setDesctiption(response.data.desc);
+      setGender(response.data.gender);
     });
+  };
+  React.useEffect(() => {
+    getData();
   }, [setUser, userId]);
 
   return (
     <div className="bg-gray-100 p-5">
+      <div className="absolute right-0 mr-6">
+        {userId == store.user._id && (
+          <EditButton value={editMode} setValue={setEditMode} size={25} />
+        )}
+      </div>
       <div className="flex flex-wrap gap-5 justify-center">
         <div className="grid grid-col gap-5 h-fit">
-          <div className="p-10 bg-white rounded w-80 flex flex-col border drop-shadow h-fit">
+          <div className="p-10 bg-white rounded w-80 flex flex-col border drop-shadow h-fit gap-2">
             <div className="flex justify-center">
               <Avatar
-                name={user?.login}
-                src={url + "/" + user?.avatar}
-                size="180"
+                name={login}
+                src={
+                  avatar ? URL.createObjectURL(avatar) : url + "/" + avatarPath
+                }
                 className="rounded"
+                size="200"
               />
             </div>
+            <FileUploader display={editMode} setFile={setAvatar} />
             <div className="flex justify-center p-5">
-              <p className="text-4xl">{user?.login}</p>
+              {(editMode && (
+                <ExtraInput
+                  editMode={editMode}
+                  value={login!}
+                  setValue={setLogin}
+                />
+              )) || <p className="text-4xl">{user?.login}</p>}
             </div>
           </div>
           <InviteButtons userId={userId} />
@@ -59,18 +126,30 @@ const UserPage: React.FC = () => {
         <div className="p-10 bg-white border drop-shadow rounded md:w-7/12 sm:w-full grid grid-col h-fit gap-8">
           <div>
             <div>
-              <p>Коротка інформація:</p>
+              <p>Інформація про користувача:</p>
             </div>
-            <div className="mt-1">
-              <p>
-                Test test test test test test test test test test test test test
-                test test test test test test test test test test test test test
-                test test test test test test test test test test test test test
-                test test test test test test test test test test test test test
-                test test test test test test test test test test test test test
-                test test test test test test test test test test test test test
-                test
-              </p>
+            <div className="py-2 px-4">
+              {(editMode && (
+                <div className="flex flex-col gap-2">
+                  {description == "" && (
+                    <div className="bg-yellow-100 border-2 border-yellow-400 rounded p-2 flex flex-col gap-2">
+                      <div>
+                        опишіть себе, щоб інші користувачі могли побачити
+                        інформацію про вас
+                      </div>
+                      <BsFillArrowDownCircleFill />
+                    </div>
+                  )}
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDesctiption(e.target.value)}
+                    className={"w-full border-2 rounded"}
+                  />
+                </div>
+              )) ||
+                (description == "" && (
+                  <p className="text-gray-400">інформація не вказана</p>
+                )) || <p>{description}</p>}
             </div>
           </div>
           <div className="grid xl:grid-cols-2 lg:grid-cols-1 gap-5">
@@ -79,15 +158,23 @@ const UserPage: React.FC = () => {
                 <p>Ім'я:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.name}</p>
+                <ExtraInput
+                  value={name!}
+                  setValue={setName}
+                  editMode={editMode}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
               <div>
-                <p>Прзвище:</p>
+                <p>Прізвище:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.surname}</p>
+                <ExtraInput
+                  value={surname!}
+                  setValue={setSurame}
+                  editMode={editMode}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
@@ -95,7 +182,11 @@ const UserPage: React.FC = () => {
                 <p>Email:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.email}</p>
+                <ExtraInput
+                  value={email!}
+                  setValue={setEmail}
+                  editMode={editMode}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
@@ -103,7 +194,11 @@ const UserPage: React.FC = () => {
                 <p>Номер телефону:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.cell}</p>
+                <ExtraInput
+                  value={cell!}
+                  setValue={setCell}
+                  editMode={editMode}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
@@ -111,7 +206,17 @@ const UserPage: React.FC = () => {
                 <p>Стать:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.gender}</p>
+                {(editMode && (
+                  <select
+                    value={gender}
+                    className="rounded p-1 focus:border-2 border-cyan-600"
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <option value="male">чоловіча</option>
+                    <option value="female">жіноча</option>
+                    <option value="none">не вказувати</option>
+                  </select>
+                )) || <GenderDisplayer gender={gender!} className="" />}
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
@@ -119,7 +224,11 @@ const UserPage: React.FC = () => {
                 <p>Місто:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <p>{user?.city}</p>
+                <ExtraInput
+                  value={city!}
+                  setValue={setCity}
+                  editMode={editMode}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
@@ -127,74 +236,26 @@ const UserPage: React.FC = () => {
                 <p>Дата народження:</p>
               </div>
               <div className="flex flex-row-reverse">
-                <DateFormater value={user?.birthday} dayOfWeek={false} />
+                {(editMode && (
+                  <ReactDatePicker
+                    className="w-full rounded p-1"
+                    selected={birthday}
+                    onChange={(date: Date) => setBirthday(date)}
+                    dateFormat="dd/MM/yyyy"
+                  />
+                )) || <DateFormater value={birthday} dayOfWeek={false} />}
               </div>
             </div>
+            {editMode && (
+              <div className="flex justify-center bg-green-400 hover:bg-green-200 rounded drop-shadow">
+                <button type="button" className="p-2" onClick={changeHandler}>
+                  Застосувати зміни
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        <div className="p-5 bg-white border drop-shadow rounded md:w-4/12 sm:w-full grid grid-col">
-          <div className="flex justify-center">
-            <p className="text-xl">Історія подій користувача:</p>
-          </div>
-          <div className="h-80 w-full mt-6 overflow-auto">
-            <div className="grid drid-col gap-5 text-white">
-              <div className="h-fit bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Test</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">17.10.20</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Event of legends</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">24.03.21</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Good music</div>
-                <div className="flex justify-center">Гітарист</div>
-                <div className="flex flex-row-reverse">17.07.18</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Bad music</div>
-                <div className="flex justify-center">Роль у події</div>
-                <div className="flex flex-row-reverse">24.10.22</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Назва події</div>
-                <div className="flex justify-center">Роль у події</div>
-                <div className="flex flex-row-reverse">24.10.22</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Назва події</div>
-                <div className="flex justify-center">Роль у події</div>
-                <div className="flex flex-row-reverse">24.10.22</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-5 bg-white border drop-shadow rounded md:w-4/12 sm:w-full grid grid-col">
-          <div className="flex justify-center">
-            <p className="text-xl">Майбутні події користувача:</p>
-          </div>
-          <div className="h-80 w-full mt-6 overflow-auto text-white">
-            <div className="h-fit grid drid-col gap-5">
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Test event</div>
-                <div className="flex justify-center">Барабанщик</div>
-                <div className="flex flex-row-reverse">19.11.23</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Фестиваль року</div>
-                <div className="flex justify-center">Звукорежисер</div>
-                <div className="flex flex-row-reverse">01.03.23</div>
-              </div>
-              <div className="bg-cyan-400 p-5 rounded drop-shadow border-1 grid grid-cols-3 ">
-                <div>Live Aids</div>
-                <div className="flex justify-center">Баарабанщик</div>
-                <div className="flex flex-row-reverse">09.09.22</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <History userId={user?._id!} />
       </div>
     </div>
   );

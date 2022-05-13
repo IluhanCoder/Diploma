@@ -128,16 +128,30 @@ class UserService {
     await userModel.deleteOne({ _id: userId });
   }
 
-  async update(userData, login, email, cell, city, gender) {
-    // userData.updateOne({login, email, cell, city, gender})
-    const filter = { _id: userData._id };
+  async update(
+    userId,
+    name,
+    surname,
+    login,
+    email,
+    cell,
+    city,
+    gender,
+    desc,
+    birthday
+  ) {
+    const filter = { _id: userId };
     const updateDocument = {
       $set: {
+        name,
+        surname,
         login,
         email,
         cell,
         city,
         gender,
+        desc,
+        birthday,
       },
     };
     const result = await UserModel.updateOne(filter, updateDocument);

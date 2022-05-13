@@ -28,10 +28,7 @@ const InvitePage = () => {
         events![selectedEvent]._id,
         events![selectedEvent].musiciansNeeded[selectedRole],
         comment
-      ).then(() => {
-        alert("запрошення було успішно надіслано");
-        navigate("/events");
-      });
+      );
     } catch (error: any) {
       let tempArray: Array<string> = [error.response.data.message];
       error?.response?.data?.errors.map((error: any) =>
@@ -153,7 +150,11 @@ const InvitePage = () => {
           <button
             className="bg-green-400 hover:bg-green-300 disabled:bg-gray-200 disabled:text-gray-400 p-2 rounded drop-shadow"
             disabled={selectedRole == -1 || selectedEvent == -1}
-            onClick={() => inviteHandler()}
+            onClick={() => {
+              inviteHandler();
+              alert("запрошення було успішно надіслано");
+              navigate("/events");
+            }}
           >
             надіслати запрошення
           </button>

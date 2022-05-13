@@ -12,6 +12,7 @@ const EditButton = (params: LocalParams) => {
 
   const handleButtonClick = () => {
     setValue(!value);
+    if (value) window.location.reload();
   };
 
   return (

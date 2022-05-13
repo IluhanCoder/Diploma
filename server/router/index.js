@@ -9,8 +9,9 @@ const propositionController = require("../controllers/proposition-controller");
 const inviteController = require("../controllers/invite-controller");
 const commentController = require("../controllers/comment-controller");
 const commentService = require("../service/comment-service");
+const songController = require("../controllers/song-controller");
 
-const fileStorageEngine = multer.diskStorage({
+const imageStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./images");
   },
@@ -19,8 +20,34 @@ const fileStorageEngine = multer.diskStorage({
   },
 });
 
-const upload = multer({
-  storage: fileStorageEngine,
+const uploadImage = multer({
+  storage: imageStorageEngine,
+});
+
+const pdfStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./pdfs");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+const uploadPdf = multer({
+  storage: pdfStorageEngine,
+});
+
+const audioStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./audios");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+const uploadAudio = multer({
+  storage: audioStorageEngine,
 });
 
 //handles user's registration
@@ -55,7 +82,7 @@ router.post(
 //handles user's logout
 router.post("/logout", userController.logout);
 //sets user's avatar
-router.post("/avatar", upload.single("file"), userController.setAvatar);
+router.post("/avatar", uploadImage.single("file"), userController.setAvatar);
 //returns a specific user's avatar
 router.get("/avatar/:id", userController.getAvatar);
 //deletes user's avatar
@@ -67,7 +94,7 @@ router.get("/users/:id", userController.getById);
 //delete user by id
 router.delete("/user/:id", userController.deleteUser);
 //update user data
-router.put("/user", userController.update);
+router.put("/user/:userId", userController.update);
 
 //writes down a new event data into DB
 router.post("/event", eventController.addEvent);
@@ -83,9 +110,21 @@ router.get("/user-events/:userId", eventController.getUserEvents);
 router.delete("/event/:id", eventController.deleteById);
 
 router.post(
-  "/event-avatar/:id",
-  upload.single("file"),
+  "/event-avatar/:eventId",
+  uploadImage.single("file"),
   eventController.setAvatar
+);
+
+router.post(
+  "/song-pdf/:songId",
+  uploadPdf.single("file"),
+  songController.putPdf
+);
+
+router.post(
+  "/song-audio/:songId",
+  uploadAudio.single("file"),
+  songController.putAudio
 );
 //sends to user invite of to be a participant
 router.post("/event-invite", inviteController.eventInvite);
@@ -131,5 +170,17 @@ router.get(
   "/proposition/:receiverId/:senderId",
   propositionController.getPropsition
 );
+
+router.put("/event/:eventId", eventController.update);
+
+router.post("/song", songController.newSong);
+
+router.get("/song/:songId", songController.getById);
+
+router.get("/songs/:eventId", songController.getEventSongs);
+
+router.delete("/song-pdf/:songId/:index", songController.deletePdf);
+
+router.delete("/song-audio/:songId/:index", songController.deleteAudio);
 
 module.exports = router;

@@ -22,6 +22,8 @@ app.use(
 app.use("/api", router);
 app.use(errorMiddleware);
 app.use(express.static("images"));
+app.use(express.static("pdfs"));
+app.use(express.static("audios"));
 
 const start = async () => {
   console.log("database connecting on " + process.env.DB_URL);

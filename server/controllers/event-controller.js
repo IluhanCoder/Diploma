@@ -2,6 +2,7 @@ const eventModel = require("../models/event-model");
 const eventService = require("../service/event-service");
 const EventService = require("../service/event-service");
 const userService = require("../service/user-service");
+const commentController = require("./comment-controller");
 
 class EventController {
   async addEvent(req, res, next) {
@@ -75,10 +76,10 @@ class EventController {
 
   async setAvatar(req, res, next) {
     try {
-      const eventId = req.params.id.substring(1);
+      const { eventId } = req.params;
       const file = req.file;
       if (file) {
-        EventService.setAvatar(file.path, eventId);
+        await EventService.setAvatar(file.path, eventId);
       }
     } catch (error) {
       console.log(error);
@@ -131,6 +132,36 @@ class EventController {
       const { eventId } = req.params;
       const participants = await eventService.getParticipants(eventId);
       return res.status(200).json(participants);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async update(req, res, next) {
+    try {
+      const { eventId } = req.params;
+      const {
+        name,
+        desc,
+        rider,
+        genres,
+        date,
+        adress,
+        participants,
+        musiciansNeeded,
+      } = req.body;
+      await EventService.update(
+        eventId,
+        name,
+        desc,
+        rider,
+        genres,
+        date,
+        adress,
+        participants,
+        musiciansNeeded
+      );
+      return res.status(200);
     } catch (error) {
       next(error);
     }

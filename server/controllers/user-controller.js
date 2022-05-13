@@ -109,7 +109,7 @@ class UserController {
       const file = req.file;
       if (req.file) {
         const user = tokenService.validateAccessToken(token);
-        userService.setAvatar(file.path, user);
+        await userService.setAvatar(file.path, user);
         res.json(file);
       }
     } catch (error) {
@@ -144,11 +144,30 @@ class UserController {
 
   async update(req, res, next) {
     try {
-      const tokenBearer = req.headers["authorization"].split(" ");
-      const token = tokenBearer[1];
-      const user = tokenService.validateAccessToken(token);
-      const { login, email, cell, city, gender } = req.body;
-      userService.update(user, login, email, cell, city, gender);
+      const { userId } = req.params;
+      const {
+        login,
+        name,
+        surname,
+        email,
+        cell,
+        city,
+        gender,
+        desc,
+        birthday,
+      } = req.body;
+      await userService.update(
+        userId,
+        name,
+        surname,
+        login,
+        email,
+        cell,
+        city,
+        gender,
+        desc,
+        birthday
+      );
     } catch (error) {
       next(error);
     }

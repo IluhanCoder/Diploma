@@ -60,7 +60,7 @@ class EventService {
         {
           $lookup: {
             from: "users",
-            localField: "participants.id",
+            localField: "participants._id",
             foreignField: "_id",
             as: "participantData",
           },
@@ -71,7 +71,7 @@ class EventService {
         {
           $addFields: {
             participant: {
-              _id: "$participants.id",
+              _id: "$participants._id",
               name: "$participantData.login",
               role: "$participants.role",
               rights: "$participants.rights",
@@ -123,6 +123,7 @@ class EventService {
     }
     const event = await EventModel.aggregate(query);
     //i have no time to fix it :)
+    console.log(event[0]);
     return event[0];
   }
 
@@ -160,7 +161,7 @@ class EventService {
           $match: {
             $or: [
               { creatorId: convertedUserId },
-              { "participants.id": convertedUserId },
+              { "participants._id": convertedUserId },
             ],
           },
         },
@@ -184,7 +185,6 @@ class EventService {
     try {
       //this is crazy but i have no time to fix it :)
       const events = await this.getUserEvents(userId);
-      console.log(events);
       let rightEvents = [];
       events.map((event) => {
         if (event.creatorId == userId) {
@@ -193,7 +193,7 @@ class EventService {
           event.participants.map((participant) => {
             if (
               event.creatorId == userId ||
-              (participant.id == userId && participant.rights <= rights)
+              (participant._id == userId && participant.rights <= rights)
             ) {
               rightEvents.push(event);
             }
@@ -276,7 +276,7 @@ class EventService {
       {
         $addFields: {
           participant: {
-            _id: "$participants.id",
+            _id: "$participants._id",
             name: "$participantData.login",
             role: "$participants.role",
             rights: "$participants.rights",
@@ -295,6 +295,33 @@ class EventService {
     //so stupid, but i have no time to fix it :)))
     if (participants[0]) return participants[0].participants;
     else return [];
+  }
+
+  async update(
+    eventId,
+    name,
+    desc,
+    rider,
+    genres,
+    date,
+    adress,
+    participants,
+    musiciansNeeded
+  ) {
+    const filter = { _id: eventId };
+    const updateDocument = {
+      $set: {
+        name,
+        desc,
+        rider,
+        genres,
+        date,
+        adress,
+        participants,
+        musiciansNeeded,
+      },
+    };
+    await EventModel.updateOne(filter, updateDocument);
   }
 }
 
