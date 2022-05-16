@@ -97,7 +97,7 @@ export const RegForm: FC = () => {
                 placeholder="Прізвище"
               />
             </div>
-            
+
             <label>Адреса електроної пошти:</label>
             <input
               onChange={(e) => setEmail(e.target.value)}
@@ -124,7 +124,7 @@ export const RegForm: FC = () => {
               name="cell"
               placeholder="Номер телефону"
             />
-          
+
             <label>Ваше місто</label>
             <input
               onChange={(e) => setCity(e.target.value)}
@@ -156,7 +156,7 @@ export const RegForm: FC = () => {
               name="password"
               placeholder="Пароль"
             />
-          
+
             <label>Підтвердження пароля:</label>
             <input
               onChange={(e) => setPasswordConf(e.target.value)}

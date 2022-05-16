@@ -25,15 +25,20 @@ export default function FileUploader({
   if (display) {
     return (
       <div className="flex justify-center">
-      <button className="bg-gray-200 rounded p-1 drop-shadow hover:bg-gray-100" onClick={() => document.getElementById('getFile')!.click()}>Завантажити файл</button>
-      <input
-        className="hidden"
-        onChange={(e) => handleFileSelected(e)}
-        type="file"
-        name="file"
-        accept={accept}
-        id = "getFile"
-      />
+        <button
+          className="bg-gray-200 rounded p-1 drop-shadow hover:bg-gray-100"
+          onClick={() => document.getElementById("getFile")!.click()}
+        >
+          Завантажити файл
+        </button>
+        <input
+          className="hidden"
+          onChange={(e) => handleFileSelected(e)}
+          type="file"
+          name="file"
+          accept={accept}
+          id="getFile"
+        />
       </div>
     );
   } else {

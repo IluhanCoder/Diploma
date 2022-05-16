@@ -27,18 +27,22 @@ export const AddEventForm: FC = () => {
 
   const { store } = useContext(Context);
   const newEventHandler = async () => {
-    await EventService.createEvent(
-      name,
-      store.user._id,
-      desc,
-      rider,
-      genres,
-      date,
-      adress,
-      avatar,
-      musiciansNeeded
-    );
-    navigate("/events");
+    try {
+      await EventService.createEvent(
+        name,
+        store.user._id,
+        desc,
+        rider,
+        genres,
+        date,
+        adress,
+        avatar,
+        musiciansNeeded
+      );
+      navigate("/events");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

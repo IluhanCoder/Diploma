@@ -15,22 +15,26 @@ export default class EventService {
     avatar: File,
     musiciansNeeded: string[]
   ): Promise<AxiosResponse<IEvent[]>> {
-    return $api
-      .post("/event", {
-        name,
-        creatorId,
-        desc,
-        rider,
-        genres,
-        date,
-        adress,
-        musiciansNeeded,
-      })
-      .then((res) => {
-        const data = res.data;
-        EventService.setAvatar(data, avatar);
-        return data;
-      });
+    try {
+      return $api
+        .post("/event", {
+          name,
+          creatorId,
+          desc,
+          rider,
+          genres,
+          date,
+          adress,
+          musiciansNeeded,
+        })
+        .then((res) => {
+          const data = res.data;
+          EventService.setAvatar(data, avatar);
+          return data;
+        });
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async getEvents(

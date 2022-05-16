@@ -60,7 +60,6 @@ router.post(
   body("email")
     .isEmail()
     .withMessage("Адреса елекроної пошти має відповідати формату: нік@пошта"),
-  //todo: fix date validation
   body("cell")
     .isMobilePhone()
     .withMessage("Введені цифри не є номером телефону"),
@@ -98,7 +97,22 @@ router.delete("/user/:id", userController.deleteUser);
 router.put("/user/:userId", userController.update);
 
 //writes down a new event data into DB
-router.post("/event", eventController.addEvent);
+router.post(
+  "/event",
+  body("name")
+    .exists()
+    .isLength({ min: 5, max: 50 })
+    .withMessage("Довжина назви події має бути від 5 до 50 символів"),
+  body("desc")
+    .exists()
+    .isLength({ min: 20, max: 300 })
+    .withMessage("Довжина опису події має бути від 20 до 300 символів"),
+  body("genres")
+    .exists()
+    .isEmpty()
+    .withMessage("Ви маєте вказати хочаб 1 жанр"),
+  eventController.addEvent
+);
 //sumbits event
 router.put("/event-submit/:eventId", eventController.submitEvent);
 //returns events from DB (isSubmited = true - returns submited events
@@ -188,8 +202,10 @@ router.put("/song/:songId", songController.update);
 
 router.post("/message", chatController.newMessage);
 
-router.get("/chat/:receiverId/:senderId", chatController.getChat)
+router.get("/chat/:receiverId/:senderId", chatController.getChat);
 
-router.get("/chats/:userId", chatController.getUserChats)
+router.get("/chats/:userId", chatController.getUserChats);
+
+router.get("/chats/unread/:userId", chatController.countUnread);
 
 module.exports = router;

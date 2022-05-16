@@ -1,4 +1,6 @@
+import { generateKeySync } from "crypto";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { IEvent, IParticipant } from "../../../models/IEvent";
 import EventService from "../../../services/EventService";
 import DateFormater from "../../UniversalComps/DateFormater";
@@ -29,16 +31,40 @@ const History = ({ userId }: LocalParams) => {
           })
           .map((event: IEvent) => {
             return (
-              <div className="bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow">
-                <div className="flex justify-center font-bol">{event.name}</div>
-                <div className="flex justify-center font-bol">
-                  {event.creator._id == userId
-                    ? "творець"
-                    : event.participants.filter((participant: any) => {
-                        return participant.id == userId;
-                      })[0]?.role}
+              <Link
+                to={`/event/${event._id}`}
+                className="bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow px-6 py-4 flex flex-col gap-2"
+                key={event._id}
+              >
+                <div className="flex justify-center font-bold">
+                  {event.name}
                 </div>
-              </div>
+                <div className="grid grid-cols-2">
+                  <div>
+                    Pоль:{" "}
+                    {event.creator._id == userId
+                      ? "творець"
+                      : event.participants.filter((participant: any) => {
+                          return participant.id == userId;
+                        })[0]?.role}
+                  </div>
+                  <div>
+                    Дата: <DateFormater value={event.date} dayOfWeek={false} />
+                  </div>
+                  <div className="flex gap-2">
+                    <div>Жанри:</div>
+                    <div className="flex flex-wrap">
+                      {event.genres.map((genre: string) => {
+                        return <div>{genre}</div>;
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>Адреса:</div>
+                    <div>{event.adress}</div>
+                  </div>
+                </div>
+              </Link>
             );
           })}
       </div>
@@ -52,16 +78,40 @@ const History = ({ userId }: LocalParams) => {
           })
           .map((event: IEvent) => {
             return (
-              <div className="bg-cyan-500 hover:bg-cyan-300 rounded drop-shadow text-white p-4">
-                <div className="text-center font-bold">{event.name}</div>
-                <div className="grid grid-cols-2">
-                  <div>Адреса: {event.adress}</div>
-                  <div><DateFormater value={event.date} dayOfWeek/></div>
-                  <div>Роль: {event.participants.map((participant: IParticipant) => {
-                    if(participant._id == userId) return (<div>participant.role</div>);
-                  })}</div>
+              <Link
+                to={`/event/${event._id}`}
+                className="bg-cyan-400 hover:bg-cyan-200 rounded drop-shadow px-6 py-4 flex flex-col gap-2"
+                key={event._id}
+              >
+                <div className="flex justify-center font-bold">
+                  {event.name}
                 </div>
-              </div>
+                <div className="grid grid-cols-2">
+                  <div>
+                    Pоль:{" "}
+                    {event.creator._id == userId
+                      ? "творець"
+                      : event.participants.filter((participant: any) => {
+                          return participant.id == userId;
+                        })[0]?.role}
+                  </div>
+                  <div>
+                    Дата: <DateFormater value={event.date} dayOfWeek={false} />
+                  </div>
+                  <div className="flex gap-2">
+                    <div>Жанри:</div>
+                    <div className="flex flex-wrap">
+                      {event.genres.map((genre: string) => {
+                        return <div>{genre}</div>;
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>Адреса:</div>
+                    <div>{event.adress}</div>
+                  </div>
+                </div>
+              </Link>
             );
           })}
       </div>

@@ -99,30 +99,34 @@ const EventPage = () => {
       <div className="col-span-3 flex flex-row gap-2 mx-6">
         <div className="bg-white flex justify-between rounded drop-shadow grow px-12 py-14">
           <div className="text-center text-4xl">{event?.name}</div>
-          {(new Date()).getTime() <= new Date(event?.date!).getTime()! && <div className="flex gap-2 flex-row-reverse">
-          
-          {(!event?.isSubmited && (
-            <div className="bg-red-200 text-red-400 rounded border-2 border-red-400 p-2">
-              подію не підтверджено
+          {(new Date().getTime() <= new Date(event?.date!).getTime()! && (
+            <div className="flex gap-2 flex-row-reverse">
+              {(!event?.isSubmited && (
+                <div className="bg-red-200 text-red-400 rounded border-2 border-red-400 p-2">
+                  подію не підтверджено
+                </div>
+              )) || (
+                <div className="bg-green-200 text-green-400 rounded border-2 border-green-400 p-2">
+                  подію підтверджено
+                </div>
+              )}
+              {(event?.musiciansNeeded.length! > 0 && (
+                <div className="bg-yellow-200 text-yellow-400 rounded border-2 border-yellow-400 p-2">
+                  потрібні учасники
+                </div>
+              )) || (
+                <div className="bg-blue-200 text-blue-400 rounded border-2 border-blue-400 p-2">
+                  укомплектовано
+                </div>
+              )}
             </div>
           )) || (
-            <div className="bg-green-200 text-green-400 rounded border-2 border-green-400 p-2">
-              подію підтверджено
+            <div className="flex gap-2 flex-row-reverse">
+              <div className="bg-gray-200 text-gray-400 rounded border-2 border-gray-400 p-2">
+                подія вже пройшла
+              </div>
             </div>
           )}
-          {event?.musiciansNeeded.length! > 0 &&
-            <div className="bg-yellow-200 text-yellow-400 rounded border-2 border-yellow-400 p-2">
-            потрібні учасники
-          </div> ||
-            <div className="bg-blue-200 text-blue-400 rounded border-2 border-blue-400 p-2">
-            укомплектовано
-          </div>
-          }
-        </div>
-        ||
-        <div className="flex gap-2 flex-row-reverse"><div className="bg-gray-200 text-gray-400 rounded border-2 border-gray-400 p-2">
-        подія вже пройшла
-      </div></div>}
         </div>
         <div className="bg-white rounded drop-shadow w-fit px-4 py-1 flex-col gap-2">
           <div className="text-center">Сворив подію:</div>
@@ -191,11 +195,17 @@ const EventPage = () => {
       </div>
       <div className="bg-white rounded drop-shadow p-4 flex flex-col gap-4">
         <div className="text-center">Потрібні музиканти:</div>
-        <ArrayMapper
-          className="flex flex-wrap gap-2 overflow-auto"
-          itemClassName="bg-gray-300 rounded drop-shadow p-3"
-          array={event?.musiciansNeeded ?? []}
-        />
+        {(event?.musiciansNeeded.length && (
+          <ArrayMapper
+            className="flex flex-wrap gap-2 overflow-auto"
+            itemClassName="bg-gray-300 rounded drop-shadow p-3"
+            array={event?.musiciansNeeded ?? []}
+          />
+        )) || (
+          <div className="flex justify-center text-gray-500">
+            Нема потреби в музикантах
+          </div>
+        )}
       </div>
       <div className="bg-white rounded drop-shadow p-4 flex flex-col gap-4">
         <div className="text-center">Технічний райдер:</div>
