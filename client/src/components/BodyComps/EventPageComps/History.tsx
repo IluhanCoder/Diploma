@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { IEvent } from "../../../models/IEvent";
+import { IEvent, IParticipant } from "../../../models/IEvent";
 import EventService from "../../../services/EventService";
+import DateFormater from "../../UniversalComps/DateFormater";
 
 type LocalParams = {
   userId: string;
@@ -41,7 +42,7 @@ const History = ({ userId }: LocalParams) => {
             );
           })}
       </div>
-      <div className="bg-white rounded drop-shadow w-1/2 p-4">
+      <div className="bg-white rounded drop-shadow w-1/2 p-4 flex flex-col gap-2">
         <div className="text-center text-xl">майбутні події:</div>
         {events
           ?.filter((event: IEvent) => {
@@ -51,8 +52,15 @@ const History = ({ userId }: LocalParams) => {
           })
           .map((event: IEvent) => {
             return (
-              <div className="bg-cyan-400 hover:bg-cyan-200  rounded drop-shadow">
-                <div>event.name</div>
+              <div className="bg-cyan-500 hover:bg-cyan-300 rounded drop-shadow text-white p-4">
+                <div className="text-center font-bold">{event.name}</div>
+                <div className="grid grid-cols-2">
+                  <div>Адреса: {event.adress}</div>
+                  <div><DateFormater value={event.date} dayOfWeek/></div>
+                  <div>Роль: {event.participants.map((participant: IParticipant) => {
+                    if(participant._id == userId) return (<div>participant.role</div>);
+                  })}</div>
+                </div>
               </div>
             );
           })}

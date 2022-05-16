@@ -7,6 +7,7 @@ const userModel = require("../models/user-model");
 const multer = require("multer");
 const tokenService = require("../service/token-service");
 const { contextsKey } = require("express-validator/src/base");
+const eventService = require("../service/event-service");
 
 class UserController {
   async registration(req, res, next) {

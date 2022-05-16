@@ -42,6 +42,7 @@ export const LoginForm: FC = () => {
             })}
           </div>
           <div className="py-2">
+            <label>Адрес електроної пошти:</label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -50,7 +51,7 @@ export const LoginForm: FC = () => {
               name="email"
               placeholder="Електрона пошта"
             />
-
+            <label>Пароль:</label>
             <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}

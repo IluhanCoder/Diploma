@@ -45,6 +45,11 @@ function Header() {
             <div className="hover:text-gray-300">
               <Link to={`/users`}>користувачі</Link>
             </div>
+            {store.isAuth && store.user.login != "ADMIN" && (
+              <div className="hover:text-gray-300">
+                <Link to={`/chats`}>чати</Link>
+              </div>
+            )}
           </div>
         </div>
 

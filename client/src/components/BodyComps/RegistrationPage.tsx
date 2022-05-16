@@ -67,16 +67,19 @@ export const RegForm: FC = () => {
             })}
           </div>
           <div className="pt-2">
+            <label>Псевдонім користувача:</label>
             <input
               onChange={(e) => setLogin(e.target.value)}
               value={login}
               type="text"
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="fullname"
-              placeholder="Нік користувача"
+              placeholder="Псевдоним користувача"
             />
 
-            <div className="flex gap-2 justify-between">
+            <div className="grid grid-cols-2 gap-2 justify-between">
+              <label>Ваше ім'я:</label>
+              <label>Ваше прізвище:</label>
               <input
                 onChange={(e) => setName(e.target.value)}
                 value={name}
@@ -85,7 +88,6 @@ export const RegForm: FC = () => {
                 name="fullname"
                 placeholder="Ім'я"
               />
-
               <input
                 onChange={(e) => setSurname(e.target.value)}
                 value={surName}
@@ -95,7 +97,8 @@ export const RegForm: FC = () => {
                 placeholder="Прізвище"
               />
             </div>
-
+            
+            <label>Адреса електроної пошти:</label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -105,12 +108,14 @@ export const RegForm: FC = () => {
               placeholder="Електрона пошта"
             />
 
+            <label>Дата народження:</label>
             <DatePicker
               className="block border border-grey-light w-full p-3 rounded mb-4"
               selected={birthday}
               onChange={(date: Date) => setBirthday(date)}
             />
 
+            <label>Ваш номер телефону:</label>
             <input
               onChange={(e) => setCell(e.target.value)}
               value={cell}
@@ -119,7 +124,8 @@ export const RegForm: FC = () => {
               name="cell"
               placeholder="Номер телефону"
             />
-
+          
+            <label>Ваше місто</label>
             <input
               onChange={(e) => setCity(e.target.value)}
               value={city}
@@ -129,6 +135,7 @@ export const RegForm: FC = () => {
               placeholder="Місто"
             />
 
+            <label>Ваша стать:</label>
             <select
               onChange={(e) => setGender(e.target.value)}
               value={gender}
@@ -140,6 +147,7 @@ export const RegForm: FC = () => {
               <option value="none">не вказувати стать</option>
             </select>
 
+            <label>Пароль:</label>
             <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}
@@ -148,7 +156,8 @@ export const RegForm: FC = () => {
               name="password"
               placeholder="Пароль"
             />
-
+          
+            <label>Підтвердження пароля:</label>
             <input
               onChange={(e) => setPasswordConf(e.target.value)}
               value={passwordConf}

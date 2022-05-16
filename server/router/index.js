@@ -10,6 +10,7 @@ const inviteController = require("../controllers/invite-controller");
 const commentController = require("../controllers/comment-controller");
 const commentService = require("../service/comment-service");
 const songController = require("../controllers/song-controller");
+const chatController = require("../controllers/chat-controller");
 
 const imageStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -184,5 +185,11 @@ router.delete("/song-pdf/:songId/:index", songController.deletePdf);
 router.delete("/song-audio/:songId/:index", songController.deleteAudio);
 
 router.put("/song/:songId", songController.update);
+
+router.post("/message", chatController.newMessage);
+
+router.get("/chat/:receiverId/:senderId", chatController.getChat)
+
+router.get("/chats/:userId", chatController.getUserChats)
 
 module.exports = router;

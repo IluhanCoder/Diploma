@@ -111,7 +111,7 @@ const SongPage = () => {
           {(store.user._id == event?.creatorId ||
             event?.participants.some((participant: IParticipant) => {
               return (
-                participant._id == store.user._id && participant.rights <= 1
+                participant._id == store.user._id && participant.rights <= 2
               );
             })) && (
             <EditButton value={editMode} setValue={setEditMode} size={25} />

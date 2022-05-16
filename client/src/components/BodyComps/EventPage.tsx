@@ -66,7 +66,6 @@ const EventPage = () => {
 
   return (
     <div className="grid grid-cols-3 w-full bg-gray-200 p-4 gap-4">
-      {console.log(event)}
       {(store.user.login == "ADMIN" ||
         event?.creator._id == store.user._id ||
         userRights! <= 1) && (
@@ -98,8 +97,10 @@ const EventPage = () => {
         </div>
       )}
       <div className="col-span-3 flex flex-row gap-2 mx-6">
-        <div className="bg-white flex justify-between rounded drop-shadow grow h-fit py-4 px-12 mt-10">
+        <div className="bg-white flex justify-between rounded drop-shadow grow px-12 py-14">
           <div className="text-center text-4xl">{event?.name}</div>
+          {(new Date()).getTime() <= new Date(event?.date!).getTime()! && <div className="flex gap-2 flex-row-reverse">
+          
           {(!event?.isSubmited && (
             <div className="bg-red-200 text-red-400 rounded border-2 border-red-400 p-2">
               подію не підтверджено
@@ -109,6 +110,19 @@ const EventPage = () => {
               подію підтверджено
             </div>
           )}
+          {event?.musiciansNeeded.length! > 0 &&
+            <div className="bg-yellow-200 text-yellow-400 rounded border-2 border-yellow-400 p-2">
+            потрібні учасники
+          </div> ||
+            <div className="bg-blue-200 text-blue-400 rounded border-2 border-blue-400 p-2">
+            укомплектовано
+          </div>
+          }
+        </div>
+        ||
+        <div className="flex gap-2 flex-row-reverse"><div className="bg-gray-200 text-gray-400 rounded border-2 border-gray-400 p-2">
+        подія вже пройшла
+      </div></div>}
         </div>
         <div className="bg-white rounded drop-shadow w-fit px-4 py-1 flex-col gap-2">
           <div className="text-center">Сворив подію:</div>

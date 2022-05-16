@@ -69,7 +69,7 @@ const InvitePage = () => {
 
           <div className="flex justify-center">
             <div className="flex flex-wrap gap-4 p-4">
-              {events?.map((event: IEvent) => {
+              {filterEvents(events!).map((event: IEvent) => {
                 const currentIndex = events.indexOf(event);
                 return (
                   <button

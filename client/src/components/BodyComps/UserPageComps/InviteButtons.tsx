@@ -5,6 +5,7 @@ import UserService from "../../../services/UserService";
 import { observer } from "mobx-react-lite";
 import PropositionService from "../../../services/PropositionService";
 import { ITicket } from "../../../models/ITicket";
+import { Link } from "react-router-dom";
 
 type LocalParams = {
   userId: string;
@@ -18,6 +19,7 @@ const InviteButtons = ({ userId }: LocalParams) => {
   const deleteHandler = () => {
     UserService.deleteUserById(userId);
     navigate("/users");
+    window.location.reload();
   };
 
   const getData = () => {
@@ -50,12 +52,12 @@ const InviteButtons = ({ userId }: LocalParams) => {
               Запропонувати участь у події
             </button>
           ))}
-        <button
-          type="button"
-          className="rounded bg-cyan-400 text-white hover:bg-cyan-400 transition px-4 py-2 hover:text-white lg:mt-0"
+        <Link
+          to={`/chat/${userId}`}
+          className="rounded bg-cyan-400 text-white hover:bg-cyan-200 transition px-4 py-2 hover:text-white lg:mt-0 text-center"
         >
           Надіслати повідомлення
-        </button>
+        </Link>
       </div>
     );
   } else return <></>;

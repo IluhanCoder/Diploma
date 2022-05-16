@@ -112,7 +112,7 @@ const UserPage: React.FC = () => {
                   value={login!}
                   setValue={setLogin}
                 />
-              )) || <p className="text-4xl">{user?.login}</p>}
+              )) || <p className="text-4xl">Вітаємо, {user?.login}</p>}
             </div>
           </div>
           <InviteButtons userId={userId} />
