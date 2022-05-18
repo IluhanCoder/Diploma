@@ -16,7 +16,7 @@ export default class EventService {
     musiciansNeeded: string[]
   ): Promise<AxiosResponse<IEvent[]>> {
     try {
-      return $api
+      return await $api
         .post("/event", {
           name,
           creatorId,
@@ -29,7 +29,7 @@ export default class EventService {
         })
         .then((res) => {
           const data = res.data;
-          EventService.setAvatar(data, avatar);
+          EventService.setAvatar(data._id, avatar);
           return data;
         });
     } catch (error) {

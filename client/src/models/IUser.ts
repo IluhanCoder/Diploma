@@ -12,4 +12,5 @@ export interface IUser {
   isActivated: boolean;
   _id: string;
   desc: string;
+  rating?: number;
 }

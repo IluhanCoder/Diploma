@@ -8,6 +8,7 @@ const ApiError = require("../exceptions/api-error");
 const userModel = require("../models/user-model");
 const eventService = require("./event-service");
 const eventModel = require("../models/event-model");
+const feedbackService = require("./feedback-service");
 
 class UserService {
   async registration(
@@ -107,9 +108,40 @@ class UserService {
     };
   }
 
-  async getAllUsers() {
-    const users = await UserModel.find();
-    return users;
+  async getAllUsers(rated) {
+    if (rated)
+      return await UserModel.aggregate([
+        {
+          $lookup: {
+            from: "feedbacks",
+            localField: "_id",
+            foreignField: "receiverId",
+            as: "feedbacks",
+          },
+        },
+        { $unwind: "$feedbacks" },
+        {
+          $group: {
+            _id: "$_id",
+            login: { $first: "$login" },
+            email: { $first: "$email" },
+            name: { $first: "$name" },
+            surname: { $first: "$surname" },
+            password: { $first: "$password" },
+            birthday: { $first: "$birthday" },
+            cell: { $first: "$cell" },
+            city: { $first: "$city" },
+            gender: { $first: "$gender" },
+            isActivated: { $first: "$isActivated" },
+            eventInvites: { $first: "$eventInvites" },
+            eventPropositions: { $first: "$eventPropositions" },
+            desc: { $first: "$desc" },
+            avatar: { $first: "$avatar" },
+            rating: { $avg: "$feedbacks.value" },
+          },
+        },
+      ]);
+    else return await userModel.find();
   }
 
   async setAvatar(filePath, userData) {

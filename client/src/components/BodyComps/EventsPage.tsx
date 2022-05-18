@@ -113,7 +113,7 @@ export const Events = ({ type }: LocalParams) => {
         )}
       </div>
 
-      {type == "submited" && UserService.isAdmin(store.user) && (
+      {type == "submited" && UserService.isAdmin(store.user._id) && (
         <div className="flex justify-center py-4">
           <Link to={"/events-admin"} className="w-fit">
             <div className="text-center rounded px-2 py-1 border-4 border-red-500 bg-red-300 text-red-500 hover:bg-red-200 hover:text-red-300 hover:border-red-300">

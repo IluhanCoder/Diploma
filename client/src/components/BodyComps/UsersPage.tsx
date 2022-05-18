@@ -4,18 +4,20 @@ import UserService from "../../services/UserService";
 import ImgDisplayer from "../UniversalComps/ImgDisplayer";
 import { API_URL } from "../../http";
 import UsersMapper from "./UsersPageComps/UsersMapper";
+import FeedbackService from "../../services/FeedbackService";
 
 const UsersPage = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchType, setSearchType] = useState<string>("name");
+  const [rated, setRated] = useState<boolean>();
 
   const getData = async () => {
-    await UserService.getUsers().then((res) => setUsers(res.data));
+    await UserService.getUsers(rated!).then((res) => setUsers(res.data));
   };
   useEffect(() => {
     getData();
-  }, [setUsers]);
+  }, [rated]);
 
   const filterUsers = (users: IUser[]) => {
     return users.filter((user: IUser) => {
@@ -41,6 +43,15 @@ const UsersPage = () => {
     <div className="flex flex-col">
       <div className="flex md:justify-between md:flex-row-reverse flex-col items-center gap-5 bg-gray-200 py-2 px-5 drop-shadow">
         <div className="flex gap-3">
+          <div className="pt-1">
+            <input
+              type="checkbox"
+              onClick={() => {
+                setRated(!rated);
+              }}
+            />{" "}
+            сортувати за рейтингом
+          </div>
           <input
             type="text"
             className="rounded drop-shadow"
@@ -61,7 +72,9 @@ const UsersPage = () => {
       </div>
       <div className="bg-gray-100 flex flex-col p-4 gap-4">
         <div className="text-center text-3xl">Користувачі:</div>
-        {users.length > 0 && <UsersMapper users={filterUsers(users)} />}
+        {users.length > 0 && (
+          <UsersMapper users={filterUsers(users)} rated={rated} />
+        )}
         {users.length == 0 && (
           <div className="text-center text-gray-400">користувачів нема</div>
         )}

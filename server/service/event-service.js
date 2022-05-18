@@ -207,7 +207,8 @@ class EventService {
   }
 
   async setAvatar(filePath, eventId) {
-    const filter = { _id: eventId };
+    const convertedEventId = Mongoose.Types.ObjectId(eventId);
+    const filter = { _id: convertedEventId };
     let fileStr = filePath.replace("images\\", "");
     const updateDocument = {
       $set: {
@@ -265,7 +266,7 @@ class EventService {
       {
         $lookup: {
           from: "users",
-          localField: "participants.id",
+          localField: "participants._id",
           foreignField: "_id",
           as: "participantData",
         },
@@ -292,6 +293,7 @@ class EventService {
         },
       },
     ]);
+    console.log(participants);
     //so stupid, but i have no time to fix it :)))
     if (participants[0]) return participants[0].participants;
     else return [];

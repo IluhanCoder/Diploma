@@ -16,6 +16,7 @@ const EventSchema = new Schema({
         name: String,
         role: String,
         rights: Number,
+        feedbacked: { type: Boolean, default: false },
       },
     ],
     required: false,

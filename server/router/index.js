@@ -11,6 +11,7 @@ const commentController = require("../controllers/comment-controller");
 const commentService = require("../service/comment-service");
 const songController = require("../controllers/song-controller");
 const chatController = require("../controllers/chat-controller");
+const feedbackController = require("../controllers/feedback-controller");
 
 const imageStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -88,9 +89,9 @@ router.get("/avatar/:id", userController.getAvatar);
 //deletes user's avatar
 router.delete("/avatar", userController.deleteAvatar);
 //returns all the users from DB
-router.get("/users", userController.getUsers);
+router.get("/users/:rated", userController.getUsers);
 //returns a specific user by id
-router.get("/users/:id", userController.getById);
+router.get("/user/:id", userController.getById);
 //delete user by id
 router.delete("/user/:id", userController.deleteUser);
 //update user data
@@ -207,5 +208,15 @@ router.get("/chat/:receiverId/:senderId", chatController.getChat);
 router.get("/chats/:userId", chatController.getUserChats);
 
 router.get("/chats/unread/:userId", chatController.countUnread);
+
+router.post("/feedback", feedbackController.newFeedback);
+
+router.get("/feedback/:receiverId", feedbackController.getUserFeedbacks);
+
+router.get("/feedback/:senderId/:receiverId", feedbackController.getFeedBack);
+
+router.delete("/feedback/:feedbackId", feedbackController.deleteFeedback);
+
+router.get("/rating/:userId", feedbackController.calculateRating);
 
 module.exports = router;

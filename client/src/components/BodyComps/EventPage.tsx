@@ -23,6 +23,7 @@ import AcceptInviteButton from "./EventPageComps/AcceptInviteButton";
 import PropositionButton from "./EventPageComps/PropositionButton";
 import rightsArray from "../../static/rights-array";
 import Songs from "./EventPageComps/Songs";
+import UserService from "../../services/UserService";
 
 type LocalParams = {
   eventId: string;
@@ -50,6 +51,10 @@ const EventPage = () => {
     navigate("/events");
   };
 
+  const isDone = () => {
+    return new Date().getTime() >= new Date(event?.date!).getTime();
+  };
+
   const getData = () => {
     EventService.getEvent(eventId!).then((res) => {
       setEvent(res.data);
@@ -66,7 +71,20 @@ const EventPage = () => {
 
   return (
     <div className="grid grid-cols-3 w-full bg-gray-200 p-4 gap-4">
-      {(store.user.login == "ADMIN" ||
+      {isDone() && store.user._id == event?.creator._id && (
+        <div className="bg-yellow-100 text-yellow-500 flex justify-center pt-4 border-2 border-yellow-500 rounded drop-shadow">
+          <div>
+            Подію завершено, не бажаєте залишити{" "}
+            <Link
+              to={`/feedback/${event?._id}`}
+              className="underline font-bold"
+            >
+              відгуки учасникам?
+            </Link>
+          </div>
+        </div>
+      )}
+      {(UserService.isAdmin(store.user._id) ||
         event?.creator._id == store.user._id ||
         userRights! <= 1) && (
         <div className="bg-white rounded drop-shadow flex justify-center p-2 gap-4 col-start-2">
@@ -99,7 +117,7 @@ const EventPage = () => {
       <div className="col-span-3 flex flex-row gap-2 mx-6">
         <div className="bg-white flex justify-between rounded drop-shadow grow px-12 py-14">
           <div className="text-center text-4xl">{event?.name}</div>
-          {(new Date().getTime() <= new Date(event?.date!).getTime()! && (
+          {(!isDone() && (
             <div className="flex gap-2 flex-row-reverse">
               {(!event?.isSubmited && (
                 <div className="bg-red-200 text-red-400 rounded border-2 border-red-400 p-2">
@@ -120,13 +138,14 @@ const EventPage = () => {
                 </div>
               )}
             </div>
-          )) || (
-            <div className="flex gap-2 flex-row-reverse">
-              <div className="bg-gray-200 text-gray-400 rounded border-2 border-gray-400 p-2">
-                подія вже пройшла
+          )) ||
+            (isDone() && (
+              <div className="flex gap-2 flex-row-reverse">
+                <div className="bg-gray-200 text-gray-400 rounded border-2 border-gray-400 p-2">
+                  подія вже пройшла
+                </div>
               </div>
-            </div>
-          )}
+            ))}
         </div>
         <div className="bg-white rounded drop-shadow w-fit px-4 py-1 flex-col gap-2">
           <div className="text-center">Сворив подію:</div>

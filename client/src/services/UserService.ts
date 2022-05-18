@@ -5,9 +5,11 @@ import { IUser } from "../models/IUser";
 import { IEvent } from "../models/IEvent";
 import { ITicket } from "../models/ITicket";
 
+const adminId = "6250231126dc7f6aff62ef7e";
+
 export default class UserService {
-  static getUsers(): Promise<AxiosResponse<IUser[]>> {
-    return $api.get("/users");
+  static getUsers(rated: boolean): Promise<AxiosResponse<IUser[]>> {
+    return $api.get(`/users/${rated}`);
   }
 
   static async changeAvatar(fileData: File) {
@@ -20,7 +22,8 @@ export default class UserService {
     $api.delete("/user/" + userId);
   }
 
-  static getById(userId: string) {
+  static async getById(userId: string) {
+    console.log(userId);
     return $api.get("/users/:" + userId);
   }
 
@@ -73,7 +76,7 @@ export default class UserService {
     return await $api.post("/propositions/", { propositions });
   }
 
-  static isAdmin(user: IUser) {
-    return user.login == "ADMIN";
+  static isAdmin(userId: string) {
+    return userId == adminId;
   }
 }

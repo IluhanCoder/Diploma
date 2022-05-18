@@ -9,7 +9,6 @@ import AddEventForm from "./BodyComps/NewEventPage";
 import UserPage from "./BodyComps/UserPage";
 import SendEventRequest from "./BodyComps/InvitePage";
 import EventPage from "./BodyComps/EventPage";
-import UsersAdminPage from "./BodyComps/UsersAdminPage";
 import PropositionPage from "./BodyComps/PropositionPage";
 import AcceptPropositionPage from "./BodyComps/AcceptPropositionPage";
 import InvitePage from "./BodyComps/InvitePage";
@@ -21,6 +20,7 @@ import NewSongPage from "./BodyComps/NewSongPage";
 import SongPage from "./BodyComps/SongPage";
 import ChatPage from "./BodyComps/ChatPage";
 import ChatsPage from "./BodyComps/ChatsPage";
+import FeedBackPage from "./BodyComps/FeedbackPage";
 
 function Body() {
   const { store } = useContext(Context);
@@ -35,7 +35,6 @@ function Body() {
         <Route path="/user/:userId" element={<UserPage />} />
         <Route path="/events" element={<Events type={"submited"} />} />
         <Route path="/events-admin" element={<Events type={"unsubmited"} />} />
-        <Route path="/users-admin" element={<UsersAdminPage />} />
         <Route path="/event-form" element={<AddEventForm />} />
         <Route path="/user-events" element={<Events type={"user"} />} />
         <Route
@@ -55,6 +54,7 @@ function Body() {
         <Route path="/song/:songId" element={<SongPage />}></Route>
         <Route path="/chat/:receiverId" element={<ChatPage />}></Route>
         <Route path="/chats" element={<ChatsPage />}></Route>
+        <Route path="/feedback/:eventId" element={<FeedBackPage />}></Route>
       </Routes>
     </>
   );

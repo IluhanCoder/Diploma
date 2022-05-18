@@ -6,6 +6,7 @@ export interface IParticipant {
   name: string;
   role: string;
   rights: number;
+  feedbacked: boolean;
 }
 
 export interface IEvent {

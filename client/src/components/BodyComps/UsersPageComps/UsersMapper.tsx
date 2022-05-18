@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 import { Context } from "../../../index";
 import { useContext } from "react";
 import GenderDisplayer from "../../UniversalComps/GenderDisplayer";
+import PointsPicker from "../FeedBackPageComps/PointsPicker";
 
 type LocalParams = {
   users: IUser[];
+  rated?: boolean;
 };
 
-const UsersMapper = ({ users }: LocalParams) => {
+const UsersMapper = ({ users, rated }: LocalParams) => {
   const url = API_URL.replace("/api", "");
   const { store } = useContext(Context);
 
@@ -32,6 +34,12 @@ const UsersMapper = ({ users }: LocalParams) => {
               </div>
               <div key={user._id} className="flex flex-col grow gap-2">
                 <div className="text-center text-2xl">{user.login}</div>
+                {rated && (
+                  <div className="flex justify-center gap-2">
+                    <div>Рейтинг:</div>
+                    <PointsPicker points={user.rating!} disabled />
+                  </div>
+                )}
                 <div className="grid grid-cols-2">
                   <div className="flex gap-4">
                     <div>Ім'я:</div>

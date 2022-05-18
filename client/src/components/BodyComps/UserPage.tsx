@@ -24,6 +24,8 @@ import GenderDisplayer from "../UniversalComps/GenderDisplayer";
 import FileUploader from "./UserEventsPageComps/UserAvatarUploader";
 import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import History from "./EventPageComps/History";
+import UserFeedBacks from "./UserPageComps/UserFeedBacks";
+import Rating from "./UserPageComps/Rating";
 
 const UserPage: React.FC = () => {
   let url = API_URL.replace("/api", "");
@@ -66,7 +68,7 @@ const UserPage: React.FC = () => {
   };
 
   const getData = async () => {
-    await $api.get("/users/" + userId).then((response) => {
+    await $api.get("/user/" + userId).then((response) => {
       setUser(response.data);
       setName(response.data.name);
       setSurame(response.data.surname);
@@ -81,8 +83,8 @@ const UserPage: React.FC = () => {
     });
   };
   React.useEffect(() => {
-    getData();
-  }, [setUser, userId]);
+    if (userId) getData();
+  }, [userId]);
 
   return (
     <div className="bg-gray-100 p-5">
@@ -153,6 +155,14 @@ const UserPage: React.FC = () => {
             </div>
           </div>
           <div className="grid xl:grid-cols-2 lg:grid-cols-1 gap-5">
+            <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
+              <div>
+                <p>Рейтинг:</p>
+              </div>
+              <div className="flex flex-row-reverse">
+                <Rating userId={user?._id!} />
+              </div>
+            </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
               <div>
                 <p>Ім'я:</p>
@@ -255,7 +265,8 @@ const UserPage: React.FC = () => {
             )}
           </div>
         </div>
-        <History userId={user?._id!} />
+        {/* <History userId={user?._id!} /> */}
+        <UserFeedBacks userId={user?._id!} />
       </div>
     </div>
   );

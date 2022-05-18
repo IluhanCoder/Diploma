@@ -75,9 +75,11 @@ class EventController {
   }
 
   async setAvatar(req, res, next) {
+    console.log(req.params);
     try {
       const { eventId } = req.params;
       const file = req.file;
+      console.log(file);
       if (file) {
         await EventService.setAvatar(file.path, eventId);
       }

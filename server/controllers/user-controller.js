@@ -96,7 +96,8 @@ class UserController {
 
   async getUsers(req, res, next) {
     try {
-      const users = await userService.getAllUsers();
+      const rated = req.params.rated == "true";
+      const users = await userService.getAllUsers(rated);
       return res.json(users);
     } catch (error) {
       next(error);
@@ -104,6 +105,7 @@ class UserController {
   }
 
   async setAvatar(req, res, next) {
+    console.log("called");
     try {
       const tokenBearer = req.headers["authorization"].split(" ");
       const token = tokenBearer[1];
