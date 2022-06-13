@@ -162,7 +162,7 @@ export const AddEventForm: FC = () => {
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="cell"
-            placeholder="Місто"
+            placeholder="Адреса"
           />
 
           <textarea

@@ -129,18 +129,20 @@ const InvitePage = () => {
             </div>
           )}
         </div>
-        <div className="flex w-full justify-center">
-          <form className="flex flex-col gap-4 w-3/4">
-            <label>Коментар до запрошення:</label>
-            <textarea
-              className="h-44"
-              value={comment}
-              onChange={(e) => {
-                setComment(e.target.value);
-              }}
-            />
-          </form>
-        </div>
+        {selectedRole > -1 && (
+          <div className="flex w-full justify-center">
+            <form className="flex flex-col gap-4 w-3/4">
+              <label>Коментар до запрошення:</label>
+              <textarea
+                className="h-44 border-2 border-gray-300 rounded"
+                value={comment}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                }}
+              />
+            </form>
+          </div>
+        )}
         <div className="flex flex-col gap-2 justify-center text-2xl">
           {errorMessages.map((message: string) => {
             return <div className="text-center text-red-500">{message}</div>;

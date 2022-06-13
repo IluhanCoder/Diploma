@@ -20,7 +20,9 @@ class UserService {
     birthday,
     cell,
     city,
-    gender
+    gender,
+    genres,
+    instruments
   ) {
     const mailCandidate = await UserModel.findOne({ email });
     if (mailCandidate != null) {
@@ -50,8 +52,9 @@ class UserService {
       cell,
       city,
       gender,
+      genres,
+      instruments,
     });
-    // await mailService.sendActivationMail(email, process.env.API_URL + '/api/activate/' + activationLink)
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
@@ -138,7 +141,12 @@ class UserService {
             desc: { $first: "$desc" },
             avatar: { $first: "$avatar" },
             rating: { $avg: "$feedbacks.value" },
+            genres: { $first: "$genres" },
+            instruments: { $first: "$instruments" },
           },
+        },
+        {
+          $sort: { rating: -1 },
         },
       ]);
     else return await userModel.find();
@@ -170,7 +178,9 @@ class UserService {
     city,
     gender,
     desc,
-    birthday
+    birthday,
+    genres,
+    instruments
   ) {
     const filter = { _id: userId };
     const updateDocument = {
@@ -184,6 +194,8 @@ class UserService {
         gender,
         desc,
         birthday,
+        genres,
+        instruments,
       },
     };
     const result = await UserModel.updateOne(filter, updateDocument);

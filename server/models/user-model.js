@@ -11,7 +11,6 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     birthday: { type: Date, required: true },
     cell: { type: String, required: true },
-    //todo: think about city choosing logic
     city: { type: String, required: true },
     gender: { type: String, required: true },
     avatar: { type: String, required: false },
@@ -20,6 +19,8 @@ const UserSchema = new Schema(
     eventInvites: { type: [Schema.Types.ObjectId], required: false },
     eventPropositions: { type: [Schema.Types.ObjectId], required: false },
     desc: { type: String, required: false, default: "" },
+    genres: { type: [String], required: true },
+    instruments: { type: [String], required: false },
   },
   { strict: false }
 );

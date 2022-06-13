@@ -20,7 +20,9 @@ export default class AuthService {
     birthday: Date,
     cell: string,
     city: string,
-    gender: string
+    gender: string,
+    genres: string[],
+    instruments: string[]
   ): Promise<AxiosResponse<AuthResponse>> {
     return $api.post("/registration", {
       login: login,
@@ -32,6 +34,8 @@ export default class AuthService {
       cell,
       city,
       gender,
+      genres,
+      instruments,
       avatar: null,
       eventInvites: [],
       eventPropositions: [],

@@ -97,12 +97,6 @@ export const Events = ({ type }: LocalParams) => {
             <option value="creator">по творцю</option>
             <option value="genre">по жанрах</option>
           </select>
-          <button
-            type="button"
-            className="bg-cyan-400 rounded px-3 hover:bg-cyan-200 drop-shadow"
-          >
-            <BiSearch color="white" />
-          </button>
         </div>
         {store.isAuth && type != "unsubmited" && (
           <Link to="/event-form">

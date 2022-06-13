@@ -1,6 +1,5 @@
 import $api from "../http";
 import { AxiosResponse } from "axios";
-import { AuthResponse } from "../models/response/AuthResponse";
 import { IUser } from "../models/IUser";
 import { IEvent } from "../models/IEvent";
 import { ITicket } from "../models/ITicket";
@@ -45,7 +44,9 @@ export default class UserService {
     city: string,
     gender: string,
     desc: string,
-    birthday: Date
+    birthday: Date,
+    genres: string[],
+    instruments: string[]
   ) {
     await $api.put(`/user/${userId}`, {
       desc,
@@ -57,6 +58,8 @@ export default class UserService {
       city,
       gender,
       birthday,
+      genres,
+      instruments,
     });
   }
 

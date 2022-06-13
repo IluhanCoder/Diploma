@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { TypeVariable } from "typescript";
 import { IUser } from "../models/IUser";
 import AuthService from "../services/AuthService";
 import axios from "axios";
@@ -43,7 +42,9 @@ export default class Store {
     birthday: Date,
     cell: string,
     city: string,
-    gender: string
+    gender: string,
+    genres: string[],
+    instruments: string[]
   ) {
     try {
       const response = await AuthService.registration(
@@ -55,7 +56,9 @@ export default class Store {
         birthday,
         cell,
         city,
-        gender
+        gender,
+        genres,
+        instruments
       );
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);

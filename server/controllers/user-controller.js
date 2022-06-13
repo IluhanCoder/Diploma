@@ -22,6 +22,8 @@ class UserController {
         cell,
         city,
         gender,
+        genres,
+        instruments,
       } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -36,7 +38,9 @@ class UserController {
         birthday,
         cell,
         city,
-        gender
+        gender,
+        genres,
+        instruments
       );
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -158,6 +162,8 @@ class UserController {
         gender,
         desc,
         birthday,
+        genres,
+        instruments,
       } = req.body;
       await userService.update(
         userId,
@@ -169,7 +175,9 @@ class UserController {
         city,
         gender,
         desc,
-        birthday
+        birthday,
+        genres,
+        instruments
       );
     } catch (error) {
       next(error);

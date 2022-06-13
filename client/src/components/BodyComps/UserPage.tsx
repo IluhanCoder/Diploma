@@ -26,6 +26,8 @@ import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import History from "./EventPageComps/History";
 import UserFeedBacks from "./UserPageComps/UserFeedBacks";
 import Rating from "./UserPageComps/Rating";
+import { ImCross } from "react-icons/im";
+import ArrayMapper from "../UniversalComps/ArrayMapper";
 
 const UserPage: React.FC = () => {
   let url = API_URL.replace("/api", "");
@@ -47,6 +49,10 @@ const UserPage: React.FC = () => {
   const [avatar, setAvatar] = useState<File>();
   const [avatarPath, setAvatarPath] = useState<string>();
   const [description, setDesctiption] = useState<string>("");
+  const [genre, setGenre] = useState<string>("");
+  const [genres, setGenres] = useState<string[]>();
+  const [instrument, setInstrument] = useState<string>("");
+  const [instruments, setInstruments] = useState<string[]>();
 
   const [user, setUser] = useState<IUser>();
 
@@ -61,7 +67,9 @@ const UserPage: React.FC = () => {
       city!,
       gender!,
       description!,
-      birthday!
+      birthday!,
+      genres!,
+      instruments!
     );
     UserService.changeAvatar(avatar!);
     window.location.reload();
@@ -80,6 +88,8 @@ const UserPage: React.FC = () => {
       setCity(response.data.city);
       setDesctiption(response.data.desc);
       setGender(response.data.gender);
+      setGenres(response.data.genres);
+      setInstruments(response.data.instruments);
     });
   };
   React.useEffect(() => {
@@ -114,7 +124,10 @@ const UserPage: React.FC = () => {
                   value={login!}
                   setValue={setLogin}
                 />
-              )) || <p className="text-4xl">Вітаємо, {user?.login}</p>}
+              )) ||
+                (store.user._id == user?._id && (
+                  <p className="text-4xl">Вітаємо, {user?.login}</p>
+                )) || <p className="text-4xl">{user?.login}</p>}
             </div>
           </div>
           <InviteButtons userId={userId} />
@@ -189,7 +202,7 @@ const UserPage: React.FC = () => {
             </div>
             <div className="grid grid-cols-2 bg-gray-200 p-4 gap-20 rounded h-fit">
               <div>
-                <p>Email:</p>
+                <p>Електронна пошта:</p>
               </div>
               <div className="flex flex-row-reverse">
                 <ExtraInput
@@ -256,8 +269,116 @@ const UserPage: React.FC = () => {
                 )) || <DateFormater value={birthday} dayOfWeek={false} />}
               </div>
             </div>
+            {(editMode && (
+              <div className="flex flex-col gap-2 border-2 bg-gray-200 rounded p-2">
+                <label className="text-center text-xl">Жанри:</label>
+                <div className="flex justify-center gap-2">
+                  <input
+                    className="border-2 border-gray-300 rounded"
+                    type="text"
+                    value={genre}
+                    onChange={(e) => setGenre(e.target.value)}
+                  />
+                  <button
+                    className="bg-cyan-500 text-white hover:bg-cyan-400 rounded px-2 py-1 drop-shadow"
+                    onClick={() => {
+                      setGenres(genres?.concat(genre!));
+                      setGenre("");
+                    }}
+                  >
+                    додати...
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2 p-4">
+                  {genres?.map((genre: string) => {
+                    return (
+                      <div className="bg-white rounded drop-shadow py-2 px-4 w-fit flex space-between gap-8">
+                        <div className="text-center">{genre}</div>
+                        <div className="mt-1">
+                          <button
+                            onClick={() => {
+                              setGenres(
+                                genres.filter((g) => {
+                                  return g != genre;
+                                })
+                              );
+                            }}
+                          >
+                            <ImCross color="red" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )) || (
+              <div>
+                <div>Переважні жанри користувача:</div>
+                <ArrayMapper
+                  array={genres!}
+                  className="flex flex-wrap gap-2 p-2"
+                  itemClassName="bg-gray-100 rounded drop-shadow py-2 px-4"
+                />
+              </div>
+            )}
+            {(editMode && (
+              <div className="flex flex-col gap-2 border-2 bg-gray-200 rounded p-2">
+                <label className="text-center text-xl">
+                  Музичні інструменти:
+                </label>
+                <div className="flex justify-center gap-2">
+                  <input
+                    className="border-2 border-gray-300 rounded"
+                    type="text"
+                    value={instrument}
+                    onChange={(e) => setInstrument(e.target.value)}
+                  />
+                  <button
+                    className="bg-cyan-500 text-white hover:bg-cyan-400 rounded px-2 py-1 drop-shadow"
+                    onClick={() => {
+                      setInstruments(instruments?.concat(instrument!));
+                      setInstrument("");
+                    }}
+                  >
+                    додати...
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2 p-4">
+                  {instruments?.map((instrument: string) => {
+                    return (
+                      <div className="bg-white rounded drop-shadow py-2 px-4 w-fit flex space-between gap-8">
+                        <div className="text-center">{instrument}</div>
+                        <div className="mt-1">
+                          <button
+                            onClick={() => {
+                              setInstruments(
+                                instruments.filter((i) => {
+                                  return i != instrument;
+                                })
+                              );
+                            }}
+                          >
+                            <ImCross color="red" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )) || (
+              <div>
+                <div>Музичні інструенти користувача:</div>
+                <ArrayMapper
+                  array={instruments!}
+                  className="flex flex-wrap gap-2 p-2"
+                  itemClassName="bg-gray-100 rounded drop-shadow py-2 px-4"
+                />
+              </div>
+            )}
             {editMode && (
-              <div className="flex justify-center bg-green-400 hover:bg-green-200 rounded drop-shadow">
+              <div className="flex justify-center bg-green-400 hover:bg-green-200 rounded drop-shadow col-span-2">
                 <button type="button" className="p-2" onClick={changeHandler}>
                   Застосувати зміни
                 </button>
@@ -265,7 +386,7 @@ const UserPage: React.FC = () => {
             )}
           </div>
         </div>
-        {/* <History userId={user?._id!} /> */}
+        <History userId={user?._id!} />
         <UserFeedBacks userId={user?._id!} />
       </div>
     </div>

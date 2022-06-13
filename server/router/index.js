@@ -70,6 +70,9 @@ router.post(
   body("password")
     .isLength({ min: 5, max: 24 })
     .withMessage("Пароль має бути довжиною від 5 до 24 символів"),
+  body("genres")
+    .isLength({ min: 1, max: 10 })
+    .withMessage("Ви маєте вказати від 1 до 10 переважних жанрів"),
   userController.registration
 );
 //handles user's login

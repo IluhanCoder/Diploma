@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ArrayMapper from "../UniversalComps/ArrayMapper";
+import Select from "react-select";
+import genresArray from "../../static/genres-array";
+import instrumentsArray from "../../static/instruments-array";
 
 export const RegForm: FC = () => {
   const [login, setLogin] = useState<string>("");
@@ -19,6 +23,10 @@ export const RegForm: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordConf, setPasswordConf] = useState<string>("");
   const [errorMessages, setErrorMessages] = useState<Array<any>>([]);
+  const [genres, setGenres] = useState<string[]>([]);
+  const [genre, setGenre] = useState<string>("");
+  const [instruments, setInstruments] = useState<string[]>([]);
+  const [instrument, setInstrument] = useState<string>("");
   const { store } = useContext(Context);
   const navigate = useNavigate();
 
@@ -39,7 +47,9 @@ export const RegForm: FC = () => {
         birthday,
         cell,
         city,
-        gender
+        gender,
+        genres,
+        instruments
       );
       navigate(`/user/${store.user._id}`);
     } catch (error: any) {
@@ -51,6 +61,16 @@ export const RegForm: FC = () => {
       setErrorMessages(tempArray);
     }
   }
+
+  const options = [
+    { name: "Swedish", value: "sv" },
+    { name: "English", value: "en" },
+    {
+      type: "group",
+      name: "Group name",
+      items: [{ name: "Spanish", value: "es" }],
+    },
+  ];
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col py-6">
@@ -74,7 +94,7 @@ export const RegForm: FC = () => {
               type="text"
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="fullname"
-              placeholder="Псевдоним користувача"
+              placeholder="Псевдонім користувача"
             />
 
             <div className="grid grid-cols-2 gap-2 justify-between">
@@ -146,6 +166,70 @@ export const RegForm: FC = () => {
               <option value="female">жіноча стать</option>
               <option value="none">не вказувати стать</option>
             </select>
+
+            <label>Ваші музичні інструменти: </label>
+
+            <Select
+              options={instrumentsArray}
+              placeholder="обрати..."
+              value={{ value: instrument, label: instrument }}
+              onChange={(e) => {
+                setInstrument(e?.value!);
+              }}
+            />
+
+            <div className="flex py-3 flex-row-reverse">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={() => {
+                  setInstruments(instruments.concat(instrument));
+                  setInstrument("");
+                }}
+              >
+                Додати...
+              </button>
+            </div>
+
+            <div className="flex flex-row gap-2">
+              <ArrayMapper
+                array={instruments}
+                className="flex gap-2 overflow-auto"
+                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
+              />
+            </div>
+
+            <label>Переваги в музичних жанрах: </label>
+
+            <Select
+              options={genresArray}
+              placeholder="обрати..."
+              value={{ value: genre, label: genre }}
+              onChange={(e) => {
+                setGenre(e?.value!);
+              }}
+            />
+
+            <div className="flex py-3 flex-row-reverse">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="button"
+                onClick={() => {
+                  setGenres(genres.concat(genre));
+                  setGenre("");
+                }}
+              >
+                Додати...
+              </button>
+            </div>
+
+            <div className="flex flex-row gap-2">
+              <ArrayMapper
+                array={genres}
+                className="flex gap-2 overflow-auto"
+                itemClassName="bg-gray-200 px-2 py-1 rounded drop-shadow"
+              />
+            </div>
 
             <label>Пароль:</label>
             <input

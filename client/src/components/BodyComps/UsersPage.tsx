@@ -34,6 +34,15 @@ const UsersPage = () => {
           case "city":
             return user.city.toUpperCase().includes(upperValue);
             break;
+          case "genre":
+            return user.genres!.some((genre: string) => {
+              if (genre.toUpperCase().includes(upperValue)) return true;
+            });
+            break;
+          case "instrument":
+            return user.instruments!.some((instrument: string) => {
+              if (instrument.toUpperCase().includes(upperValue)) return true;
+            });
         }
       } else return true;
     });
@@ -67,6 +76,8 @@ const UsersPage = () => {
           >
             <option value="name">за ім'ям</option>
             <option value="city">за містом</option>
+            <option value="genre">за переважними жанрами</option>
+            <option value="instrument">за музичним інструментом</option>
           </select>
         </div>
       </div>

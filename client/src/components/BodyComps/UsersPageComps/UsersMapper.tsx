@@ -6,6 +6,7 @@ import { Context } from "../../../index";
 import { useContext } from "react";
 import GenderDisplayer from "../../UniversalComps/GenderDisplayer";
 import PointsPicker from "../FeedBackPageComps/PointsPicker";
+import ArrayMapper from "../../UniversalComps/ArrayMapper";
 
 type LocalParams = {
   users: IUser[];
@@ -25,7 +26,7 @@ const UsersMapper = ({ users, rated }: LocalParams) => {
               className="flex bg-white drop-shadow rounded p-4"
               key={user._id}
             >
-              <div className="p-4">
+              <div className="px-4 py-6">
                 <Avatar
                   src={url + "/" + user.avatar}
                   className="rounded"
@@ -56,6 +57,10 @@ const UsersMapper = ({ users, rated }: LocalParams) => {
                   <div className="flex gap-4">
                     <div>Місто:</div>
                     <div>{user.city}</div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>Переважні жанри:</div>
+                    <ArrayMapper array={user.genres} className="flex gap-2" />
                   </div>
                 </div>
                 <div className="flex justify-center">

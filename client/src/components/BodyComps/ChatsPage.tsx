@@ -44,7 +44,11 @@ const ChatsPage = () => {
               key={chat._id}
             >
               <div className="row-span-2 w-fit">
-                <Avatar src={url + "/" + receiver.avatar} className="rounded" />
+                <Avatar
+                  src={url + "/" + receiver.avatar}
+                  className="rounded"
+                  name={receiver.login}
+                />
               </div>
               <div className="grow">
                 <div className="py-2 px-6 font-bold">{receiver.login}</div>

@@ -10,6 +10,8 @@ export interface IUser {
   gender: string;
   avatar: string;
   isActivated: boolean;
+  genres: string[];
+  instruments: string[];
   _id: string;
   desc: string;
   rating?: number;

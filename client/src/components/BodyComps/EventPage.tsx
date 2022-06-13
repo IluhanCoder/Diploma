@@ -129,7 +129,7 @@ const EventPage = () => {
                 </div>
               )}
               {(event?.musiciansNeeded.length! > 0 && (
-                <div className="bg-yellow-200 text-yellow-400 rounded border-2 border-yellow-400 p-2">
+                <div className="bg-yellow-200 text-yellow-600 rounded border-2 border-yellow-600 p-2">
                   потрібні учасники
                 </div>
               )) || (

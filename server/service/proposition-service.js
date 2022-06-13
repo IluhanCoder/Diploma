@@ -90,10 +90,10 @@ class propositionService {
         {
           $push: {
             participants: {
-              id: convertedSenderId,
+              _id: convertedSenderId,
               name: sender.login,
               role: proposition.role,
-              rights: 4,
+              rights: 2,
             },
           },
         }

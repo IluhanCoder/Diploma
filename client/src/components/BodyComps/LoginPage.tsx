@@ -42,7 +42,7 @@ export const LoginForm: FC = () => {
             })}
           </div>
           <div className="py-2">
-            <label>Адрес електроної пошти:</label>
+            <label>Адреса електроної пошти:</label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -66,7 +66,7 @@ export const LoginForm: FC = () => {
               className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 focus:outline-none my-1"
               onClick={() => LoginHandler()}
             >
-              Увійти в систему
+              Увійти до системи
             </button>
           </div>
         </div>

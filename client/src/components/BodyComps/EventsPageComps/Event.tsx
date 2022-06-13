@@ -43,11 +43,12 @@ export const Event = ({ event }: LocalProps) => {
           </div>
         </div>
         <div className="row-span-3">
-          <div className="grid md:grid-cols-2 sm:grid-rows-2">
+          <div className="flex flex-col gap-4">
             <div>
               <p className="mb-2">Жанри:</p>
-              <div className="flex flex-wrap">
+              <div className="flex gap-2 w-full">
                 <ArrayMapper
+                  className="flex"
                   itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
                   array={event.genres}
                 />
@@ -55,23 +56,27 @@ export const Event = ({ event }: LocalProps) => {
             </div>
             <div>
               <p className="mb-2">Учасники:</p>
-              <div className="flex flex-wrap gap-2">
-                {event.participants.map((participant: IParticipant) => {
-                  return (
-                    <div
-                      className="bg-gray-400 rounded px-4 py-1"
-                      key={participant._id}
-                    >
-                      {participant.name}
-                    </div>
-                  );
-                })}
-              </div>
+
+              {(event.participants.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {event.participants.map((participant: IParticipant) => {
+                    return (
+                      <div
+                        className="bg-gray-400 rounded px-4 py-1"
+                        key={participant._id}
+                      >
+                        {participant.name}
+                      </div>
+                    );
+                  })}
+                </div>
+              )) || <div className="text-gray-400">учасників нема</div>}
             </div>
             <div>
               <p className="mb-2">Потрібні:</p>
               <div className="flex flex-wrap">
                 <ArrayMapper
+                  className="flex"
                   itemClassName="bg-gray-400 mr-4 mb-2 rounded px-4 py-1"
                   array={event.musiciansNeeded}
                 />

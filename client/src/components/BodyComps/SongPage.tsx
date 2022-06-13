@@ -172,7 +172,7 @@ const SongPage = () => {
         </div>
         <div className="bg-white rounded drop-shadow p-4 flex flex-col gap-2">
           <div className="text-center font-bold">pdf - файли:</div>
-          <div className="grid grid-cols-2 gap-2 overflow-auto">
+          <div className="flex flex-col gap-2 overflow-auto">
             {pdfs!.map((file: fileData) => {
               return (
                 <div className="bg-cyan-500 hover:bg-cyan-300 rounded py-1 px-3 drop-shadow flex justify-between">
@@ -227,7 +227,7 @@ const SongPage = () => {
         </div>
         <div className="bg-white rounded drop-shadow p-4 flex flex-col gap-2">
           <div className="text-center font-bold">аудіо - файли:</div>
-          <div className="grid grid-cols-2 gap-2 overflow-auto">
+          <div className="flex flex-col gap-2 overflow-auto">
             {audio!.map((file: fileData) => {
               return (
                 <div className="bg-cyan-500 hover:bg-cyan-300 rounded py-1 px-3 drop-shadow flex justify-between">
@@ -258,7 +258,7 @@ const SongPage = () => {
                 <FileUploader
                   display={true}
                   setFile={setAudioFile}
-                  accept=".wav, .mp3, .flac"
+                  accept=".mp3, .wav, .flac"
                   className="w-52"
                 />
               </div>

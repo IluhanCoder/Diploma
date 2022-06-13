@@ -47,11 +47,6 @@ function Header() {
                 <Link to={`/tickets`}>пропозиції</Link>
               </div>
             )}
-            {store.isAuth && store.user.login != "ADMIN" && (
-              <div className="hover:text-gray-300">
-                <Link to={`/event-history`}>історія подій</Link>
-              </div>
-            )}
             <div className="hover:text-gray-300">
               <Link to={`/events`}>події</Link>
             </div>
