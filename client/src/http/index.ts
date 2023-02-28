@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-export const API_URL = "http://localhost:5000/api";
+export const API_URL = "API_URL=https://solar-plus-node-app.onrender.com/api";
 
 const $api = axios.create({
   withCredentials: true,
