@@ -25697,7 +25697,7 @@
       Sa = n.n(ka),
       Ca = n(4569),
       Da = n.n(Ca),
-      Ea = "http://localhost:5000/api",
+      Ea = "https://music-web-node-app.onrender.com/api",
       Oa = Da().create({ withCredentials: !0, baseURL: Ea });
     Oa.interceptors.request.use(function (e) {
       return (
